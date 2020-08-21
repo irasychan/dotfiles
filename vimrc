@@ -17,6 +17,7 @@ Plugin 'godlygeek/tabular'
 Plugin 'preservim/nerdtree'
 Plugin 'dense-analysis/ale'
 Plugin 'plasticboy/vim-markdown'
+Plugin 'posva/vim-vue'
 
 call vundle#end()
 
