@@ -1,0 +1,108 @@
+" Set Leader
+let mapleader = ","
+
+" Common settings
+set ignorecase
+set clipboard=unnamed
+set number relativenumber
+set hlsearch
+set incsearch
+
+" ReSharper Refactoring
+nnoremap <Space>rr :vsc ReSharper.ReSharper_Rename<CR>
+nnoremap <Space>rm :vsc ReSharper.ReSharper_ExtractMethod<CR>
+nnoremap <Space>rf :vsc ReSharper.ReSharper_ReformatCode<CR>
+
+" ReSharper Navigation
+nnoremap gd :vsc ReSharper.ReSharper_GotoDeclaration<CR>
+nnoremap <Space>f :vsc ReSharper.ReSharper_GotoFileMember<CR>
+nnoremap <Space>e :vsc ReSharper.ReSharper_GotoNextErrorInSolution<CR>
+nnoremap <Space>E :vsc ReSharper.ReSharper_GotoPrevErrorInSolution<CR>
+nnoremap <Space>l :vsc ReSharper.ReSharper_LiveTemplatesInsert
+nnoremap <Space>u :vsc ReSharper.ReSharper_GotoUsage<CR>
+nnoremap <Space>d :vsc ReSharper.ReSharper_DuplicateText<CR>
+nnoremap <Space>, :vsc ReSharper.ReSharper_GotoText<CR>
+nnoremap <Space>v :vsc ReSharper.Resharper_IntroVariable<CR>
+nnoremap <Space>o :vsc ReSharper.ReSharper_Move<CR>
+nnoremap <Space>/ :vsc ReSharper.ReSharper_LineComment<CR>
+nnoremap <Space>t :vsc ReSharper.ReSharper_GotoType<CR>
+nnoremap <Space>ys :vsc ReSharper.ReSharper_SurroundWith<CR>
+nnoremap ]] :vsc ReSharper.ReSharper_GotoNextMember<CR>
+nnoremap [[ :vsc ReSharper.ReSharper_GotoPrevMember<CR>
+nnoremap <C-O> :vsc View.NavigateBackward<CR>
+nnoremap <C-I> :vsc View.NavigateForward<CR>
+
+" ReSharper Test Commands
+nnoremap <Space>tr :vsc ReSharper.ReSharper_UnitTestRunFromContext<CR>
+nnoremap <Space>td :vsc ReSharper.ReSharper_UnitTestDebugContext<CR>
+nnoremap <Space>ta :vsc ReSharper.ReSharper_UnitTestRunSolution<CR>
+nnoremap <Space>tl :vsc ReSharper.ReSharper_UnitTestSessionRepeatPreviousRun<CR>
+nnoremap <Space>tt :vsc ReSharper.ReSharper_ShowUnitTestSessions<CR>
+
+" Version Control
+nnoremap <Space>gf :vsc Team.Git.GoToGitChanges<CR>
+
+" Custom Commands
+nnoremap <Space>qs :vsc ReSharper.ReSharper_ShowCodeStructure<CR>
+nnoremap <Space>n :vsc View.SolutionExplorer<CR>
+
+nnoremap <Space>b :vsc Build.BuildSolution<CR>
+
+" Configuration
+nnoremap <Space>qk :vsc Tools.CustomizeKeyboard<CR>
+nnoremap <Space>ql :vsc Window.QuickLaunch<CR>
+nnoremap <Space>zl :so ~/.vsvimrc<CR>
+nnoremap <Space>ze :e ~/.vsvimrc<CR>
+
+" Surround simulating bindings
+nnoremap ys) ciw(<C-r>")<Esc>
+nnoremap ys] ciw[<C-r>"]<Esc>
+nnoremap ys} ciw{<C-r>"}<Esc>
+nnoremap ys> ciw<lt><C-r>"><Esc>
+nnoremap ys" ciw"<C-r>""<Esc>
+nnoremap ys' ciw'<C-r>"'<Esc>
+nnoremap ysw) ciW(<C-r>")<Esc>
+nnoremap ysw] ciW[<C-r>"]<Esc>
+nnoremap ysw} ciW{<C-r>"}<Esc>
+nnoremap ysw> ciW<lt><C-r>"><Esc>
+nnoremap ysw" ciW"<C-r>""<Esc>
+nnoremap ysw' ciW'<C-r>"'<Esc>
+
+" Surround delete bindings
+nnoremap ds) vi(dvhp
+nnoremap ds] vi[dvhp
+nnoremap ds} vi{dvhp
+nnoremap ds> vi<dvhp
+nnoremap ds" vi"dvhp
+nnoremap ds' vi'dvhp
+
+" Surround change bindings
+nnoremap cs"' vi"oh<Esc>msvi"l<Esc>cl'<Esc>`scl'<Esc>
+nnoremap cs'" vi'oh<Esc>msvi'l<Esc>cl"<Esc>`scl"<Esc>
+
+" Surround visual selected text
+vnoremap S" c"<C-r>""<Esc>
+vnoremap S' c"<C-r>"'<Esc>
+vnoremap S) c(<C-r>")<Esc>
+vnoremap S] c[<C-r>"]<Esc>
+vnoremap S} c{<C-r>"}<Esc>
+vnoremap S> c<lt><C-r>"><Esc>
+vnoremap S* c/*<C-r>"*/<Esc>
+vnoremap St c<lt>div><CR><C-r>"<Esc>
+
+" Surround in div tag and edit tag
+vnoremap St c<lt>div><CR><C-r>"<Esc>`<lt>lcw
+
+" Easy Motion simulation
+
+"Whole viewport jump-to-word beginning mode:
+nnoremap <Leader>f :vsc Tools.InvokePeasyMotion<CR>
+
+"Select text from current caret position to desired jump label (fwd and reverse directions supported)
+nmap <Leader>s :vsc Tools.InvokePeasyMotionTextSelect<CR>
+
+nmap zw :vsc Tools.InvokePeasyMotionLineJumpToWordBegining<CR>
+nmap ze :vsc Tools.InvokePeasyMotionLineJumpToWordEnding<CR>
+nmap ;w :vsc Tools.InvokePeasyMotionJumpToDocumentTab<CR>
+nmap ;l :vsc Tools.InvokePeasyMotionJumpToLineBegining<CR>
+nmap ;c :vsc Tools.InvokePeasyMotionTwoCharJump<CR>
