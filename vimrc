@@ -40,7 +40,7 @@ set pastetoggle=<F2>
 " Max character count for files
 set textwidth=79
 " Highlight textwidth column
-set columncolor=81
+set colorcolumn=81
 
 " Default formatting options
 "   t        Auto-wrap text using textwidth
