@@ -91,6 +91,7 @@ fi
 alias ll='ls -alF'
 alias la='ls -A'
 alias l='ls -CF'
+alias aws='docker run --rm -it -v ~/.aws:/root/.aws amazon/aws-cli'
 
 # Add an "alert" alias for long running commands.  Use like so:
 #   sleep 10; alert
@@ -116,9 +117,9 @@ if ! shopt -oq posix; then
   fi
 fi
 
-if [ -t 1 ]; then
-  exec zsh
-fi
+# if [ -t 1 ]; then
+#   exec zsh
+# fi
 
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm

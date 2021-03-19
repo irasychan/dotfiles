@@ -39,9 +39,9 @@ imap <F2> <C-O>:set invpaste paste?<CR>
 set pastetoggle=<F2>
 
 " Max character count for files
-set textwidth=79
+set textwidth=119
 " Highlight textwidth column
-set colorcolumn=81
+set colorcolumn=120
 
 " Default formatting options
 "   t        Auto-wrap text using textwidth
@@ -136,3 +136,13 @@ set conceallevel=2
 packloadall
 " Load all of the helptags after the plugins are loaded
 silent! helptags ALL
+
+" Fix windows terminal cursor
+" to fix cursor shape in WSL bash add
+" echo -ne "\e[2 q"
+" to .bashrc
+if &term =~ "xterm"
+  let &t_SI = "\<Esc>[6 q"
+  let &t_SR = "\<Esc>[3 q"
+  let &t_EI = "\<Esc>[2 q"
+endif
