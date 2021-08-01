@@ -1,13 +1,12 @@
-" Set compatibility to Vim only
-set nocompatible
-
-" Helps force plug-ins to load correctly when it is turned back on below.
-filetype off
 " Turn on syntax highlighting
 syntax on
 
-" Setup Vundle here
+" Set compatibility to Vim only
+set nocompatible
+" Helps force plug-ins to load correctly when it is turned back on below.
+filetype off
 
+" Setup Vundle here
 set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
 
