@@ -1,3 +1,6 @@
 [user]
 	email = ira@cga.hk
 	name = Ira Chan
+[alias]
+	st = status -sb
+	ll = log --oneline
