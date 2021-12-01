@@ -1,55 +1,93 @@
-""" Map leader to space ---------------------
-let mapleader=" "
+" Map leader to comma
+let mapleader = ","
 
-""" Plugins  --------------------------------
+" Pluuins
 set exchange
 set surround
 set multiple-cursors
 set commentary
+set NERDTree
 set argtextobj
-set easymotion
 set textobj-entire
 set highlightedyank
 set ReplaceWithRegister
+set easymotion
 
-""" Plugin settings -------------------------
-let g:argtextobj_pairs="[:],(:),<:>"
+" Plugin settings
+let g:argtextobj_pairs = "[:],(:),<:>"
 
-""" Common settings -------------------------
+" Common settings
 set showmode
 set so=5
 set incsearch
 set nu
 set hlsearch
 set relativenumber
+set visualbell
 
-""" Idea specific settings ------------------
+" Idea specific settings
 set ideajoin
 set ideastatusicon=gray
 set idearefactormode=keep
 
-""" Mappings --------------------------------
-map <leader>f <Plug>(easymotion-s)
-map <leader>e <Plug>(easymotion-f)
+sethandler <C-A> a:vim
+sethandler <C-F> a:vim
+sethandler <C-H> a:vim
+sethandler <C-I> a:vim
+sethandler <C-J> a:vim
+sethandler <C-N> a:vim
+sethandler <C-O> a:vim
+sethandler <C-P> a:vim
+sethandler <C-R> a:vim
+sethandler <C-S> a:vim
+sethandler <C-V> a:vim
+sethandler <C-W> a:vim
+sethandler <C-X> a:vim
+sethandler <C-Y> a:vim
+sethandler <C-[> a:vim
+sethandler <C-]> a:vim
 
-map <leader>qs :nohls<CR>
-map <leader>qr :action RecentFiles<CR>
+nnoremap <Space><Space> :nohls<CR>
 
-map <leader>rr :action ChooseRunConfiguration<CR>
-map <leader>rd :action Debug<CR>
-map <leader>c :action Stop<CR>
-map <leader>z :action ToggleDistractionFreeMode<CR>
+" Easy Motion
+map <Space>f <Plug>(easymotion-s)
+map <Space>e <Plug>(easymotion-f)
 
-map <leader>gc :action ActivateCommitToolWindow<CR>
-map <leader>gt :action ActivateTerminalToolWindow<CR>
-map <leader>go :action FileStructurePopup<CR>
-map <leader>ga :action HideAllWindows<CR>
-map <leader>gr :action com.jetbrains.plugins.remotesdk.console.RunSshConsoleAction<CR>
-map <leader>s :action SelectInProjectView<CR>
-map <leader>a :action Annotate<CR>
-map <leader>h :action Vcs.ShowTabbedFileHistory<CR>
-map <S-Space> :action GotoNextError<CR>
+" Run
+nnoremap <Space>qr :action ChooseRunConfiguration<CR>
+nnoremap <Space>qd :action ChooseDebugConfiguration<CR>
+nnoremap <Space>qc :action Stop<CR>
 
-map <leader>b :action ToggleLineBreakpoint<CR>
-map zl :source ~/.ideavimrc<CR>
+" Refactoring
+nnoremap <Space>rf :action ReformatCode<CR>
+nnoremap <Space>re :action Javascript.Linters.EsLint.Fix<CR>
+nnoremap <Space>rr :action RenameElement<CR>
+nnoremap <Space>rm :action ExtractMethod<CR>
+nnoremap <Space>ri :action ExtractInterface<CR>
 
+" Editing
+nnoremap <Space>j :action InsertLiveTemplate<CR>
+nnoremap <Space>/ :action CommentByLineComment<CR>
+nnoremap <Space>? :action CommentByBlockComment<CR>
+
+" Navigation
+nnoremap <Space>e :action GotoPreviousError<CR>
+nnoremap <Space>E :action GotoNextError<CR>
+
+nnoremap <Space>gf :action ActivateCommitToolWindow<CR>
+nnoremap <Space>gg :action ActivateVersionControlToolWindow<CR>
+
+nnoremap <Space>pd :action QuickJavaDoc<CR>
+nnoremap <Space>qi :action ShowErrorDescription<CR>
+nnoremap <Space>qt :action ActivateTerminalToolWindow<CR>
+nnoremap <Space>qs :action FileStructurePopup<CR>
+nnoremap <Space>qa :action HideAllWindows<CR>
+nnoremap <Space>s :action SelectInProjectView<CR>
+nnoremap <Space>a :action Annotate<CR>
+
+nnoremap <Space>b :action ToggleLineBreakpoint<CR>
+nnoremap zl :source ~/.ideavimrc<CR>
+
+" NERDTree
+map <Space>n :NERDTreeToggle<CR>
+map <Leader>n :NERDTreeFocus<CR>
