@@ -1,3 +1,7 @@
+export PATH=/Users/ira.sy.chan/homebrew/opt/openjdk@11/bin:/Users/ira.sy.chan/homebrew/opt/node@14/bin:/Users/ira.sy.chan/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Library/Apple/usr/bin:/Users/ira.sy.chan/.rvm/bin
+
+# Add RVM to PATH for scripting. Make sure this is the last PATH variable change.
+export PATH="$PATH:$HOME/.rvm/bin"
 # Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
 # Initialization code that may require console input (password prompts, [y/n]
 # confirmations, etc.) must go above this block; everything else may go below.
@@ -108,10 +112,18 @@ export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
 autoload -U +X bashcompinit && bashcompinit
-source /etc/bash_completion.d/azure-cli
 source $ZSH/oh-my-zsh.sh
 
 complete -C '/usr/local/bin/aws_completer' aws
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+
+# Add RVM to PATH for scripting. Make sure this is the last PATH variable change.
+export PATH="$PATH:$HOME/.rvm/bin"
+
+export NVM_DIR="$HOME/.nvm"
+[ -s "/Users/ira.sy.chan/homebrew/opt/nvm/nvm.sh" ] && . "/Users/ira.sy.chan/homebrew/opt/nvm/nvm.sh"  # This loads nvm
+[ -s "/Users/ira.sy.chan/homebrew/opt/nvm/etc/bash_completion.d/nvm" ] && . "/Users/ira.sy.chan/homebrew/opt/nvm/etc/bash_completion.d/nvm"  # This loads nvm bash_completionk
+export PATH="$HOME/.jenv/bin:$PATH"
+eval "$(jenv init -)"

@@ -48,6 +48,8 @@ sethandler <C-[> a:vim
 sethandler <C-]> a:vim
 
 nnoremap <Space><Space> :nohls<CR>
+nnoremap <C-O> :action Back<CR>
+nnoremap <C-I> :action Forward<CR>
 
 " Easy Motion
 map <Space>f <Plug>(easymotion-s)
@@ -76,6 +78,10 @@ nnoremap <Space>E :action GotoNextError<CR>
 
 nnoremap <Space>gf :action ActivateCommitToolWindow<CR>
 nnoremap <Space>gg :action ActivateVersionControlToolWindow<CR>
+
+nnoremap gi :action GotoImplementation<CR>
+nnoremap gd :action GotoDeclaration<CR>
+nnoremap gp :action GotoSuperMethod<CR>
 
 nnoremap <Space>pd :action QuickJavaDoc<CR>
 nnoremap <Space>qi :action ShowErrorDescription<CR>
