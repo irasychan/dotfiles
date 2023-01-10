@@ -27,4 +27,4 @@ ln -sf $dotfiles_dir/bashrc ~/.bashrc
 ln -sf $dotfiles_dir/zshrc ~/.zshrc
 ln -sf $dotfiles_dir/gitconfig ~/.gitconfig
 
-
+ git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim

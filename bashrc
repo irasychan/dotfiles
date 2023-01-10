@@ -93,6 +93,9 @@ alias la='ls -A'
 alias l='ls -CF'
 alias aws='docker run --rm -it -v ~/.aws:/root/.aws amazon/aws-cli'
 
+# add common shorthand aliases
+alias pn='pnpm'
+
 # Add an "alert" alias for long running commands.  Use like so:
 #   sleep 10; alert
 alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
@@ -101,7 +104,6 @@ alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo
 # You may want to put all your additions into a separate file like
 # ~/.bash_aliases, instead of adding them here directly.
 # See /usr/share/doc/bash-doc/examples in the bash-doc package.
-
 if [ -f ~/.bash_aliases ]; then
     . ~/.bash_aliases
 fi
@@ -116,10 +118,6 @@ if ! shopt -oq posix; then
     . /etc/bash_completion
   fi
 fi
-
-# if [ -t 1 ]; then
-#   exec zsh
-# fi
 
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
