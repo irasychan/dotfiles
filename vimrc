@@ -16,21 +16,22 @@ set nocompatible
 " Helps force plug-ins to load correctly when it is turned back on below.
 filetype off
 
-" start vundle setup
-set rtp+=~/.vim/bundle/Vundle.vim
-call vundle#begin()
+" start vim-plug setup
+call plug#begin('$HOME/.vim/plugged/')
 
 " Put plugins here
-Plugin 'dense-analysis/ale'
-Plugin 'easymotion/vim-easymotion'
-Plugin 'godlygeek/tabular'
-Plugin 'plasticboy/vim-markdown'
-Plugin 'posva/vim-vue'
-Plugin 'preservim/nerdtree'
-Plugin 'tpope/vim-surround'
+Plug 'dense-analysis/ale'
+Plug 'easymotion/vim-easymotion'
+Plug 'godlygeek/tabular'
+Plug 'plasticboy/vim-markdown'
+Plug 'posva/vim-vue'
+Plug 'preservim/nerdtree'
+Plug 'tpope/vim-surround'
 
-call vundle#end()
-" end vundle setup
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+Plug 'junegunn/fzf.vim'
+
+call plug#end()
 
 " For plug-ins to load correctly
 filetype plugin indent on
@@ -80,8 +81,6 @@ set laststatus=2                  " Show the status line all the time
 
 " Max character count for files
 set textwidth=119
-" Highlight textwidth column
-set colorcolumn=120
 
 " Default formatting options
 "   t        Auto-wrap text using textwidth
