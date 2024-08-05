@@ -1,7 +1,9 @@
-export PATH=/Users/ira.sy.chan/homebrew/opt/openjdk@11/bin:/Users/ira.sy.chan/homebrew/opt/node@14/bin:/Users/ira.sy.chan/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Library/Apple/usr/bin:/Users/ira.sy.chan/.rvm/bin
+# Uses XDG Base Directory Specification for config when available
+export XDG_DATA_HOME="$HOME/.local/share"
+export XDG_CONFIG_HOME="$HOME/.config"
+export XDG_STATE_HOME="$HOME/.local/state"
+export XDG_CACHE_HOME="$HOME/.cache"
 
-# Add RVM to PATH for scripting. Make sure this is the last PATH variable change.
-export PATH="$PATH:$HOME/.rvm/bin"
 # Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
 # Initialization code that may require console input (password prompts, [y/n]
 # confirmations, etc.) must go above this block; everything else may go below.
@@ -13,7 +15,7 @@ export TERM="xterm-256color"
 # If you come from bash you might have to change your $PATH.
 export PATH=$HOME/bin:/usr/local/bin:$PATH
 # Path to your oh-my-zsh installation.
-export ZSH=$HOME/.oh-my-zsh
+export ZSH="$XDG_DATA_HOME"/oh-my-zsh
 
 # Set name of the theme to load --- if set to "random", it will
 # load a random theme each time oh-my-zsh is loaded, in which case,
@@ -80,20 +82,27 @@ COMPLETION_WAITING_DOTS="true"
 # Custom plugins may be added to $ZSH_CUSTOM/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git kubectl)
+plugins=(git)
 
 # User configuration
 # export MANPATH="/usr/local/man:$MANPATH"
 
 # You may need to manually set your language environment
-# export LANG=en_US.UTF-8
+export LANG=en_US.UTF-8
+export LC_ALL=C.UTF-8
 
 # Preferred editor for local and remote sessions
-# if [[ -n $SSH_CONNECTION ]]; then
-#   export EDITOR='vim'
-# else
-#   export EDITOR='mvim'
-# fi
+#if [[ -n $SSH_CONNECTION ]]; then
+#  export EDITOR='vim'
+#else
+#  export EDITOR='nvim'
+#fi
+export EDITOR='vim'
+export VISUAL='vim'
+
+compinit -d "$XDG_CACHE_HOME"/zsh/zcompdump-"$ZSH_VERSION"
+
+export HISTFILE="$XDG_STATE_HOME"/zsh/history
 
 # Compilation flags
 # export ARCHFLAGS="-arch x86_64"
@@ -104,26 +113,23 @@ plugins=(git kubectl)
 # For a full list of active aliases, run `alias`.
 #
 # Example aliases
-alias zshconfig="vim ~/.zshrc"
+alias zshconfig="vim ~/.config/zsh/.zshrc"
 alias ohmyzsh="vim ~/.oh-my-zsh"
+alias vim="nvim"
+alias nv="nvim"
+alias nvc="nvim ."
+alias tmm="tmux new -s main"
 
-export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
-
-autoload -U +X bashcompinit && bashcompinit
 source $ZSH/oh-my-zsh.sh
 
-complete -C '/usr/local/bin/aws_completer' aws
-
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
-[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+[[ ! -f ${ZDOTDIR:-~}/.p10k.zsh ]] || source ${ZDOTDIR:-~}/.p10k.zsh
 
-# Add RVM to PATH for scripting. Make sure this is the last PATH variable change.
-export PATH="$PATH:$HOME/.rvm/bin"
+eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
 
-export NVM_DIR="$HOME/.nvm"
-[ -s "/Users/ira.sy.chan/homebrew/opt/nvm/nvm.sh" ] && . "/Users/ira.sy.chan/homebrew/opt/nvm/nvm.sh"  # This loads nvm
-[ -s "/Users/ira.sy.chan/homebrew/opt/nvm/etc/bash_completion.d/nvm" ] && . "/Users/ira.sy.chan/homebrew/opt/nvm/etc/bash_completion.d/nvm"  # This loads nvm bash_completionk
-export PATH="$HOME/.jenv/bin:$PATH"
-eval "$(jenv init -)"
+# XDG vim support
+if [ -x "$(command -v vim)" ]; then
+	[ "$(vim --clean -es +'exec "!echo" has("patch-9.1.0327")' +q)" -eq 0 ] && \
+		export VIMINIT="set nocp | source ${XDG_CONFIG_HOME:-$HOME/.config}/vim/vimrc"
+fi
+
