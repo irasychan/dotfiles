@@ -118,3 +118,4 @@ if ! shopt -oq posix; then
     . /etc/bash_completion
   fi
 fi
+. "/Users/irachan/.local/share/cargo/env"

@@ -4,16 +4,30 @@ export XDG_CONFIG_HOME="$HOME/.config"
 export XDG_STATE_HOME="$HOME/.local/state"
 export XDG_CACHE_HOME="$HOME/.cache"
 
-# Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
-# Initialization code that may require console input (password prompts, [y/n]
-# confirmations, etc.) must go above this block; everything else may go below.
-if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
-  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
-fi
+# AWS
+export AWS_SHARED_CREDENTIALS_FILE="$XDG_CONFIG_HOME"/aws/credentials
+export AWS_CONFIG_FILE="$XDG_CONFIG_HOME"/aws/config
 
-export TERM="xterm-256color"
+# Docker
+export CARGO_HOME="$XDG_DATA_HOME"/cargo
+export DOCKER_CONFIG="$XDG_CONFIG_HOME"/docker
+export GNUPGHOME="$XDG_DATA_HOME"/gnupg
+export GOPATH="$XDG_DATA_HOME"/go
+export LESSHISTFILE="$XDG_STATE_HOME"/less/history
+export MINIKUBE_HOME="$XDG_DATA_HOME"/minikube
+export NPM_CONFIG_USERCONFIG="$XDG_CONFIG_HOME"/npm/npmrc
+export PYENV_ROOT="$XDG_DATA_HOME"/pyenv
+export RUSTUP_HOME="$XDG_DATA_HOME"/rustup
+export SDKMAN_DIR="$XDG_DATA_HOME"/sdkman
+
+# zsh history
+export HISTFILE="$XDG_STATE_HOME/zsh/history"
+export COLIMA_HOME="$HOME/.colima"
+
 # If you come from bash you might have to change your $PATH.
-export PATH=$HOME/bin:/usr/local/bin:$PATH
+export PATH=$HOME/bin:/opt/homebrew/bin:/usr/local/bin:$PATH
+export PATH=$HOME/.local/share/solana/install/active_release/bin:$PATH
+
 # Path to your oh-my-zsh installation.
 export ZSH="$XDG_DATA_HOME"/oh-my-zsh
 
@@ -21,8 +35,7 @@ export ZSH="$XDG_DATA_HOME"/oh-my-zsh
 # load a random theme each time oh-my-zsh is loaded, in which case,
 # to know which specific one was loaded, run: echo $RANDOM_THEME
 # See https://github.com/ohmyzsh/ohmyzsh/wiki/Themes
-ZSH_THEME="powerlevel10k/powerlevel10k"
-# ZSH_THEME="darkblood"
+# ZSH_THEME="powerlevel10k/powerlevel10k"
 
 # Set list of themes to pick from when loading at random
 # Setting this variable when ZSH_THEME=random will cause zsh to load
@@ -82,14 +95,37 @@ COMPLETION_WAITING_DOTS="true"
 # Custom plugins may be added to $ZSH_CUSTOM/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git)
-
+plugins=(
+  alias-finder
+  aliases
+  argocd
+  asdf
+  command-not-found
+  docker
+  docker-compose
+  fzf
+  git
+  gpg-agent
+  iterm2
+  kubectl
+  kubectx
+  man
+  nvm
+  sdk
+  ssh-agent
+  tmux
+  z
+  zsh-autosuggestions
+  zsh-completions
+  zsh-syntax-highlighting
+)
 # User configuration
 # export MANPATH="/usr/local/man:$MANPATH"
 
 # You may need to manually set your language environment
-export LANG=en_US.UTF-8
-export LC_ALL=C.UTF-8
+# export LANG=en_US.UTF-8
+# export LC_ALL=C.UTF-8
+
 
 # Preferred editor for local and remote sessions
 #if [[ -n $SSH_CONNECTION ]]; then
@@ -97,12 +133,21 @@ export LC_ALL=C.UTF-8
 #else
 #  export EDITOR='nvim'
 #fi
-export EDITOR='vim'
-export VISUAL='vim'
+export EDITOR='nvim'
+export VISUAL='nvim'
 
+export NVM_DIR="$HOME/.config/nvm"
+
+# Add zsh-completions
+fpath+=${ZSH_CUSTOM:-${ZSH:-~/.oh-my-zsh}/custom}/plugins/zsh-completions/src
+
+source $ZSH/oh-my-zsh.sh
 compinit -d "$XDG_CACHE_HOME"/zsh/zcompdump-"$ZSH_VERSION"
 
-export HISTFILE="$XDG_STATE_HOME"/zsh/history
+HB_CNF_HANDLER="$(brew --repository)/Library/Taps/homebrew/homebrew-command-not-found/handler.sh"
+if [ -f "$HB_CNF_HANDLER" ]; then
+  source "$HB_CNF_HANDLER";
+fi
 
 # Compilation flags
 # export ARCHFLAGS="-arch x86_64"
@@ -113,19 +158,15 @@ export HISTFILE="$XDG_STATE_HOME"/zsh/history
 # For a full list of active aliases, run `alias`.
 #
 # Example aliases
-alias zshconfig="vim ~/.config/zsh/.zshrc"
+# alias zshconfig="vim ~/.config/zsh/.zshrc"
 alias ohmyzsh="vim ~/.oh-my-zsh"
 alias vim="nvim"
 alias nv="nvim"
 alias nvc="nvim ."
 alias tmm="tmux new -s main"
-
-source $ZSH/oh-my-zsh.sh
-
-# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
-[[ ! -f ${ZDOTDIR:-~}/.p10k.zsh ]] || source ${ZDOTDIR:-~}/.p10k.zsh
-
-eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+alias og="openapi-generator"
+# alias kubectl="minikube kubectl --"
+alias lg="lazygit"
 
 # XDG vim support
 if [ -x "$(command -v vim)" ]; then
@@ -133,3 +174,23 @@ if [ -x "$(command -v vim)" ]; then
 		export VIMINIT="set nocp | source ${XDG_CONFIG_HOME:-$HOME/.config}/vim/vimrc"
 fi
 
+# GPG Config
+export GPG_TTY="$(tty)"          
+export SSH_AUTH_SOCK=$(gpgconf --list-dirs agent-ssh-socket)
+gpgconf --launch gpg-agent
+
+# PostgreSQL
+export PATH="/opt/homebrew/opt/postgresql@15/bin:$PATH"
+
+# SDKMAN
+source "$SDKMAN_DIR/bin/sdkman-init.sh"
+
+
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+#
+# Oh My Posh
+if [ "$TERM_PROGRAM" != "Apple_Terminal" ] && [ "$TERM" != "xterm-color" ]; then
+  # eval "$(oh-my-posh init zsh --config $(brew --prefix oh-my-posh)/themes/tokyonight_storm.omp.json)"
+  # eval "$(oh-my-posh init zsh --config $(brew --prefix oh-my-posh)/themes/jandedobbeleer.omp.json)"
+  eval "$(oh-my-posh init zsh --config $XDG_CONFIG_HOME/omp/.mytheme.omp.json)"
+fi
