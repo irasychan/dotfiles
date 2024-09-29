@@ -4,32 +4,40 @@ export XDG_CONFIG_HOME="$HOME/.config"
 export XDG_STATE_HOME="$HOME/.local/state"
 export XDG_CACHE_HOME="$HOME/.cache"
 
-# AWS
 export AWS_SHARED_CREDENTIALS_FILE="$XDG_CONFIG_HOME"/aws/credentials
 export AWS_CONFIG_FILE="$XDG_CONFIG_HOME"/aws/config
-
-# Docker
-export CARGO_HOME="$XDG_DATA_HOME"/cargo
+export AZURE_CONFIG_DIR="$XDG_DATA_HOME"/azure
 export DOCKER_CONFIG="$XDG_CONFIG_HOME"/docker
+export NPM_CONFIG_USERCONFIG="$XDG_CONFIG_HOME"/npm/npmrc
+
+export CARGO_HOME="$XDG_DATA_HOME"/cargo
 export GNUPGHOME="$XDG_DATA_HOME"/gnupg
 export GOPATH="$XDG_DATA_HOME"/go
-export LESSHISTFILE="$XDG_STATE_HOME"/less/history
 export MINIKUBE_HOME="$XDG_DATA_HOME"/minikube
-export NPM_CONFIG_USERCONFIG="$XDG_CONFIG_HOME"/npm/npmrc
 export PYENV_ROOT="$XDG_DATA_HOME"/pyenv
 export RUSTUP_HOME="$XDG_DATA_HOME"/rustup
 export SDKMAN_DIR="$XDG_DATA_HOME"/sdkman
+export W3M_DIR="$XDG_DATA_HOME"/w3m
 
-# zsh history
-export HISTFILE="$XDG_STATE_HOME/zsh/history"
-export COLIMA_HOME="$HOME/.colima"
+export _Z_DATA="$XDG_DATA_HOME"/z
+export LESSHISTFILE="$XDG_STATE_HOME"/less/history
+export HISTFILE="$XDG_STATE_HOME"/zsh/history
+export COLIMA_HOME="$HOME"/.colima
+
+export PYTHON_HISTORY="$XDG_STATE_HOME"/python_history
+
+# homebrew setup for windows
+eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
 
 # If you come from bash you might have to change your $PATH.
-export PATH=$HOME/bin:/opt/homebrew/bin:/usr/local/bin:$PATH
-export PATH=$HOME/.local/share/solana/install/active_release/bin:$PATH
+# export PATH=$HOME/bin:/opt/homebrew/bin:/usr/local/bin:$PATH
+# export PATH=$HOME/.local/share/solana/install/active_release/bin:$PATH
+export PATH=$HOME/.local/bin:$PATH
 
 # Path to your oh-my-zsh installation.
 export ZSH="$XDG_DATA_HOME"/oh-my-zsh
+
+export BROWSER=wslview
 
 # Set name of the theme to load --- if set to "random", it will
 # load a random theme each time oh-my-zsh is loaded, in which case,
@@ -118,7 +126,7 @@ plugins=(
   zsh-autosuggestions
   zsh-completions
   zsh-syntax-highlighting
-)
+ spring)
 # User configuration
 # export MANPATH="/usr/local/man:$MANPATH"
 
@@ -128,11 +136,11 @@ plugins=(
 
 
 # Preferred editor for local and remote sessions
-#if [[ -n $SSH_CONNECTION ]]; then
+# if [[ -n $SSH_CONNECTION ]]; then
 #  export EDITOR='vim'
-#else
+# else
 #  export EDITOR='nvim'
-#fi
+# fi
 export EDITOR='nvim'
 export VISUAL='nvim'
 
@@ -144,10 +152,10 @@ fpath+=${ZSH_CUSTOM:-${ZSH:-~/.oh-my-zsh}/custom}/plugins/zsh-completions/src
 source $ZSH/oh-my-zsh.sh
 compinit -d "$XDG_CACHE_HOME"/zsh/zcompdump-"$ZSH_VERSION"
 
-HB_CNF_HANDLER="$(brew --repository)/Library/Taps/homebrew/homebrew-command-not-found/handler.sh"
-if [ -f "$HB_CNF_HANDLER" ]; then
-  source "$HB_CNF_HANDLER";
-fi
+# HB_CNF_HANDLER="$(brew --repository)/Library/Taps/homebrew/homebrew-command-not-found/handler.sh"
+# if [ -f "$HB_CNF_HANDLER" ]; then
+#   source "$HB_CNF_HANDLER";
+# fi
 
 # Compilation flags
 # export ARCHFLAGS="-arch x86_64"
@@ -159,13 +167,12 @@ fi
 #
 # Example aliases
 # alias zshconfig="vim ~/.config/zsh/.zshrc"
+# alias kubectl="minikube kubectl --"
+# alias og="openapi-generator"
 alias ohmyzsh="vim ~/.oh-my-zsh"
 alias vim="nvim"
 alias nv="nvim"
-alias nvc="nvim ."
 alias tmm="tmux new -s main"
-alias og="openapi-generator"
-# alias kubectl="minikube kubectl --"
 alias lg="lazygit"
 
 # XDG vim support
@@ -180,17 +187,15 @@ export SSH_AUTH_SOCK=$(gpgconf --list-dirs agent-ssh-socket)
 gpgconf --launch gpg-agent
 
 # PostgreSQL
-export PATH="/opt/homebrew/opt/postgresql@15/bin:$PATH"
+# export PATH="/opt/homebrew/opt/postgresql@15/bin:$PATH"
 
 # SDKMAN
 source "$SDKMAN_DIR/bin/sdkman-init.sh"
 
-
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-#
+
 # Oh My Posh
 if [ "$TERM_PROGRAM" != "Apple_Terminal" ] && [ "$TERM" != "xterm-color" ]; then
-  # eval "$(oh-my-posh init zsh --config $(brew --prefix oh-my-posh)/themes/tokyonight_storm.omp.json)"
-  # eval "$(oh-my-posh init zsh --config $(brew --prefix oh-my-posh)/themes/jandedobbeleer.omp.json)"
-  eval "$(oh-my-posh init zsh --config $XDG_CONFIG_HOME/omp/.mytheme.omp.json)"
+  eval "$(oh-my-posh init zsh --config $XDG_CONFIG_HOME/oh-my-posh/custom_theme.omp.yaml)"
+
 fi
