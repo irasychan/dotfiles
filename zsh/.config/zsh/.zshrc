@@ -197,5 +197,4 @@ source "$SDKMAN_DIR/bin/sdkman-init.sh"
 # Oh My Posh
 if [ "$TERM_PROGRAM" != "Apple_Terminal" ] && [ "$TERM" != "xterm-color" ]; then
   eval "$(oh-my-posh init zsh --config $XDG_CONFIG_HOME/oh-my-posh/custom_theme.omp.yaml)"
-
 fi
