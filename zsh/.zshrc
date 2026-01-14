@@ -24,8 +24,8 @@ export SDKMAN_DIR="$XDG_DATA_HOME"/sdkman
 export HISTFILE="$XDG_STATE_HOME/zsh/history"
 export COLIMA_HOME="$HOME/.colima"
 
-# If you come from bash you might have to change your $PATH.
-export PATH=$HOME/bin:/opt/homebrew/bin:/usr/local/bin:$PATH
+# Path configuration
+export PATH=$HOME/.local/bin:$HOME/bin:/usr/local/bin:$PATH
 export PATH=$HOME/.local/share/solana/install/active_release/bin:$PATH
 
 # Path to your oh-my-zsh installation.
@@ -106,7 +106,6 @@ plugins=(
   fzf
   git
   gpg-agent
-  iterm2
   kubectl
   kubectx
   man
@@ -136,7 +135,7 @@ plugins=(
 export EDITOR='nvim'
 export VISUAL='nvim'
 
-export NVM_DIR="$HOME/.config/nvm"
+export NVM_DIR="$XDG_DATA_HOME/nvm"
 
 # Add zsh-completions
 fpath+=${ZSH_CUSTOM:-${ZSH:-~/.oh-my-zsh}/custom}/plugins/zsh-completions/src
@@ -144,10 +143,7 @@ fpath+=${ZSH_CUSTOM:-${ZSH:-~/.oh-my-zsh}/custom}/plugins/zsh-completions/src
 source $ZSH/oh-my-zsh.sh
 compinit -d "$XDG_CACHE_HOME"/zsh/zcompdump-"$ZSH_VERSION"
 
-HB_CNF_HANDLER="$(brew --repository)/Library/Taps/homebrew/homebrew-command-not-found/handler.sh"
-if [ -f "$HB_CNF_HANDLER" ]; then
-  source "$HB_CNF_HANDLER";
-fi
+# Command not found handler (uses command-not-found plugin on apt-based systems)
 
 # Compilation flags
 # export ARCHFLAGS="-arch x86_64"
@@ -179,8 +175,8 @@ export GPG_TTY="$(tty)"
 export SSH_AUTH_SOCK=$(gpgconf --list-dirs agent-ssh-socket)
 gpgconf --launch gpg-agent
 
-# PostgreSQL
-export PATH="/opt/homebrew/opt/postgresql@15/bin:$PATH"
+# PostgreSQL (uncomment and adjust path if needed)
+# export PATH="/usr/lib/postgresql/15/bin:$PATH"
 
 # SDKMAN
 source "$SDKMAN_DIR/bin/sdkman-init.sh"
@@ -192,5 +188,5 @@ source "$SDKMAN_DIR/bin/sdkman-init.sh"
 if [ "$TERM_PROGRAM" != "Apple_Terminal" ] && [ "$TERM" != "xterm-color" ]; then
   # eval "$(oh-my-posh init zsh --config $(brew --prefix oh-my-posh)/themes/tokyonight_storm.omp.json)"
   # eval "$(oh-my-posh init zsh --config $(brew --prefix oh-my-posh)/themes/jandedobbeleer.omp.json)"
-  eval "$(oh-my-posh init zsh --config $XDG_CONFIG_HOME/omp/.mytheme.omp.json)"
+  eval "$(oh-my-posh init zsh --config $XDG_CONFIG_HOME/omp/theme.omp.json)"
 fi

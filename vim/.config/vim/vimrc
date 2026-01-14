@@ -45,7 +45,7 @@ set nocompatible
 filetype off
 
 " start vim-plug setup
-call plug#begin('$HOME/.vim/plugged/')
+call plug#begin($XDG_DATA_HOME.'/vim/plugged')
 
 " Put plugins here
 Plug 'dense-analysis/ale'
@@ -103,7 +103,7 @@ set visualbell                    " No beeping.
 
 set nobackup                      " Don't make a backup before overwriting a file.
 set nowritebackup                 " And again.
-set directory=$HOME/.vim/tmp//,.  " Keep swap files in one location
+set directory=$XDG_STATE_HOME/vim/swap//,.  " Keep swap files in one location
 
 set laststatus=2                  " Show the status line all the time
 
