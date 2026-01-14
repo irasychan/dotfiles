@@ -20,6 +20,12 @@ dotfiles/
 ├── starship/.config/starship.toml  # Starship prompt (for pwsh)
 ├── pwsh/.config/powershell/  # PowerShell profile
 │   └── Microsoft.PowerShell_profile.ps1
+├── vscode/.config/vscode/    # VS Code settings (Windows only)
+│   ├── settings.json
+│   ├── keybindings.json
+│   └── extensions.json
+├── windowsterminal/.config/windowsterminal/  # Windows Terminal (Windows only)
+│   └── settings.json
 ├── wsl/.bashrc               # WSL-specific (auto-starts zsh)
 ├── git/.config/git/          # Git config (placeholder)
 ├── windows/install.ps1       # Windows 11 installer
@@ -68,14 +74,18 @@ Available packages: bash, zsh, vim, tmux, omp, starship, pwsh, wsl, git
 Windows 11 installer (PowerShell):
 - Installs Starship via winget/scoop/chocolatey
 - Deploys PowerShell profile to both PS 5.x and 7+
+- Deploys VS Code settings, keybindings, and extensions
+- Deploys Windows Terminal settings with Tokyo Night color scheme
 - Creates symlinks (requires admin) or copies files
 - Backup/restore functionality like Linux version
 
-Options: `-Help`, `-Backup`, `-Restore <timestamp>`, `-SkipStarship`
+Options: `-Help`, `-Backup`, `-Restore <timestamp>`, `-SkipStarship`, `-SkipVSCode`, `-SkipTerminal`
 
-Windows profile locations:
+Windows config locations:
 - PowerShell 7+: `$HOME\Documents\PowerShell\Microsoft.PowerShell_profile.ps1`
 - PowerShell 5.x: `$HOME\Documents\WindowsPowerShell\Microsoft.PowerShell_profile.ps1`
+- VS Code: `%APPDATA%\Code\User\settings.json`
+- Windows Terminal: `%LOCALAPPDATA%\Packages\Microsoft.WindowsTerminal_*\LocalState\settings.json`
 
 ## Configuration Details
 
@@ -127,22 +137,47 @@ Windows profile locations:
 - Auto-execs zsh when in interactive terminal
 - Use this instead of `bash` package in WSL
 
+### vscode/.config/vscode/ (Windows only)
+
+- `settings.json`: Editor and terminal settings with Tokyo Night theme
+- `keybindings.json`: Custom keyboard shortcuts
+- `extensions.json`: Recommended extensions list
+- Terminal colors match Tokyo Night palette
+- Font: JetBrains Mono with ligatures
+- Recommended theme: Tokyo Night (`enkia.tokyo-night`)
+- Deployed via `windows/install.ps1`
+
+### windowsterminal/.config/windowsterminal/ (Windows only)
+
+- Tokyo Night and Tokyo Night Storm color schemes
+- Tokyo Night window theme (tab bar, backgrounds)
+- Default profile: PowerShell Core
+- Profiles: PowerShell 7+, Windows PowerShell 5.x, Ubuntu (WSL), CMD
+- Font: JetBrains Mono, 12pt
+- Keyboard shortcuts for pane splitting, tab management
+- Deployed via `windows/install.ps1`
+
 ## Theme Alignment
 
-Both Oh My Posh (zsh) and Starship (pwsh) use the same Tokyo Night color palette:
+All configurations use the Tokyo Night color palette for consistency across shells, editors, and terminals:
 
 | Color | Hex | Usage |
 |-------|-----|-------|
-| terminal-blue | `#7aa2f7` | Prompt arrow, PHP |
-| terminal-magenta | `#bb9af7` | Path, .NET |
-| light-sky-blue | `#7dcfff` | Git branch clean, Go |
+| main-bg | `#1a1b26` | Terminal/editor background |
+| terminal-blue | `#7aa2f7` | Prompt arrow, commands, PHP |
+| terminal-magenta | `#bb9af7` | Path, keywords, .NET |
+| light-sky-blue | `#7dcfff` | Git branch clean, operators, Go |
 | terminal-red | `#f7768e` | Errors, git dirty, Ruby |
-| pistachio-green | `#9ece6a` | Success char, Node |
-| terminal-yellow | `#e0af68` | Python |
-| white-blue | `#a9b1d6` | Command duration |
+| pistachio-green | `#9ece6a` | Success char, strings, Node |
+| terminal-yellow | `#e0af68` | Python, numbers |
+| terminal-green | `#73daca` | Variables |
+| white-blue | `#a9b1d6` | Command duration, foreground |
 | blue-black | `#565f89` | Comments, predictions |
+| terminal-black | `#414868` | Selection background |
 
 ## XDG Paths Reference
+
+### Linux/WSL
 
 | Tool | Path |
 |------|------|
@@ -157,6 +192,16 @@ Both Oh My Posh (zsh) and Starship (pwsh) use the same Tokyo Night color palette
 | Starship config | `$XDG_CONFIG_HOME/starship.toml` |
 | PowerShell profile | `$XDG_CONFIG_HOME/powershell/` |
 
+### Windows
+
+| Tool | Path |
+|------|------|
+| Starship config | `%USERPROFILE%\.config\starship.toml` |
+| VS Code settings | `%APPDATA%\Code\User\` |
+| Windows Terminal | `%LOCALAPPDATA%\Packages\Microsoft.WindowsTerminal_*\LocalState\` |
+| PowerShell 7+ | `%USERPROFILE%\Documents\PowerShell\` |
+| PowerShell 5.x | `%USERPROFILE%\Documents\WindowsPowerShell\` |
+
 ## Adding New Configurations
 
 1. Create package directory: `mkdir -p newpkg/.config/newpkg`
@@ -170,3 +215,5 @@ After editing configs:
 - Vim: `:source $MYVIMRC` or restart vim
 - Tmux: `tmux source ~/.config/tmux/tmux.conf`
 - PowerShell: `. $PROFILE` or `reload`
+- VS Code: Restart VS Code or `Ctrl+Shift+P` → "Reload Window"
+- Windows Terminal: Changes apply immediately (no restart needed)

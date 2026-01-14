@@ -1,0 +1,97 @@
+[
+  // Terminal shortcuts
+  {
+    "key": "ctrl+`",
+    "command": "workbench.action.terminal.toggleTerminal"
+  },
+  {
+    "key": "ctrl+shift+`",
+    "command": "workbench.action.terminal.new"
+  },
+
+  // Quick file navigation
+  {
+    "key": "ctrl+p",
+    "command": "workbench.action.quickOpen"
+  },
+  {
+    "key": "ctrl+shift+p",
+    "command": "workbench.action.showCommands"
+  },
+
+  // Editor navigation
+  {
+    "key": "ctrl+tab",
+    "command": "workbench.action.nextEditor"
+  },
+  {
+    "key": "ctrl+shift+tab",
+    "command": "workbench.action.previousEditor"
+  },
+
+  // Sidebar toggle
+  {
+    "key": "ctrl+b",
+    "command": "workbench.action.toggleSidebarVisibility"
+  },
+
+  // Multi-cursor
+  {
+    "key": "ctrl+d",
+    "command": "editor.action.addSelectionToNextFindMatch"
+  },
+
+  // Line operations
+  {
+    "key": "ctrl+shift+k",
+    "command": "editor.action.deleteLines"
+  },
+  {
+    "key": "alt+up",
+    "command": "editor.action.moveLinesUpAction"
+  },
+  {
+    "key": "alt+down",
+    "command": "editor.action.moveLinesDownAction"
+  },
+  {
+    "key": "shift+alt+up",
+    "command": "editor.action.copyLinesUpAction"
+  },
+  {
+    "key": "shift+alt+down",
+    "command": "editor.action.copyLinesDownAction"
+  },
+
+  // Code folding
+  {
+    "key": "ctrl+shift+[",
+    "command": "editor.fold"
+  },
+  {
+    "key": "ctrl+shift+]",
+    "command": "editor.unfold"
+  },
+
+  // Go to definition
+  {
+    "key": "f12",
+    "command": "editor.action.revealDefinition"
+  },
+  {
+    "key": "ctrl+f12",
+    "command": "editor.action.peekDefinition"
+  },
+
+  // Format document
+  {
+    "key": "shift+alt+f",
+    "command": "editor.action.formatDocument"
+  },
+
+  // Toggle zen mode
+  {
+    "key": "ctrl+k z",
+    "command": "workbench.action.toggleZenMode"
+  }
+]

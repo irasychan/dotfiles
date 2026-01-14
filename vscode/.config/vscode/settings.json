@@ -1,0 +1,96 @@
+{
+  // VS Code Settings
+  // Tokyo Night theme - aligned with terminal configurations
+
+  // Theme
+  "workbench.colorTheme": "Tokyo Night",
+  "workbench.iconTheme": "material-icon-theme",
+  "workbench.productIconTheme": "material-product-icons",
+
+  // Editor
+  "editor.fontFamily": "'JetBrains Mono', 'Cascadia Code', 'Fira Code', Consolas, monospace",
+  "editor.fontSize": 14,
+  "editor.fontLigatures": true,
+  "editor.lineHeight": 1.6,
+  "editor.cursorBlinking": "smooth",
+  "editor.cursorSmoothCaretAnimation": "on",
+  "editor.smoothScrolling": true,
+  "editor.minimap.enabled": false,
+  "editor.renderWhitespace": "selection",
+  "editor.bracketPairColorization.enabled": true,
+  "editor.guides.bracketPairs": "active",
+  "editor.linkedEditing": true,
+  "editor.formatOnSave": true,
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.tabSize": 2,
+  "editor.insertSpaces": true,
+  "editor.wordWrap": "off",
+  "editor.rulers": [80, 120],
+  "editor.stickyScroll.enabled": true,
+
+  // Terminal - Tokyo Night colors
+  "terminal.integrated.fontFamily": "'JetBrains Mono', 'Cascadia Code', monospace",
+  "terminal.integrated.fontSize": 14,
+  "terminal.integrated.cursorStyle": "line",
+  "terminal.integrated.cursorBlinking": true,
+  "workbench.colorCustomizations": {
+    "terminal.background": "#1a1b26",
+    "terminal.foreground": "#c0caf5",
+    "terminal.ansiBlack": "#414868",
+    "terminal.ansiBlue": "#7aa2f7",
+    "terminal.ansiCyan": "#7dcfff",
+    "terminal.ansiGreen": "#9ece6a",
+    "terminal.ansiMagenta": "#bb9af7",
+    "terminal.ansiRed": "#f7768e",
+    "terminal.ansiWhite": "#c0caf5",
+    "terminal.ansiYellow": "#e0af68",
+    "terminal.ansiBrightBlack": "#565f89",
+    "terminal.ansiBrightBlue": "#7aa2f7",
+    "terminal.ansiBrightCyan": "#7dcfff",
+    "terminal.ansiBrightGreen": "#9ece6a",
+    "terminal.ansiBrightMagenta": "#bb9af7",
+    "terminal.ansiBrightRed": "#f7768e",
+    "terminal.ansiBrightWhite": "#c0caf5",
+    "terminal.ansiBrightYellow": "#e0af68",
+    "terminal.selectionBackground": "#414868",
+    "terminalCursor.foreground": "#c0caf5"
+  },
+
+  // Files
+  "files.autoSave": "onFocusChange",
+  "files.trimTrailingWhitespace": true,
+  "files.insertFinalNewline": true,
+  "files.trimFinalNewlines": true,
+  "files.exclude": {
+    "**/.git": true,
+    "**/.DS_Store": true,
+    "**/node_modules": true,
+    "**/__pycache__": true,
+    "**/.pytest_cache": true
+  },
+
+  // Explorer
+  "explorer.confirmDelete": false,
+  "explorer.confirmDragAndDrop": false,
+  "explorer.compactFolders": true,
+
+  // Search
+  "search.exclude": {
+    "**/node_modules": true,
+    "**/bower_components": true,
+    "**/*.code-search": true,
+    "**/dist": true,
+    "**/build": true
+  },
+
+  // Git
+  "git.autofetch": true,
+  "git.confirmSync": false,
+  "git.enableSmartCommit": true,
+
+  // Telemetry
+  "telemetry.telemetryLevel": "off",
+
+  // Extensions recommendations
+  "extensions.ignoreRecommendations": false
+}

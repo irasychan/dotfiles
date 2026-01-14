@@ -34,6 +34,8 @@ param(
     [switch]$Backup,
     [string]$Restore,
     [switch]$SkipStarship,
+    [switch]$SkipVSCode,
+    [switch]$SkipTerminal,
     [switch]$Help
 )
 
@@ -48,6 +50,19 @@ $Script:ConfigHome = if ($env:XDG_CONFIG_HOME) { $env:XDG_CONFIG_HOME } else { J
 # PowerShell profile paths
 $Script:PSCorePath = Join-Path $env:USERPROFILE "Documents\PowerShell"
 $Script:PS5Path = Join-Path $env:USERPROFILE "Documents\WindowsPowerShell"
+
+# VS Code paths
+$Script:VSCodeUserPath = Join-Path $env:APPDATA "Code\User"
+
+# Windows Terminal path (find dynamically)
+function Get-WindowsTerminalPath {
+    $localAppData = $env:LOCALAPPDATA
+    $wtPackages = Get-ChildItem (Join-Path $localAppData "Packages") -Filter "Microsoft.WindowsTerminal*" -Directory -ErrorAction SilentlyContinue
+    if ($wtPackages) {
+        return Join-Path $wtPackages[0].FullName "LocalState"
+    }
+    return $null
+}
 
 # Colors
 function Write-Info { Write-Host "[INFO] $args" -ForegroundColor Blue }
@@ -68,12 +83,15 @@ Options:
     -Backup         Only backup existing configuration
     -Restore <TIME> Restore from backup (lists available if no TIME given)
     -SkipStarship   Skip Starship installation
+    -SkipVSCode     Skip VS Code settings installation
+    -SkipTerminal   Skip Windows Terminal settings installation
 
 Examples:
     .\install.ps1                    # Full installation
     .\install.ps1 -Backup            # Backup only
     .\install.ps1 -Restore           # List backups
     .\install.ps1 -SkipStarship      # Install without Starship
+    .\install.ps1 -SkipVSCode        # Install without VS Code settings
 
 Backups are stored in: $Script:BackupDir
 
@@ -110,6 +128,34 @@ function Backup-ExistingConfig {
         if (-not $isSymlink) {
             Write-Info "  Backing up starship.toml"
             Copy-Item $starshipConfig (Join-Path $backupPath "starship.toml") -Force
+        }
+    }
+
+    # Backup VS Code settings
+    $vscodeBackupDir = Join-Path $backupPath "vscode"
+    $vscodeFiles = @("settings.json", "keybindings.json", "extensions.json")
+    foreach ($file in $vscodeFiles) {
+        $vscodeFile = Join-Path $Script:VSCodeUserPath $file
+        if (Test-Path $vscodeFile) {
+            $isSymlink = (Get-Item $vscodeFile).Attributes -band [System.IO.FileAttributes]::ReparsePoint
+            if (-not $isSymlink) {
+                New-Item -ItemType Directory -Path $vscodeBackupDir -Force | Out-Null
+                Write-Info "  Backing up VS Code $file"
+                Copy-Item $vscodeFile (Join-Path $vscodeBackupDir $file) -Force
+            }
+        }
+    }
+
+    # Backup Windows Terminal settings
+    $wtPath = Get-WindowsTerminalPath
+    if ($wtPath) {
+        $wtSettings = Join-Path $wtPath "settings.json"
+        if (Test-Path $wtSettings) {
+            $isSymlink = (Get-Item $wtSettings).Attributes -band [System.IO.FileAttributes]::ReparsePoint
+            if (-not $isSymlink) {
+                Write-Info "  Backing up Windows Terminal settings.json"
+                Copy-Item $wtSettings (Join-Path $backupPath "windowsterminal_settings.json") -Force
+            }
         }
     }
 
@@ -190,6 +236,26 @@ function Restore-FromBackup {
         New-Item -ItemType Directory -Path $Script:ConfigHome -Force | Out-Null
         Write-Info "  Restoring starship.toml"
         Copy-Item $starshipBackup $dest -Force
+    }
+
+    # Restore VS Code settings
+    $vscodeBackupDir = Join-Path $backupPath "vscode"
+    if (Test-Path $vscodeBackupDir) {
+        New-Item -ItemType Directory -Path $Script:VSCodeUserPath -Force | Out-Null
+        Get-ChildItem $vscodeBackupDir -File | ForEach-Object {
+            Write-Info "  Restoring VS Code $($_.Name)"
+            Copy-Item $_.FullName (Join-Path $Script:VSCodeUserPath $_.Name) -Force
+        }
+    }
+
+    # Restore Windows Terminal settings
+    $wtBackup = Join-Path $backupPath "windowsterminal_settings.json"
+    if (Test-Path $wtBackup) {
+        $wtPath = Get-WindowsTerminalPath
+        if ($wtPath) {
+            Write-Info "  Restoring Windows Terminal settings.json"
+            Copy-Item $wtBackup (Join-Path $wtPath "settings.json") -Force
+        }
     }
 
     Write-Success "Restore complete from $Timestamp"
@@ -326,6 +392,75 @@ function Install-StarshipConfig {
     }
 }
 
+function Install-VSCodeSettings {
+    Write-Info "Installing VS Code settings..."
+
+    $sourceDir = Join-Path $Script:DotfilesDir "vscode\.config\vscode"
+
+    if (-not (Test-Path $sourceDir)) {
+        Write-Err "Source VS Code settings not found: $sourceDir"
+        return
+    }
+
+    # Ensure VS Code User directory exists
+    New-Item -ItemType Directory -Path $Script:VSCodeUserPath -Force | Out-Null
+
+    $files = @("settings.json", "keybindings.json", "extensions.json")
+    foreach ($file in $files) {
+        $sourceFile = Join-Path $sourceDir $file
+        if (Test-Path $sourceFile) {
+            $dest = Join-Path $Script:VSCodeUserPath $file
+
+            if (Test-Path $dest) {
+                Remove-Item $dest -Force
+            }
+
+            try {
+                New-Item -ItemType SymbolicLink -Path $dest -Target $sourceFile -Force | Out-Null
+                Write-Success "  Created symlink for VS Code $file"
+            } catch {
+                Copy-Item $sourceFile $dest -Force
+                Write-Success "  Copied VS Code $file"
+            }
+        }
+    }
+
+    # Remind about extensions
+    Write-Info "  To install recommended extensions, run in VS Code:"
+    Write-Host "    code --install-extension enkia.tokyo-night"
+}
+
+function Install-WindowsTerminalSettings {
+    Write-Info "Installing Windows Terminal settings..."
+
+    $sourceFile = Join-Path $Script:DotfilesDir "windowsterminal\.config\windowsterminal\settings.json"
+
+    if (-not (Test-Path $sourceFile)) {
+        Write-Err "Source Windows Terminal settings not found: $sourceFile"
+        return
+    }
+
+    $wtPath = Get-WindowsTerminalPath
+    if (-not $wtPath) {
+        Write-Warn "Windows Terminal not found, skipping..."
+        return
+    }
+
+    $dest = Join-Path $wtPath "settings.json"
+
+    if (Test-Path $dest) {
+        Remove-Item $dest -Force
+    }
+
+    try {
+        New-Item -ItemType SymbolicLink -Path $dest -Target $sourceFile -Force | Out-Null
+        Write-Success "Created symlink for Windows Terminal settings.json"
+    } catch {
+        Copy-Item $sourceFile $dest -Force
+        Write-Success "Copied Windows Terminal settings.json"
+    }
+}
+
 function Install-NerdFont {
     Write-Info "Checking for Nerd Fonts..."
 
@@ -356,6 +491,8 @@ function Show-Summary {
     Write-Host "Installed components:"
     Write-Host "  - PowerShell profile (PS 5.x and 7+)"
     Write-Host "  - Starship prompt with Tokyo Night theme"
+    Write-Host "  - VS Code settings, keybindings, and extensions"
+    Write-Host "  - Windows Terminal settings with Tokyo Night color scheme"
     Write-Host ""
     Write-Host "To restore: .\install.ps1 -Restore <timestamp>"
     Write-Host ""
@@ -363,7 +500,8 @@ function Show-Summary {
     Write-Host "  1. Restart your terminal"
     Write-Host "  2. Install a Nerd Font for icons:"
     Write-Host "     winget install --id=JetBrains.JetBrainsMono.NerdFont -e"
-    Write-Host "  3. Configure Windows Terminal to use the font"
+    Write-Host "  3. In VS Code, install the Tokyo Night theme:"
+    Write-Host "     code --install-extension enkia.tokyo-night"
     Write-Host ""
 }
 
@@ -386,6 +524,16 @@ function Main {
     # Install configs
     Install-Profile
     Install-StarshipConfig
+
+    # Install VS Code settings
+    if (-not $SkipVSCode) {
+        Install-VSCodeSettings
+    }
+
+    # Install Windows Terminal settings
+    if (-not $SkipTerminal) {
+        Install-WindowsTerminalSettings
+    }
 
     # Check for Nerd Fonts
     Install-NerdFont

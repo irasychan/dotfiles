@@ -1,0 +1,16 @@
+{
+  "recommendations": [
+    "enkia.tokyo-night",
+    "pkief.material-icon-theme",
+    "pkief.material-product-icons",
+    "esbenp.prettier-vscode",
+    "dbaeumer.vscode-eslint",
+    "eamodio.gitlens",
+    "streetsidesoftware.code-spell-checker",
+    "editorconfig.editorconfig",
+    "usernamehw.errorlens",
+    "christian-kohler.path-intellisense",
+    "formulahendry.auto-rename-tag",
+    "aaron-bond.better-comments"
+  ]
+}
