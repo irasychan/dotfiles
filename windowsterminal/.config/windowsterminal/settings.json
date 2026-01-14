@@ -1,185 +1,320 @@
 {
-  "$help": "https://aka.ms/terminal-documentation",
-  "$schema": "https://aka.ms/terminal-profiles-schema",
-
-  "defaultProfile": "{574e775e-4f2a-5b96-ac1e-a2962a402336}",
-  "copyOnSelect": false,
-  "copyFormatting": "none",
-  "trimBlockSelection": true,
-  "trimPaste": true,
-
-  "initialCols": 120,
-  "initialRows": 30,
-  "launchMode": "default",
-
-  "theme": "Tokyo Night",
-  "useAcrylicInTabRow": true,
-  "showTabsInTitlebar": true,
-  "showTerminalTitleInTitlebar": true,
-  "tabWidthMode": "equal",
-  "alwaysShowTabs": true,
-
-  "profiles": {
-    "defaults": {
-      "colorScheme": "Tokyo Night",
-      "font": {
-        "face": "JetBrains Mono",
-        "size": 12,
-        "weight": "normal"
-      },
-      "cursorShape": "bar",
-      "cursorHeight": 25,
-      "padding": "12",
-      "scrollbarState": "visible",
-      "antialiasingMode": "grayscale",
-      "bellStyle": "none",
-      "useAcrylic": false,
-      "opacity": 95
+    "$help": "https://aka.ms/terminal-documentation",
+    "$schema": "https://aka.ms/terminal-profiles-schema",
+    "actions": 
+    [
+        {
+            "command": 
+            {
+                "action": "closeTab"
+            },
+            "id": "User.closeTab.0"
+        }
+    ],
+    "alwaysShowTabs": true,
+    "copyFormatting": "none",
+    "copyOnSelect": false,
+    "defaultProfile": "{574e775e-4f2a-5b96-ac1e-a2962a402336}",
+    "initialCols": 120,
+    "initialRows": 30,
+    "keybindings": 
+    [
+        {
+            "id": "Terminal.SplitPaneDown",
+            "keys": "alt+shift+minus"
+        },
+        {
+            "id": "Terminal.PrevTab",
+            "keys": "ctrl+shift+tab"
+        },
+        {
+            "id": "Terminal.CopyToClipboard",
+            "keys": "ctrl+c"
+        },
+        {
+            "id": "User.closeTab.0",
+            "keys": "ctrl+shift+w"
+        },
+        {
+            "id": "Terminal.OpenSettingsFile",
+            "keys": "ctrl+comma"
+        },
+        {
+            "id": "Terminal.PasteFromClipboard",
+            "keys": "ctrl+v"
+        },
+        {
+            "id": "Terminal.FindText",
+            "keys": "ctrl+shift+f"
+        },
+        {
+            "id": "Terminal.DecreaseFontSize",
+            "keys": "ctrl+minus"
+        },
+        {
+            "id": "Terminal.IncreaseFontSize",
+            "keys": "ctrl+plus"
+        },
+        {
+            "id": "Terminal.DuplicatePaneAuto",
+            "keys": "alt+shift+d"
+        },
+        {
+            "id": "Terminal.OpenNewTab",
+            "keys": "ctrl+shift+t"
+        },
+        {
+            "id": "Terminal.MoveFocusDown",
+            "keys": "alt+down"
+        },
+        {
+            "id": "Terminal.SplitPaneRight",
+            "keys": "alt+shift+plus"
+        },
+        {
+            "id": "Terminal.MoveFocusLeft",
+            "keys": "alt+left"
+        },
+        {
+            "id": "Terminal.DecreaseFontSize",
+            "keys": "ctrl+numpad_minus"
+        },
+        {
+            "id": "Terminal.MoveFocusRight",
+            "keys": "alt+right"
+        },
+        {
+            "id": "Terminal.MoveFocusUp",
+            "keys": "alt+up"
+        },
+        {
+            "id": "Terminal.NextTab",
+            "keys": "ctrl+tab"
+        },
+        {
+            "id": "Terminal.ResizePaneDown",
+            "keys": "alt+shift+down"
+        },
+        {
+            "id": "Terminal.ResizePaneLeft",
+            "keys": "alt+shift+left"
+        },
+        {
+            "id": "Terminal.ResizePaneRight",
+            "keys": "alt+shift+right"
+        },
+        {
+            "id": "Terminal.ResizePaneUp",
+            "keys": "alt+shift+up"
+        },
+        {
+            "id": "Terminal.SwitchToTab0",
+            "keys": "ctrl+1"
+        },
+        {
+            "id": "Terminal.SwitchToTab1",
+            "keys": "ctrl+2"
+        },
+        {
+            "id": "Terminal.SwitchToTab2",
+            "keys": "ctrl+3"
+        },
+        {
+            "id": "Terminal.SwitchToTab3",
+            "keys": "ctrl+4"
+        },
+        {
+            "id": "Terminal.SwitchToTab4",
+            "keys": "ctrl+5"
+        },
+        {
+            "id": "Terminal.ScrollDown",
+            "keys": "ctrl+shift+down"
+        },
+        {
+            "id": "Terminal.ScrollUp",
+            "keys": "ctrl+shift+up"
+        },
+        {
+            "id": "Terminal.ToggleFullscreen",
+            "keys": "f11"
+        },
+        {
+            "id": "Terminal.ScrollUpPage",
+            "keys": "ctrl+shift+pgup"
+        },
+        {
+            "id": "Terminal.ScrollDownPage",
+            "keys": "ctrl+shift+pgdn"
+        },
+        {
+            "id": "Terminal.ToggleFullscreen",
+            "keys": "alt+enter"
+        },
+        {
+            "id": "Terminal.IncreaseFontSize",
+            "keys": "ctrl+numpad_plus"
+        },
+        {
+            "id": "Terminal.ResetFontSize",
+            "keys": "ctrl+0"
+        }
+    ],
+    "launchMode": "default",
+    "newTabMenu": 
+    [
+        {
+            "type": "remainingProfiles"
+        }
+    ],
+    "profiles": 
+    {
+        "defaults": 
+        {
+            "antialiasingMode": "grayscale",
+            "bellStyle": "none",
+            "colorScheme": "Tokyo Night",
+            "cursorHeight": 25,
+            "cursorShape": "bar",
+            "font":
+            {
+                "face": "CaskaydiaCove Nerd Font",
+                "size": 12,
+                "weight": "normal"
+            },
+            "opacity": 95,
+            "padding": "12",
+            "scrollbarState": "visible",
+            "useAcrylic": false
+        },
+        "list": 
+        [
+            {
+                "guid": "{574e775e-4f2a-5b96-ac1e-a2962a402336}",
+                "hidden": false,
+                "icon": "ms-appx:///ProfileIcons/pwsh.png",
+                "name": "PowerShell",
+                "source": "Windows.Terminal.PowershellCore",
+                "startingDirectory": "%USERPROFILE%"
+            },
+            {
+                "commandline": "%SystemRoot%\\System32\\WindowsPowerShell\\v1.0\\powershell.exe",
+                "guid": "{61c54bbd-c2c6-5271-96e7-009a87ff44bf}",
+                "hidden": false,
+                "icon": "ms-appx:///ProfileIcons/{61c54bbd-c2c6-5271-96e7-009a87ff44bf}.png",
+                "name": "Windows PowerShell",
+                "startingDirectory": "%USERPROFILE%"
+            },
+            {
+                "guid": "{2c4de342-38b7-51cf-b940-2309a097f518}",
+                "hidden": false,
+                "icon": "ms-appx:///ProfileIcons/{9acb9455-ca41-5af7-950f-6bca1bc9722f}.png",
+                "name": "Ubuntu",
+                "source": "Windows.Terminal.Wsl",
+                "startingDirectory": "~"
+            },
+            {
+                "commandline": "%SystemRoot%\\System32\\cmd.exe",
+                "guid": "{0caa0dad-35be-5f56-a8ff-afceeeaa6101}",
+                "hidden": true,
+                "icon": "ms-appx:///ProfileIcons/{0caa0dad-35be-5f56-a8ff-afceeeaa6101}.png",
+                "name": "Command Prompt",
+                "startingDirectory": "%USERPROFILE%"
+            },
+            {
+                "guid": "{b453ae62-4e3d-5e58-b989-0a998ec441b8}",
+                "hidden": true,
+                "name": "Azure Cloud Shell",
+                "source": "Windows.Terminal.Azure"
+            },
+            {
+                "guid": "{2ece5bfe-50ed-5f3a-ab87-5cd4baafed2b}",
+                "hidden": false,
+                "name": "Git Bash",
+                "source": "Git"
+            }
+        ]
     },
-    "list": [
-      {
-        "guid": "{574e775e-4f2a-5b96-ac1e-a2962a402336}",
-        "name": "PowerShell",
-        "source": "Windows.Terminal.PowershellCore",
-        "icon": "ms-appx:///ProfileIcons/pwsh.png",
-        "startingDirectory": "%USERPROFILE%",
-        "hidden": false
-      },
-      {
-        "guid": "{61c54bbd-c2c6-5271-96e7-009a87ff44bf}",
-        "name": "Windows PowerShell",
-        "commandline": "%SystemRoot%\\System32\\WindowsPowerShell\\v1.0\\powershell.exe",
-        "icon": "ms-appx:///ProfileIcons/{61c54bbd-c2c6-5271-96e7-009a87ff44bf}.png",
-        "startingDirectory": "%USERPROFILE%",
-        "hidden": false
-      },
-      {
-        "guid": "{2c4de342-38b7-51cf-b940-2309a097f518}",
-        "name": "Ubuntu",
-        "source": "Windows.Terminal.Wsl",
-        "icon": "ms-appx:///ProfileIcons/{9acb9455-ca41-5af7-950f-6bca1bc9722f}.png",
-        "startingDirectory": "~",
-        "hidden": false
-      },
-      {
-        "guid": "{0caa0dad-35be-5f56-a8ff-afceeeaa6101}",
-        "name": "Command Prompt",
-        "commandline": "%SystemRoot%\\System32\\cmd.exe",
-        "icon": "ms-appx:///ProfileIcons/{0caa0dad-35be-5f56-a8ff-afceeeaa6101}.png",
-        "startingDirectory": "%USERPROFILE%",
-        "hidden": true
-      },
-      {
-        "guid": "{b453ae62-4e3d-5e58-b989-0a998ec441b8}",
-        "name": "Azure Cloud Shell",
-        "source": "Windows.Terminal.Azure",
-        "hidden": true
-      }
-    ]
-  },
-
-  "schemes": [
-    {
-      "name": "Tokyo Night",
-      "background": "#1a1b26",
-      "foreground": "#c0caf5",
-      "cursorColor": "#c0caf5",
-      "selectionBackground": "#414868",
-      "black": "#414868",
-      "red": "#f7768e",
-      "green": "#9ece6a",
-      "yellow": "#e0af68",
-      "blue": "#7aa2f7",
-      "purple": "#bb9af7",
-      "cyan": "#7dcfff",
-      "white": "#c0caf5",
-      "brightBlack": "#565f89",
-      "brightRed": "#f7768e",
-      "brightGreen": "#9ece6a",
-      "brightYellow": "#e0af68",
-      "brightBlue": "#7aa2f7",
-      "brightPurple": "#bb9af7",
-      "brightCyan": "#7dcfff",
-      "brightWhite": "#c0caf5"
-    },
-    {
-      "name": "Tokyo Night Storm",
-      "background": "#24283b",
-      "foreground": "#c0caf5",
-      "cursorColor": "#c0caf5",
-      "selectionBackground": "#414868",
-      "black": "#414868",
-      "red": "#f7768e",
-      "green": "#9ece6a",
-      "yellow": "#e0af68",
-      "blue": "#7aa2f7",
-      "purple": "#bb9af7",
-      "cyan": "#7dcfff",
-      "white": "#c0caf5",
-      "brightBlack": "#565f89",
-      "brightRed": "#f7768e",
-      "brightGreen": "#9ece6a",
-      "brightYellow": "#e0af68",
-      "brightBlue": "#7aa2f7",
-      "brightPurple": "#bb9af7",
-      "brightCyan": "#7dcfff",
-      "brightWhite": "#c0caf5"
-    }
-  ],
-
-  "themes": [
-    {
-      "name": "Tokyo Night",
-      "tab": {
-        "background": "#1a1b26",
-        "unfocusedBackground": "#16161e"
-      },
-      "tabRow": {
-        "background": "#16161e",
-        "unfocusedBackground": "#16161e"
-      },
-      "window": {
-        "applicationTheme": "dark"
-      }
-    }
-  ],
-
-  "actions": [
-    { "command": { "action": "copy", "singleLine": false }, "keys": "ctrl+c" },
-    { "command": "paste", "keys": "ctrl+v" },
-    { "command": "find", "keys": "ctrl+shift+f" },
-    { "command": { "action": "splitPane", "split": "auto", "splitMode": "duplicate" }, "keys": "alt+shift+d" },
-    { "command": { "action": "splitPane", "split": "horizontal" }, "keys": "alt+shift+minus" },
-    { "command": { "action": "splitPane", "split": "vertical" }, "keys": "alt+shift+plus" },
-    { "command": "closePane", "keys": "ctrl+shift+w" },
-    { "command": { "action": "moveFocus", "direction": "down" }, "keys": "alt+down" },
-    { "command": { "action": "moveFocus", "direction": "left" }, "keys": "alt+left" },
-    { "command": { "action": "moveFocus", "direction": "right" }, "keys": "alt+right" },
-    { "command": { "action": "moveFocus", "direction": "up" }, "keys": "alt+up" },
-    { "command": { "action": "resizePane", "direction": "down" }, "keys": "alt+shift+down" },
-    { "command": { "action": "resizePane", "direction": "left" }, "keys": "alt+shift+left" },
-    { "command": { "action": "resizePane", "direction": "right" }, "keys": "alt+shift+right" },
-    { "command": { "action": "resizePane", "direction": "up" }, "keys": "alt+shift+up" },
-    { "command": { "action": "newTab" }, "keys": "ctrl+shift+t" },
-    { "command": "closeTab", "keys": "ctrl+shift+w" },
-    { "command": { "action": "nextTab" }, "keys": "ctrl+tab" },
-    { "command": { "action": "prevTab" }, "keys": "ctrl+shift+tab" },
-    { "command": { "action": "switchToTab", "index": 0 }, "keys": "ctrl+1" },
-    { "command": { "action": "switchToTab", "index": 1 }, "keys": "ctrl+2" },
-    { "command": { "action": "switchToTab", "index": 2 }, "keys": "ctrl+3" },
-    { "command": { "action": "switchToTab", "index": 3 }, "keys": "ctrl+4" },
-    { "command": { "action": "switchToTab", "index": 4 }, "keys": "ctrl+5" },
-    { "command": { "action": "scrollDown" }, "keys": "ctrl+shift+down" },
-    { "command": { "action": "scrollUp" }, "keys": "ctrl+shift+up" },
-    { "command": { "action": "scrollDownPage" }, "keys": "ctrl+shift+pgdn" },
-    { "command": { "action": "scrollUpPage" }, "keys": "ctrl+shift+pgup" },
-    { "command": "toggleFullscreen", "keys": "alt+enter" },
-    { "command": "toggleFullscreen", "keys": "f11" },
-    { "command": { "action": "adjustFontSize", "delta": 1 }, "keys": "ctrl+plus" },
-    { "command": { "action": "adjustFontSize", "delta": -1 }, "keys": "ctrl+minus" },
-    { "command": { "action": "adjustFontSize", "delta": 1 }, "keys": "ctrl+numpad_plus" },
-    { "command": { "action": "adjustFontSize", "delta": -1 }, "keys": "ctrl+numpad_minus" },
-    { "command": "resetFontSize", "keys": "ctrl+0" },
-    { "command": "openSettings", "keys": "ctrl+," }
-  ]
+    "schemes": 
+    [
+        {
+            "background": "#1A1B26",
+            "black": "#414868",
+            "blue": "#7AA2F7",
+            "brightBlack": "#565F89",
+            "brightBlue": "#7AA2F7",
+            "brightCyan": "#7DCFFF",
+            "brightGreen": "#9ECE6A",
+            "brightPurple": "#BB9AF7",
+            "brightRed": "#F7768E",
+            "brightWhite": "#C0CAF5",
+            "brightYellow": "#E0AF68",
+            "cursorColor": "#C0CAF5",
+            "cyan": "#7DCFFF",
+            "foreground": "#C0CAF5",
+            "green": "#9ECE6A",
+            "name": "Tokyo Night",
+            "purple": "#BB9AF7",
+            "red": "#F7768E",
+            "selectionBackground": "#414868",
+            "white": "#C0CAF5",
+            "yellow": "#E0AF68"
+        },
+        {
+            "background": "#24283B",
+            "black": "#414868",
+            "blue": "#7AA2F7",
+            "brightBlack": "#565F89",
+            "brightBlue": "#7AA2F7",
+            "brightCyan": "#7DCFFF",
+            "brightGreen": "#9ECE6A",
+            "brightPurple": "#BB9AF7",
+            "brightRed": "#F7768E",
+            "brightWhite": "#C0CAF5",
+            "brightYellow": "#E0AF68",
+            "cursorColor": "#C0CAF5",
+            "cyan": "#7DCFFF",
+            "foreground": "#C0CAF5",
+            "green": "#9ECE6A",
+            "name": "Tokyo Night Storm",
+            "purple": "#BB9AF7",
+            "red": "#F7768E",
+            "selectionBackground": "#414868",
+            "white": "#C0CAF5",
+            "yellow": "#E0AF68"
+        }
+    ],
+    "showTabsInTitlebar": true,
+    "showTerminalTitleInTitlebar": true,
+    "tabWidthMode": "equal",
+    "theme": "Tokyo Night",
+    "themes": 
+    [
+        {
+            "name": "Tokyo Night",
+            "tab": 
+            {
+                "background": "#1A1B26FF",
+                "iconStyle": "default",
+                "showCloseButton": "always",
+                "unfocusedBackground": "#16161EFF"
+            },
+            "tabRow": 
+            {
+                "background": "#16161EFF",
+                "unfocusedBackground": "#16161EFF"
+            },
+            "window": 
+            {
+                "applicationTheme": "dark",
+                "experimental.rainbowFrame": false,
+                "frame": null,
+                "unfocusedFrame": null,
+                "useMica": false
+            }
+        }
+    ],
+    "trimBlockSelection": true,
+    "trimPaste": true,
+    "useAcrylicInTabRow": true
 }

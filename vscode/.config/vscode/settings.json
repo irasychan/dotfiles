@@ -8,7 +8,7 @@
   "workbench.productIconTheme": "material-product-icons",
 
   // Editor
-  "editor.fontFamily": "'JetBrains Mono', 'Cascadia Code', 'Fira Code', Consolas, monospace",
+  "editor.fontFamily": "'CaskaydiaCove Nerd Font', 'Cascadia Code', 'Fira Code', Consolas, monospace",
   "editor.fontSize": 14,
   "editor.fontLigatures": true,
   "editor.lineHeight": 1.6,
@@ -29,7 +29,7 @@
   "editor.stickyScroll.enabled": true,
 
   // Terminal - Tokyo Night colors
-  "terminal.integrated.fontFamily": "'JetBrains Mono', 'Cascadia Code', monospace",
+  "terminal.integrated.fontFamily": "'CaskaydiaCove Nerd Font', 'Cascadia Code', monospace",
   "terminal.integrated.fontSize": 14,
   "terminal.integrated.cursorStyle": "line",
   "terminal.integrated.cursorBlinking": true,

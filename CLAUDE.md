@@ -143,7 +143,7 @@ Windows config locations:
 - `keybindings.json`: Custom keyboard shortcuts
 - `extensions.json`: Recommended extensions list
 - Terminal colors match Tokyo Night palette
-- Font: JetBrains Mono with ligatures
+- Font: CaskaydiaCove Nerd Font with ligatures
 - Recommended theme: Tokyo Night (`enkia.tokyo-night`)
 - Deployed via `windows/install.ps1`
 
@@ -153,7 +153,7 @@ Windows config locations:
 - Tokyo Night window theme (tab bar, backgrounds)
 - Default profile: PowerShell Core
 - Profiles: PowerShell 7+, Windows PowerShell 5.x, Ubuntu (WSL), CMD
-- Font: JetBrains Mono, 12pt
+- Font: CaskaydiaCove Nerd Font, 12pt
 - Keyboard shortcuts for pane splitting, tab management
 - Deployed via `windows/install.ps1`
 
