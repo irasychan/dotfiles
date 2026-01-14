@@ -16,6 +16,14 @@ For WSL environments:
 ./install.sh --wsl
 ```
 
+For Windows 11 (PowerShell):
+
+```powershell
+# In PowerShell (run as admin for symlinks)
+cd $env:USERPROFILE\dotfiles
+.\windows\install.ps1
+```
+
 ## Structure
 
 This repository uses GNU Stow for symlink management. Each directory is a "package" that mirrors the structure relative to `$HOME`:
@@ -43,7 +51,9 @@ dotfiles/
 │   └── .bashrc
 ├── git/                  # Git configuration (placeholder)
 │   └── .config/git/
-├── install.sh            # Bootstrap script
+├── windows/              # Windows installer
+│   └── install.ps1
+├── install.sh            # Bootstrap script (Linux/WSL)
 └── stow.sh               # Stow helper script
 ```
 
@@ -56,10 +66,25 @@ Installs all dependencies and deploys configurations:
 ```bash
 ./install.sh        # Standard Linux
 ./install.sh --wsl  # WSL environment
-./install.sh --pwsh # PowerShell with Starship prompt
+./install.sh --pwsh # PowerShell with Starship prompt (Linux)
 ```
 
-### Partial Installation
+### Windows 11 Installation
+
+```powershell
+# Clone and install (run PowerShell as admin for symlinks)
+git clone https://github.com/irasychan/dotfiles.git $env:USERPROFILE\dotfiles
+cd $env:USERPROFILE\dotfiles\windows
+.\install.ps1
+
+# Options
+.\install.ps1 -Help           # Show help
+.\install.ps1 -Backup         # Backup only
+.\install.ps1 -Restore        # List/restore backups
+.\install.ps1 -SkipStarship   # Skip Starship installation
+```
+
+### Partial Installation (Linux/WSL)
 
 ```bash
 ./install.sh --packages  # Only install dependencies

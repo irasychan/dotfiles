@@ -22,7 +22,8 @@ dotfiles/
 │   └── Microsoft.PowerShell_profile.ps1
 ├── wsl/.bashrc               # WSL-specific (auto-starts zsh)
 ├── git/.config/git/          # Git config (placeholder)
-├── install.sh                # Bootstrap script
+├── windows/install.ps1       # Windows 11 installer
+├── install.sh                # Bootstrap script (Linux/WSL)
 └── stow.sh                   # Stow helper
 ```
 
@@ -61,6 +62,20 @@ Helper for managing stow packages:
 - Use `all` to operate on all packages
 
 Available packages: bash, zsh, vim, tmux, omp, starship, pwsh, wsl, git
+
+### windows/install.ps1
+
+Windows 11 installer (PowerShell):
+- Installs Starship via winget/scoop/chocolatey
+- Deploys PowerShell profile to both PS 5.x and 7+
+- Creates symlinks (requires admin) or copies files
+- Backup/restore functionality like Linux version
+
+Options: `-Help`, `-Backup`, `-Restore <timestamp>`, `-SkipStarship`
+
+Windows profile locations:
+- PowerShell 7+: `$HOME\Documents\PowerShell\Microsoft.PowerShell_profile.ps1`
+- PowerShell 5.x: `$HOME\Documents\WindowsPowerShell\Microsoft.PowerShell_profile.ps1`
 
 ## Configuration Details
 

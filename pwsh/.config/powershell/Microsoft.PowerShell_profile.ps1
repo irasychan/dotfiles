@@ -214,6 +214,29 @@ if (Get-Command az -ErrorAction SilentlyContinue) {
     }
 }
 
+# winget completion (Windows only)
+if ($IsWindows -and (Get-Command winget -ErrorAction SilentlyContinue)) {
+    Register-ArgumentCompleter -Native -CommandName winget -ScriptBlock {
+        param($wordToComplete, $commandAst, $cursorPosition)
+        [Console]::InputEncoding = [Console]::OutputEncoding = $OutputEncoding = [System.Text.Utf8Encoding]::new()
+        $local:word = $wordToComplete.Replace('"', '""')
+        $local:ast = $commandAst.ToString().Replace('"', '""')
+        winget complete --word="$local:word" --commandline "$local:ast" --position $cursorPosition | ForEach-Object {
+            [System.Management.Automation.CompletionResult]::new($_, $_, 'ParameterValue', $_)
+        }
+    }
+}
+
+# dotnet completion
+if (Get-Command dotnet -ErrorAction SilentlyContinue) {
+    Register-ArgumentCompleter -Native -CommandName dotnet -ScriptBlock {
+        param($wordToComplete, $commandAst, $cursorPosition)
+        dotnet complete --position $cursorPosition "$commandAst" | ForEach-Object {
+            [System.Management.Automation.CompletionResult]::new($_, $_, 'ParameterValue', $_)
+        }
+    }
+}
+
 #endregion
 
 #region Starship Prompt
