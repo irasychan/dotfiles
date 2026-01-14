@@ -71,6 +71,7 @@ backup_existing() {
         omp
         zsh
         git
+        powershell
     )
 
     # Backup XDG config directories
@@ -227,7 +228,7 @@ detect_pkg_manager() {
 # Create XDG directories
 create_xdg_dirs() {
     info "Creating XDG directories..."
-    mkdir -p "$XDG_CONFIG_HOME"/{zsh,vim,omp,aws,docker,npm,git}
+    mkdir -p "$XDG_CONFIG_HOME"/{zsh,vim,omp,aws,docker,npm,git,powershell}
     mkdir -p "$XDG_DATA_HOME"/{vim/plugged,vim/spell,oh-my-zsh,nvm,cargo,go,gnupg,sdkman}
     mkdir -p "$XDG_STATE_HOME"/{vim/{backup,swap,view,undo},zsh,less}
     mkdir -p "$XDG_CACHE_HOME"/zsh
@@ -307,6 +308,18 @@ install_ohmyposh() {
     success "Oh My Posh installed"
 }
 
+# Install Starship prompt
+install_starship() {
+    if has starship; then
+        warn "Starship already installed, skipping..."
+        return
+    fi
+
+    info "Installing Starship..."
+    curl -sS https://starship.rs/install.sh | sh -s -- -y -b "$HOME/.local/bin"
+    success "Starship installed"
+}
+
 # Install vim-plug
 install_vimplug() {
     local plug_vim="$XDG_DATA_HOME/vim/autoload/plug.vim"
@@ -335,6 +348,8 @@ deploy_dotfiles() {
         "$HOME/.config/tmux/tmux.conf"
         "$HOME/.config/omp/theme.omp.json"
         "$HOME/.config/omp/theme.omp.yaml"
+        "$HOME/.config/starship.toml"
+        "$HOME/.config/powershell/Microsoft.PowerShell_profile.ps1"
     )
 
     for file in "${conflicts[@]}"; do
@@ -450,6 +465,7 @@ case "${1:-}" in
         echo "  --stow               Only run stow (with backup, no package installation)"
         echo "  --stow-no-backup     Only run stow (without backup)"
         echo "  --wsl                Install for WSL (uses wsl package instead of bash)"
+        echo "  --pwsh               Install PowerShell profile with Starship prompt"
         echo ""
         echo "Backups are stored in: $BACKUP_DIR"
         echo ""
@@ -500,6 +516,31 @@ case "${1:-}" in
         install_vim_plugins
         set_default_shell
         print_summary
+        ;;
+    --pwsh)
+        backup_existing
+        install_starship
+
+        info "Deploying PowerShell and Starship configs..."
+        cd "$DOTFILES_DIR"
+        stow -v -R -t "$HOME" starship pwsh
+        success "PowerShell profile and Starship deployed"
+
+        echo ""
+        echo -e "${GREEN}========================================${NC}"
+        echo -e "${GREEN}    PowerShell Setup Complete!         ${NC}"
+        echo -e "${GREEN}========================================${NC}"
+        echo ""
+        echo "Starship prompt installed with Tokyo Night theme."
+        echo ""
+        echo "To use in PowerShell, ensure pwsh is installed:"
+        echo "  # Ubuntu/Debian:"
+        echo "  sudo apt-get install -y powershell"
+        echo ""
+        echo "  # Or download from: https://github.com/PowerShell/PowerShell"
+        echo ""
+        echo "Start PowerShell with: pwsh"
+        echo ""
         ;;
     *)
         main

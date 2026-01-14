@@ -30,10 +30,15 @@ dotfiles/
 │   └── .config/vim/vimrc
 ├── tmux/                 # Tmux configuration
 │   └── .config/tmux/tmux.conf
-├── omp/                  # Oh My Posh theme
+├── omp/                  # Oh My Posh theme (for zsh)
 │   └── .config/omp/
 │       ├── theme.omp.json
 │       └── theme.omp.yaml
+├── starship/             # Starship prompt (for pwsh)
+│   └── .config/starship.toml
+├── pwsh/                 # PowerShell profile
+│   └── .config/powershell/
+│       └── Microsoft.PowerShell_profile.ps1
 ├── wsl/                  # WSL-specific bash (auto-starts zsh)
 │   └── .bashrc
 ├── git/                  # Git configuration (placeholder)
@@ -51,6 +56,7 @@ Installs all dependencies and deploys configurations:
 ```bash
 ./install.sh        # Standard Linux
 ./install.sh --wsl  # WSL environment
+./install.sh --pwsh # PowerShell with Starship prompt
 ```
 
 ### Partial Installation
@@ -85,7 +91,9 @@ stow -D -t ~ bash            # Unlink package
 | `zsh`   | Zsh + oh-my-zsh | `.zshrc` |
 | `vim`   | Vim/Neovim config | `.config/vim/vimrc` |
 | `tmux`  | Tmux config | `.config/tmux/tmux.conf` |
-| `omp`   | Oh My Posh theme | `.config/omp/theme.omp.*` |
+| `omp`   | Oh My Posh theme (zsh) | `.config/omp/theme.omp.*` |
+| `starship` | Starship prompt config | `.config/starship.toml` |
+| `pwsh`  | PowerShell profile | `.config/powershell/...` |
 | `wsl`   | WSL bash (starts zsh) | `.bashrc` |
 | `git`   | Git configuration | `.config/git/` |
 
@@ -115,12 +123,20 @@ All configurations follow the [XDG Base Directory Specification](https://specifi
 - Full XDG directory support
 - WSL cursor fixes
 
-### Oh My Posh Theme
+### Oh My Posh Theme (Zsh)
 
 - Multi-line prompt
 - Git status with color-coded changes
 - Language version display (Node, Python, Go, Ruby, PHP, Julia)
 - Tokyo Night color palette
+
+### PowerShell + Starship
+
+- **Starship** cross-shell prompt with matching Tokyo Night theme
+- PSReadLine with predictive IntelliSense and Tokyo Night colors
+- Emacs-style keybindings (like zsh)
+- Git shortcuts and navigation functions
+- Completions for kubectl, Azure CLI
 
 ## Post-Installation
 

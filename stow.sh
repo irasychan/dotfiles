@@ -6,7 +6,7 @@
 DOTFILES_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 # Available packages
-PACKAGES=(bash zsh vim tmux omp wsl git)
+PACKAGES=(bash zsh vim tmux omp wsl git starship pwsh)
 
 usage() {
     echo "Usage: ./stow.sh [command] [packages...]"

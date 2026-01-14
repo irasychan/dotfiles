@@ -14,9 +14,12 @@ dotfiles/
 ├── zsh/.zshrc                # Zsh + oh-my-zsh configuration
 ├── vim/.config/vim/vimrc     # Vim with XDG support
 ├── tmux/.config/tmux/tmux.conf
-├── omp/.config/omp/          # Oh My Posh themes
+├── omp/.config/omp/          # Oh My Posh themes (for zsh)
 │   ├── theme.omp.json
 │   └── theme.omp.yaml
+├── starship/.config/starship.toml  # Starship prompt (for pwsh)
+├── pwsh/.config/powershell/  # PowerShell profile
+│   └── Microsoft.PowerShell_profile.ps1
 ├── wsl/.bashrc               # WSL-specific (auto-starts zsh)
 ├── git/.config/git/          # Git config (placeholder)
 ├── install.sh                # Bootstrap script
@@ -30,18 +33,23 @@ Each top-level directory is a GNU Stow "package" - its contents mirror the struc
 ### install.sh
 
 Bootstrap script that:
-1. Detects package manager (apt/dnf/pacman)
-2. Installs dependencies (stow, zsh, vim, neovim, tmux, fzf, ripgrep)
-3. Installs oh-my-zsh and plugins
-4. Installs Oh My Posh
-5. Installs vim-plug
-6. Deploys configs via stow
-7. Sets zsh as default shell
+1. Backs up existing environment to `~/.dotfiles-backup/`
+2. Detects package manager (apt/dnf/pacman)
+3. Installs dependencies (stow, zsh, vim, neovim, tmux, fzf, ripgrep)
+4. Installs oh-my-zsh and plugins
+5. Installs Oh My Posh and/or Starship
+6. Installs vim-plug
+7. Deploys configs via stow
+8. Sets zsh as default shell
 
 Options:
 - `--wsl`: Uses `wsl` package instead of `bash`
+- `--pwsh`: Installs Starship and deploys PowerShell profile
 - `--packages`: Only install dependencies
-- `--stow`: Only deploy configs
+- `--stow`: Only deploy configs (with backup)
+- `--backup`: Only backup existing environment
+- `--restore [TIME]`: Restore from backup
+- `--list-backups`: List available backups
 
 ### stow.sh
 
@@ -51,6 +59,8 @@ Helper for managing stow packages:
 - `./stow.sh restow <packages>`: Relink packages
 - `./stow.sh status`: Show linked status
 - Use `all` to operate on all packages
+
+Available packages: bash, zsh, vim, tmux, omp, starship, pwsh, wsl, git
 
 ## Configuration Details
 
@@ -76,6 +86,25 @@ Helper for managing stow packages:
 - Multi-line prompt with Tokyo Night colors
 - Shows: path, git branch/status, language versions
 - JSON and YAML versions (JSON is active)
+- Used by zsh via Oh My Posh
+
+### starship/.config/starship.toml
+
+- Cross-shell prompt matching Tokyo Night theme from Oh My Posh
+- Multi-line format: `➜ path ⚡ (branch) \n ▶`
+- Right prompt shows language versions (node, python, rust, go, etc.)
+- Used by PowerShell profile
+
+### pwsh/.config/powershell/Microsoft.PowerShell_profile.ps1
+
+- Initializes Starship prompt
+- PSReadLine with Tokyo Night colors and predictive IntelliSense
+- Emacs-style keybindings (consistent with zsh)
+- XDG environment variables
+- Aliases matching zsh: `vim`, `nv`, `lg`, `g`
+- Git shortcuts: `gs`, `ga`, `gc`, `gp`, `gl`, `gd`, `gco`, `gb`, `glog`
+- Navigation: `..`, `...`, `....`, `mkcd`
+- Completions for kubectl, Azure CLI
 
 ### wsl/.bashrc
 
@@ -83,9 +112,22 @@ Helper for managing stow packages:
 - Auto-execs zsh when in interactive terminal
 - Use this instead of `bash` package in WSL
 
-## XDG Paths Reference
+## Theme Alignment
 
-The zshrc configures these XDG-compliant paths:
+Both Oh My Posh (zsh) and Starship (pwsh) use the same Tokyo Night color palette:
+
+| Color | Hex | Usage |
+|-------|-----|-------|
+| terminal-blue | `#7aa2f7` | Prompt arrow, PHP |
+| terminal-magenta | `#bb9af7` | Path, .NET |
+| light-sky-blue | `#7dcfff` | Git branch clean, Go |
+| terminal-red | `#f7768e` | Errors, git dirty, Ruby |
+| pistachio-green | `#9ece6a` | Success char, Node |
+| terminal-yellow | `#e0af68` | Python |
+| white-blue | `#a9b1d6` | Command duration |
+| blue-black | `#565f89` | Comments, predictions |
+
+## XDG Paths Reference
 
 | Tool | Path |
 |------|------|
@@ -97,6 +139,8 @@ The zshrc configures these XDG-compliant paths:
 | GPG | `$XDG_DATA_HOME/gnupg` |
 | Vim plugins | `$XDG_DATA_HOME/vim/plugged` |
 | Zsh history | `$XDG_STATE_HOME/zsh/history` |
+| Starship config | `$XDG_CONFIG_HOME/starship.toml` |
+| PowerShell profile | `$XDG_CONFIG_HOME/powershell/` |
 
 ## Adding New Configurations
 
@@ -110,3 +154,4 @@ After editing configs:
 - Zsh: `source ~/.zshrc` or restart terminal
 - Vim: `:source $MYVIMRC` or restart vim
 - Tmux: `tmux source ~/.config/tmux/tmux.conf`
+- PowerShell: `. $PROFILE` or `reload`
