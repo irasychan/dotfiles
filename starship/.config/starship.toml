@@ -21,7 +21,7 @@ vimcmd_symbol = "[◀](bold #9ece6a)"
 
 # Directory
 [directory]
-format = "[**$path**]($style) [⚡](#7dcfff)"
+format = "[$path]($style) [⚡](#7dcfff)"
 style = "bold #bb9af7"
 truncation_length = 0
 truncate_to_repo = false
