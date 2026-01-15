@@ -159,11 +159,11 @@ function Open-Here {
 Set-Alias -Name open -Value Open-Here
 
 # Reload profile
-function Reload-Profile {
+function Invoke-ProfileReload {
     . $PROFILE
     Write-Host "Profile reloaded" -ForegroundColor Green
 }
-Set-Alias -Name reload -Value Reload-Profile
+Set-Alias -Name reload -Value Invoke-ProfileReload
 
 # Get public IP
 function Get-PublicIP {
