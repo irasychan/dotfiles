@@ -93,5 +93,9 @@
   {
     "key": "ctrl+k z",
     "command": "workbench.action.toggleZenMode"
+  },
+  {
+    "key": "ctrl+shift+alt+.",
+    "command": "toggleVim"
   }
 ]

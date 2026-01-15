@@ -92,5 +92,6 @@
   "telemetry.telemetryLevel": "off",
 
   // Extensions recommendations
-  "extensions.ignoreRecommendations": false
+  "extensions.ignoreRecommendations": false,
+  "claudeCode.preferredLocation": "panel"
 }

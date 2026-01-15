@@ -65,6 +65,17 @@ if (Get-Module -ListAvailable -Name PSReadLine) {
 
 #endregion
 
+#region PSStyle Configuration (PowerShell 7.2+)
+
+if ($PSVersionTable.PSVersion.Major -ge 7 -and $PSVersionTable.PSVersion.Minor -ge 2) {
+    # File info formatting - Tokyo Night theme (24-bit RGB colors)
+    $PSStyle.FileInfo.Directory = "`e[38;2;122;162;247m"     # #7aa2f7 terminal-blue
+    $PSStyle.FileInfo.Executable = "`e[38;2;158;206;106m"    # #9ece6a pistachio-green
+    $PSStyle.FileInfo.SymbolicLink = "`e[38;2;125;207;255m"  # #7dcfff light-sky-blue
+}
+
+#endregion
+
 #region Aliases
 
 # Navigation

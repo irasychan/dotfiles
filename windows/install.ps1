@@ -47,9 +47,10 @@ $Script:BackupDir = Join-Path $env:USERPROFILE ".dotfiles-backup"
 # XDG-style paths for Windows
 $Script:ConfigHome = if ($env:XDG_CONFIG_HOME) { $env:XDG_CONFIG_HOME } else { Join-Path $env:USERPROFILE ".config" }
 
-# PowerShell profile paths
-$Script:PSCorePath = Join-Path $env:USERPROFILE "Documents\PowerShell"
-$Script:PS5Path = Join-Path $env:USERPROFILE "Documents\WindowsPowerShell"
+# PowerShell profile paths (use actual Documents location, handles OneDrive redirection)
+$Script:DocumentsPath = [Environment]::GetFolderPath('MyDocuments')
+$Script:PSCorePath = Join-Path $Script:DocumentsPath "PowerShell"
+$Script:PS5Path = Join-Path $Script:DocumentsPath "WindowsPowerShell"
 
 # VS Code paths
 $Script:VSCodeUserPath = Join-Path $env:APPDATA "Code\User"
@@ -474,7 +475,7 @@ function Install-NerdFont {
     }
 
     Write-Warn "No Nerd Font detected. For best experience, install one:"
-    Write-Host "  winget install --id=JetBrains.JetBrainsMono.NerdFont -e"
+    Write-Host "  winget install --id=NerdFonts.CascadiaCode -e"
     Write-Host "  Or visit: https://www.nerdfonts.com/"
     Write-Host ""
 }
@@ -499,7 +500,7 @@ function Show-Summary {
     Write-Host "Next steps:"
     Write-Host "  1. Restart your terminal"
     Write-Host "  2. Install a Nerd Font for icons:"
-    Write-Host "     winget install --id=JetBrains.JetBrainsMono.NerdFont -e"
+    Write-Host "     winget install --id=NerdFonts.CascadiaCode -e"
     Write-Host "  3. In VS Code, install the Tokyo Night theme:"
     Write-Host "     code --install-extension enkia.tokyo-night"
     Write-Host ""
