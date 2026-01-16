@@ -228,9 +228,9 @@ detect_pkg_manager() {
 # Create XDG directories
 create_xdg_dirs() {
     info "Creating XDG directories..."
-    mkdir -p "$XDG_CONFIG_HOME"/{zsh,vim,omp,aws,docker,npm,git,powershell}
-    mkdir -p "$XDG_DATA_HOME"/{vim/plugged,vim/spell,oh-my-zsh,nvm,cargo,go,gnupg,sdkman}
-    mkdir -p "$XDG_STATE_HOME"/{vim/{backup,swap,view,undo},zsh,less}
+    mkdir -p "$XDG_CONFIG_HOME"/{zsh,vim,nvim,omp,aws,docker,npm,git,powershell}
+    mkdir -p "$XDG_DATA_HOME"/{vim/plugged,vim/spell,nvim,oh-my-zsh,nvm,cargo,go,gnupg,sdkman}
+    mkdir -p "$XDG_STATE_HOME"/{vim/{backup,swap,view,undo},nvim,zsh,less}
     mkdir -p "$XDG_CACHE_HOME"/zsh
     mkdir -p "$HOME/.local/bin"
     success "XDG directories created"
@@ -345,6 +345,7 @@ deploy_dotfiles() {
         "$HOME/.bashrc"
         "$HOME/.zshrc"
         "$HOME/.config/vim/vimrc"
+        "$HOME/.config/nvim/init.lua"
         "$HOME/.config/tmux/tmux.conf"
         "$HOME/.config/omp/theme.omp.json"
         "$HOME/.config/omp/theme.omp.yaml"
@@ -360,7 +361,7 @@ deploy_dotfiles() {
     done
 
     # Stow packages
-    local packages=(bash zsh vim tmux omp)
+    local packages=(bash zsh vim nvim tmux omp)
 
     for pkg in "${packages[@]}"; do
         if [[ -d "$DOTFILES_DIR/$pkg" ]]; then
@@ -423,7 +424,13 @@ print_summary() {
     echo "     - lazygit: https://github.com/jesseduffield/lazygit#installation"
     echo ""
     echo "Stow packages available:"
-    echo "  bash, zsh, vim, tmux, omp, wsl, git"
+    echo "  bash, zsh, vim, nvim, tmux, omp, wsl, git, starship, pwsh"
+    echo ""
+    echo "Neovim (LazyVim):"
+    echo "  First launch will auto-install plugins."
+    echo "  <Space>e  - File explorer"
+    echo "  <Space>ff - Find files"
+    echo "  :Lazy     - Manage plugins"
     echo ""
     echo "To add/remove a package: stow [-D] <package>"
     echo ""
@@ -510,7 +517,7 @@ case "${1:-}" in
         # For WSL, stow wsl instead of bash
         info "Deploying dotfiles with stow (WSL mode)..."
         cd "$DOTFILES_DIR"
-        stow -v -R -t "$HOME" wsl zsh vim tmux omp
+        stow -v -R -t "$HOME" wsl zsh vim nvim tmux omp
         success "Dotfiles deployed (WSL mode)"
 
         install_vim_plugins

@@ -190,3 +190,6 @@ if [ "$TERM_PROGRAM" != "Apple_Terminal" ] && [ "$TERM" != "xterm-color" ]; then
   # eval "$(oh-my-posh init zsh --config $(brew --prefix oh-my-posh)/themes/jandedobbeleer.omp.json)"
   eval "$(oh-my-posh init zsh --config $XDG_CONFIG_HOME/omp/theme.omp.json)"
 fi
+
+# opencode
+export PATH=/home/irasy/.opencode/bin:$PATH

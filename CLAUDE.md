@@ -13,6 +13,9 @@ dotfiles/
 ├── bash/.bashrc              # Standard Linux bash
 ├── zsh/.zshrc                # Zsh + oh-my-zsh configuration
 ├── vim/.config/vim/vimrc     # Vim with XDG support
+├── nvim/.config/nvim/        # Neovim with LazyVim
+│   ├── init.lua
+│   └── lua/{config,plugins}/
 ├── tmux/.config/tmux/tmux.conf
 ├── omp/.config/omp/          # Oh My Posh themes (for zsh)
 │   ├── theme.omp.json
@@ -67,7 +70,7 @@ Helper for managing stow packages:
 - `./stow.sh status`: Show linked status
 - Use `all` to operate on all packages
 
-Available packages: bash, zsh, vim, tmux, omp, starship, pwsh, wsl, git
+Available packages: bash, zsh, vim, nvim, tmux, omp, starship, pwsh, wsl, git
 
 ### windows/install.ps1
 
@@ -105,6 +108,42 @@ Windows config locations:
 - Plugins: ALE (linting), NERDTree, fzf, vim-easymotion, vim-surround, vim-markdown, vim-vue
 - WSL cursor shape fixes
 - `<C-n>` toggles NERDTree
+
+### nvim/.config/nvim/
+
+LazyVim-based Neovim configuration:
+
+- **Framework**: LazyVim (lazy.nvim plugin manager)
+- **Colorscheme**: Tokyo Night (matches shell theme)
+- **Leader key**: Space
+- **File explorer**: Neo-tree (hidden files visible by default)
+- **Fuzzy finder**: Telescope (hidden files included)
+- **WSL**: Clipboard integration configured
+
+Structure:
+```
+nvim/.config/nvim/
+├── init.lua                 # Entry point
+└── lua/
+    ├── config/
+    │   ├── lazy.lua         # lazy.nvim bootstrap
+    │   ├── options.lua      # Vim options
+    │   ├── keymaps.lua      # Custom keymaps
+    │   └── autocmds.lua     # Autocommands
+    └── plugins/
+        ├── editor.lua       # Neo-tree, Telescope config
+        └── colorscheme.lua  # Tokyo Night theme
+```
+
+Key bindings:
+- `<Space>e` - Toggle file explorer (Neo-tree)
+- `<Space>ff` - Find files
+- `<Space>fg` - Live grep
+- `<Space>/` - Search in buffer
+- `jk` or `jj` - Exit insert mode
+- `:Lazy` - Plugin manager UI
+
+First launch auto-installs all plugins.
 
 ### omp/.config/omp/theme.omp.*
 
@@ -188,6 +227,8 @@ All configurations use the Tokyo Night color palette for consistency across shel
 | SDKMan | `$XDG_DATA_HOME/sdkman` |
 | GPG | `$XDG_DATA_HOME/gnupg` |
 | Vim plugins | `$XDG_DATA_HOME/vim/plugged` |
+| Neovim data | `$XDG_DATA_HOME/nvim` |
+| Neovim state | `$XDG_STATE_HOME/nvim` |
 | Zsh history | `$XDG_STATE_HOME/zsh/history` |
 | Starship config | `$XDG_CONFIG_HOME/starship.toml` |
 | PowerShell profile | `$XDG_CONFIG_HOME/powershell/` |
@@ -213,6 +254,7 @@ All configurations use the Tokyo Night color palette for consistency across shel
 After editing configs:
 - Zsh: `source ~/.zshrc` or restart terminal
 - Vim: `:source $MYVIMRC` or restart vim
+- Neovim: `:Lazy sync` to update plugins, or restart nvim
 - Tmux: `tmux source ~/.config/tmux/tmux.conf`
 - PowerShell: `. $PROFILE` or `reload`
 - VS Code: Restart VS Code or `Ctrl+Shift+P` → "Reload Window"

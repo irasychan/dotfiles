@@ -34,8 +34,10 @@ dotfiles/
 │   └── .bashrc
 ├── zsh/                  # Zsh + oh-my-zsh configuration
 │   └── .zshrc
-├── vim/                  # Vim/Neovim configuration
+├── vim/                  # Vim configuration
 │   └── .config/vim/vimrc
+├── nvim/                 # Neovim with LazyVim
+│   └── .config/nvim/
 ├── tmux/                 # Tmux configuration
 │   └── .config/tmux/tmux.conf
 ├── omp/                  # Oh My Posh theme (for zsh)
@@ -114,7 +116,8 @@ stow -D -t ~ bash            # Unlink package
 |---------|-------------|-------|
 | `bash`  | Bash shell config | `.bashrc` |
 | `zsh`   | Zsh + oh-my-zsh | `.zshrc` |
-| `vim`   | Vim/Neovim config | `.config/vim/vimrc` |
+| `vim`   | Vim config | `.config/vim/vimrc` |
+| `nvim`  | Neovim + LazyVim | `.config/nvim/` |
 | `tmux`  | Tmux config | `.config/tmux/tmux.conf` |
 | `omp`   | Oh My Posh theme (zsh) | `.config/omp/theme.omp.*` |
 | `starship` | Starship prompt config | `.config/starship.toml` |
@@ -147,6 +150,14 @@ All configurations follow the [XDG Base Directory Specification](https://specifi
 - Plugins: ALE, NERDTree, fzf, easymotion, vim-surround
 - Full XDG directory support
 - WSL cursor fixes
+
+### Neovim Configuration
+
+- **LazyVim** framework with lazy.nvim plugin manager
+- Tokyo Night colorscheme (matches shell themes)
+- Hidden files visible by default in file explorer
+- WSL clipboard integration
+- First launch auto-installs all plugins
 
 ### Oh My Posh Theme (Zsh)
 
