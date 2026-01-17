@@ -429,6 +429,8 @@ function Install-VSCodeSettings {
     # Remind about extensions
     Write-Info "  To install recommended extensions, run in VS Code:"
     Write-Host "    code --install-extension enkia.tokyo-night"
+    Write-Host "    code --install-extension pkief.material-icon-theme"
+    Write-Host "    code --install-extension pkief.material-product-icons"
 }
 
 function Install-WindowsTerminalSettings {
@@ -491,7 +493,7 @@ function Show-Summary {
     Write-Host ""
     Write-Host "Installed components:"
     Write-Host "  - PowerShell profile (PS 5.x and 7+)"
-    Write-Host "  - Starship prompt with Tokyo Night theme"
+    Write-Host "  - Starship prompt (Tokyo Night theme)"
     Write-Host "  - VS Code settings, keybindings, and extensions"
     Write-Host "  - Windows Terminal settings with Tokyo Night color scheme"
     Write-Host ""
@@ -501,8 +503,10 @@ function Show-Summary {
     Write-Host "  1. Restart your terminal"
     Write-Host "  2. Install a Nerd Font for icons:"
     Write-Host "     winget install --id=NerdFonts.CascadiaCode -e"
-    Write-Host "  3. In VS Code, install the Tokyo Night theme:"
+    Write-Host "  3. In VS Code, install the recommended themes/icons:"
     Write-Host "     code --install-extension enkia.tokyo-night"
+    Write-Host "     code --install-extension pkief.material-icon-theme"
+    Write-Host "     code --install-extension pkief.material-product-icons"
     Write-Host ""
 }
 

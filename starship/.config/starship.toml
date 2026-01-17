@@ -1,149 +1,47 @@
 # Starship prompt configuration
-# Tokyo Night theme - aligned with Oh My Posh theme
+# Tokyo Night theme - aligned with shell/editor colors
 
 # General settings
 add_newline = true
 command_timeout = 1000
 
-# Prompt format - multi-line like Oh My Posh theme
+# Prompt format - multi-line, context-first
 format = """
-[➜ ](bold #7aa2f7)$directory$git_branch$git_status$git_state$status
-$character"""
+$os$username$hostname$directory$git_branch$git_status$git_state$git_metrics$kubernetes$docker_context
+$cmd_duration$status$character"""
 
-# Right prompt with language versions
-right_format = """$nodejs$python$rust$golang$java$php$ruby$dotnet$cmd_duration"""
+# Right prompt with time, battery, and language versions
+right_format = """$time$battery$nodejs$python$rust$golang$java$php$ruby$dotnet"""
 
 # Prompt character
 [character]
-success_symbol = "[▶](bold #9ece6a)"
-error_symbol = "[▶](bold #f7768e)"
-vimcmd_symbol = "[◀](bold #9ece6a)"
+success_symbol = "[>](bold #9ece6a)"
+error_symbol = "[>](bold #f7768e)"
+vimcmd_symbol = "[<](bold #9ece6a)"
 
-# Directory
-[directory]
-format = "[$path]($style) [⚡](#7dcfff)"
-style = "bold #bb9af7"
-truncation_length = 0
-truncate_to_repo = false
-
-# Git branch
-[git_branch]
-format = "[($branch)]($style)"
-style = "#7dcfff"
-symbol = " "
-
-# Git status
-[git_status]
-format = "[$all_status$ahead_behind]($style)"
-style = "#f7768e"
-conflicted = "="
-ahead = "⇡${count}"
-behind = "⇣${count}"
-diverged = "⇕⇡${ahead_count}⇣${behind_count}"
-untracked = "?"
-stashed = "$"
-modified = "!"
-staged = "+"
-renamed = "»"
-deleted = "✘"
-
-# Git state (rebase, merge, etc.)
-[git_state]
-format = "[$state( $progress_current/$progress_total)]($style) "
-style = "#e0af68"
-
-# Status (exit code)
-[status]
-format = "[ ✘]($style)"
-style = "#f7768e"
+# OS indicator
+[os]
+format = "[$symbol]($style) "
+style = "#565f89"
 disabled = false
 
-# Command duration
-[cmd_duration]
-format = "[$duration]($style)"
-style = "#a9b1d6"
-min_time = 2000
+[os.symbols]
+Alpine = "alpine"
+Amazon = "amzn"
+Android = "android"
+Arch = "arch"
+Debian = "deb"
+Fedora = "fedora"
+Linux = "linux"
+Macos = "mac"
+NixOS = "nix"
+Raspbian = "pi"
+Ubuntu = "ubuntu"
+Windows = "win"
 
-# Node.js
-[nodejs]
-format = "[ $version]($style) "
-style = "#9ece6a"
-detect_files = ["package.json", ".nvmrc"]
-detect_folders = ["node_modules"]
-
-# Python
-[python]
-format = "[ $version]($style) "
-style = "#e0af68"
-detect_extensions = ["py"]
-detect_files = ["requirements.txt", "pyproject.toml", "Pipfile", ".python-version"]
-
-# Rust
-[rust]
-format = "[ $version]($style) "
-style = "#f7768e"
-
-# Go
-[golang]
-format = "[ﳑ $version]($style) "
-style = "#7dcfff"
-
-# Java
-[java]
-format = "[ $version]($style) "
-style = "#f7768e"
-
-# PHP
-[php]
-format = "[ $version]($style) "
-style = "#7aa2f7"
-
-# Ruby
-[ruby]
-format = "[ $version]($style) "
-style = "#f7768e"
-
-# .NET
-[dotnet]
-format = "[ $version]($style) "
-style = "#bb9af7"
-detect_files = ["global.json", "Directory.Build.props", "Directory.Build.targets", "Packages.props"]
-
-# Kubernetes
-[kubernetes]
-format = "[⎈ $context]($style) "
-style = "#7aa2f7"
-disabled = true
-
-# AWS
-[aws]
-format = "[$symbol($profile )(\\($region\\))]($style) "
-style = "#e0af68"
-symbol = " "
-disabled = true
-
-# Docker
-[docker_context]
-format = "[ $context]($style) "
-style = "#7dcfff"
-disabled = true
-
-# Package version
-[package]
-format = "[ $version]($style) "
-style = "#f7768e"
-disabled = true
-
-# Time
-[time]
-format = "[$time]($style)"
-style = "#a9b1d6"
-disabled = true
-time_format = "%H:%M"
-
-# Username (show in SSH)
+# Username (show on SSH or root)
 [username]
-format = "[$user]($style)@"
+format = "[$user]($style) "
 style_user = "#9ece6a"
 style_root = "#f7768e"
 show_always = false
@@ -154,11 +52,141 @@ format = "[$hostname]($style) "
 style = "#7dcfff"
 ssh_only = true
 
-# Shell indicator
-[shell]
-format = "[$indicator]($style) "
-style = "#565f89"
-disabled = true
-bash_indicator = "bash"
-zsh_indicator = "zsh"
-powershell_indicator = "pwsh"
+# Directory
+[directory]
+format = "[$path]($style)[$read_only]($read_only_style) "
+style = "bold #bb9af7"
+read_only = " ro"
+read_only_style = "#f7768e"
+truncation_length = 0
+truncate_to_repo = false
+
+# Git branch
+[git_branch]
+format = "[$branch]($style) "
+style = "#7dcfff"
+
+# Git status
+[git_status]
+format = "[$all_status$ahead_behind]($style) "
+style = "#f7768e"
+conflicted = "="
+ahead = "up${count}"
+behind = "down${count}"
+diverged = "up${ahead_count} down${behind_count}"
+untracked = "?"
+stashed = "stash"
+modified = "!"
+staged = "+"
+renamed = "ren"
+deleted = "del"
+
+# Git state (rebase, merge, etc.)
+[git_state]
+format = "[$state( $progress_current/$progress_total)]($style) "
+style = "#e0af68"
+
+# Git metrics (added/removed)
+[git_metrics]
+format = "([+$added]($added_style) [-$deleted]($deleted_style)) "
+added_style = "#9ece6a"
+deleted_style = "#f7768e"
+disabled = false
+
+# Status (exit code)
+[status]
+format = "[exit $status]($style) "
+style = "#f7768e"
+disabled = false
+
+# Command duration
+[cmd_duration]
+format = "[took $duration]($style) "
+style = "#a9b1d6"
+min_time = 2000
+
+# Time
+[time]
+format = "[$time]($style) "
+style = "#a9b1d6"
+disabled = false
+time_format = "%H:%M"
+
+# Battery
+[battery]
+format = "[$symbol$percentage]($style) "
+disabled = false
+
+[[battery.display]]
+threshold = 20
+style = "#f7768e"
+
+[[battery.display]]
+threshold = 60
+style = "#e0af68"
+
+[[battery.display]]
+threshold = 100
+style = "#9ece6a"
+
+[battery.symbols]
+full = "bat"
+charging = "chg"
+discharging = "bat"
+
+# Node.js
+[nodejs]
+format = "[node $version]($style) "
+style = "#9ece6a"
+detect_files = ["package.json", ".nvmrc"]
+detect_folders = ["node_modules"]
+
+# Python
+[python]
+format = "[py $version]($style) "
+style = "#e0af68"
+detect_extensions = ["py"]
+detect_files = ["requirements.txt", "pyproject.toml", "Pipfile", ".python-version"]
+
+# Rust
+[rust]
+format = "[rs $version]($style) "
+style = "#f7768e"
+
+# Go
+[golang]
+format = "[go $version]($style) "
+style = "#7dcfff"
+
+# Java
+[java]
+format = "[java $version]($style) "
+style = "#f7768e"
+
+# PHP
+[php]
+format = "[php $version]($style) "
+style = "#7aa2f7"
+
+# Ruby
+[ruby]
+format = "[rb $version]($style) "
+style = "#f7768e"
+
+# .NET
+[dotnet]
+format = "[dotnet $version]($style) "
+style = "#bb9af7"
+detect_files = ["global.json", "Directory.Build.props", "Directory.Build.targets", "Packages.props"]
+
+# Kubernetes
+[kubernetes]
+format = "[k8s:$context]($style) "
+style = "#7aa2f7"
+disabled = false
+
+# Docker
+[docker_context]
+format = "[docker:$context]($style) "
+style = "#7dcfff"
+disabled = false
