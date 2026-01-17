@@ -142,6 +142,7 @@ All configurations follow the [XDG Base Directory Specification](https://specifi
 - Hidden files visible by default in file explorer
 - WSL clipboard integration
 - First launch auto-installs all plugins
+- Tree-sitter parsers build on first launch (requires `tree-sitter-cli` on Linux)
 
 ### PowerShell + Starship
 
@@ -158,6 +159,10 @@ After running `install.sh`, you may want to install additional tools:
 ```bash
 # NVM (Node Version Manager)
 curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/master/install.sh | bash
+
+# Tree-sitter CLI (for parser builds)
+npm config set prefix "$HOME/.local/npm"
+npm install -g tree-sitter-cli
 
 # lazygit
 # See: https://github.com/jesseduffield/lazygit#installation

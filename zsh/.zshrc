@@ -17,6 +17,7 @@ export GNUPGHOME="$XDG_DATA_HOME/gnupg"
 export GOPATH="$XDG_DATA_HOME/go"
 export LESSHISTFILE="$XDG_STATE_HOME/less/history"
 export NPM_CONFIG_USERCONFIG="$XDG_CONFIG_HOME/npm/npmrc"
+export NPM_CONFIG_PREFIX="$HOME/.local/npm"
 export NVM_DIR="$XDG_DATA_HOME/nvm"
 export RUSTUP_HOME="$XDG_DATA_HOME/rustup"
 
@@ -36,6 +37,7 @@ setopt SHARE_HISTORY
 typeset -U path
 path=(
     "$HOME/.local/bin"
+    "$HOME/.local/npm/bin"
     "$HOME/bin"
     "$CARGO_HOME/bin"
     "$GOPATH/bin"
