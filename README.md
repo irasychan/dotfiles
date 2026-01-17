@@ -42,7 +42,9 @@ dotfiles/
 │   └── .config/starship.toml
 ├── pwsh/                 # PowerShell profile
 │   └── .config/powershell/
-│       └── Microsoft.PowerShell_profile.ps1
+│       ├── Microsoft.PowerShell_profile.ps1
+│       └── completions/
+
 ├── wsl/                  # WSL-specific bash (auto-starts zsh)
 │   └── .bashrc
 ├── git/                  # Git configuration (placeholder)
@@ -150,7 +152,8 @@ All configurations follow the [XDG Base Directory Specification](https://specifi
 - PSReadLine with predictive IntelliSense and Tokyo Night colors
 - Emacs-style keybindings (like zsh)
 - Git shortcuts and navigation functions
-- Completions for kubectl, Azure CLI
+- Completions for kubectl, Azure CLI, Starship CLI
+
 
 ## Post-Installation
 

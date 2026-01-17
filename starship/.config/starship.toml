@@ -8,36 +8,36 @@ command_timeout = 1000
 # Prompt format - multi-line, context-first
 format = """
 $os$username$hostname$directory$git_branch$git_status$git_state$git_metrics$kubernetes$docker_context
-$cmd_duration$status$character"""
+$status$character"""
 
-# Right prompt with time, battery, and language versions
-right_format = """$time$battery$nodejs$python$rust$golang$java$php$ruby$dotnet"""
+# Right prompt with time, battery, duration, and language versions
+right_format = """$time$battery$cmd_duration$nodejs$python$rust$golang$java$php$ruby$dotnet"""
 
 # Prompt character
 [character]
-success_symbol = "[>](bold #9ece6a)"
-error_symbol = "[>](bold #f7768e)"
-vimcmd_symbol = "[<](bold #9ece6a)"
+success_symbol = "[▶](bold #9ece6a)"
+error_symbol = "[▶](bold #f7768e)"
+vimcmd_symbol = "[◀](bold #9ece6a)"
 
 # OS indicator
 [os]
-format = "[$symbol]($style) "
+format = "[$symbol $name]($style) "
 style = "#565f89"
 disabled = false
 
 [os.symbols]
-Alpine = "alpine"
-Amazon = "amzn"
-Android = "android"
-Arch = "arch"
-Debian = "deb"
-Fedora = "fedora"
-Linux = "linux"
-Macos = "mac"
-NixOS = "nix"
-Raspbian = "pi"
-Ubuntu = "ubuntu"
-Windows = "win"
+Alpine = ""
+Amazon = ""
+Android = ""
+Arch = ""
+Debian = ""
+Fedora = ""
+Linux = ""
+Macos = ""
+NixOS = ""
+Raspbian = ""
+Ubuntu = ""
+Windows = ""
 
 # Username (show on SSH or root)
 [username]

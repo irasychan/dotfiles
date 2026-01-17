@@ -4,11 +4,18 @@ Development notes and changelog for dotfiles repository.
 
 ## 2026-01-17
 
+### PowerShell Completions
+
+- Added Starship CLI completion script for PowerShell
+- Updated Windows installer to deploy PowerShell completions
+- Updated docs to reference new completion support
+
 ### Repository Cleanup
 
 - Removed SDKMAN init from WSL bashrc
 - Updated docs to drop vim/omp references and align with current packages
 - Expanded .gitignore for local/editor files
+
 
 ### Added Neovim Configuration with LazyVim
 

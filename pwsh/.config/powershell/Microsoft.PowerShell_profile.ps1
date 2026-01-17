@@ -238,6 +238,12 @@ if ($IsWindows -and (Get-Command winget -ErrorAction SilentlyContinue)) {
     }
 }
 
+# Starship CLI completion
+$starshipCompletion = Join-Path $env:XDG_CONFIG_HOME "powershell/completions/starship.ps1"
+if (Test-Path $starshipCompletion) {
+    . $starshipCompletion
+}
+
 # dotnet completion
 if (Get-Command dotnet -ErrorAction SilentlyContinue) {
     Register-ArgumentCompleter -Native -CommandName dotnet -ScriptBlock {

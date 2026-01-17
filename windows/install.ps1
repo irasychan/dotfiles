@@ -132,6 +132,22 @@ function Backup-ExistingConfig {
         }
     }
 
+    # Backup PowerShell completions
+    $completionSource = Join-Path $Script:ConfigHome "powershell\completions"
+    if (Test-Path $completionSource) {
+        $completionBackupDir = Join-Path $backupPath "powershell-completions"
+        Get-ChildItem $completionSource -File | ForEach-Object {
+            $isSymlink = $_.Attributes -band [System.IO.FileAttributes]::ReparsePoint
+            if (-not $isSymlink) {
+                if (-not (Test-Path $completionBackupDir)) {
+                    New-Item -ItemType Directory -Path $completionBackupDir -Force | Out-Null
+                }
+                Write-Info "  Backing up PowerShell completion $($_.Name)"
+                Copy-Item $_.FullName (Join-Path $completionBackupDir $_.Name) -Force
+            }
+        }
+    }
+
     # Backup VS Code settings
     $vscodeBackupDir = Join-Path $backupPath "vscode"
     $vscodeFiles = @("settings.json", "keybindings.json", "extensions.json")
@@ -239,6 +255,17 @@ function Restore-FromBackup {
         Copy-Item $starshipBackup $dest -Force
     }
 
+    # Restore PowerShell completions
+    $completionBackupDir = Join-Path $backupPath "powershell-completions"
+    if (Test-Path $completionBackupDir) {
+        $completionDest = Join-Path $Script:ConfigHome "powershell\completions"
+        New-Item -ItemType Directory -Path $completionDest -Force | Out-Null
+        Get-ChildItem $completionBackupDir -File | ForEach-Object {
+            Write-Info "  Restoring PowerShell completion $($_.Name)"
+            Copy-Item $_.FullName (Join-Path $completionDest $_.Name) -Force
+        }
+    }
+
     # Restore VS Code settings
     $vscodeBackupDir = Join-Path $backupPath "vscode"
     if (Test-Path $vscodeBackupDir) {
@@ -317,6 +344,7 @@ function Install-Profile {
     Write-Info "Installing PowerShell profile..."
 
     $sourceProfile = Join-Path $Script:DotfilesDir "pwsh\.config\powershell\Microsoft.PowerShell_profile.ps1"
+    $sourceCompletions = Join-Path $Script:DotfilesDir "pwsh\.config\powershell\completions"
 
     if (-not (Test-Path $sourceProfile)) {
         Write-Err "Source profile not found: $sourceProfile"
@@ -362,6 +390,27 @@ function Install-Profile {
     } catch {
         Copy-Item $sourceProfile $dest5 -Force
         Write-Success "  Copied profile for PowerShell 5.x"
+    }
+
+    if (Test-Path $sourceCompletions) {
+        Write-Info "  Installing PowerShell completions..."
+        $completionDest = Join-Path $Script:ConfigHome "powershell\completions"
+        New-Item -ItemType Directory -Path $completionDest -Force | Out-Null
+
+        Get-ChildItem $sourceCompletions -File | ForEach-Object {
+            $completionTarget = Join-Path $completionDest $_.Name
+            if (Test-Path $completionTarget) {
+                Remove-Item $completionTarget -Force
+            }
+
+            try {
+                New-Item -ItemType SymbolicLink -Path $completionTarget -Target $_.FullName -Force | Out-Null
+                Write-Success "  Created symlink for completion $($_.Name)"
+            } catch {
+                Copy-Item $_.FullName $completionTarget -Force
+                Write-Success "  Copied completion $($_.Name)"
+            }
+        }
     }
 }
 
