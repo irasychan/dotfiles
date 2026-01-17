@@ -34,16 +34,10 @@ dotfiles/
 │   └── .bashrc
 ├── zsh/                  # Zsh + oh-my-zsh configuration
 │   └── .zshrc
-├── vim/                  # Vim configuration
-│   └── .config/vim/vimrc
 ├── nvim/                 # Neovim with LazyVim
 │   └── .config/nvim/
 ├── tmux/                 # Tmux configuration
 │   └── .config/tmux/tmux.conf
-├── omp/                  # Oh My Posh theme (for zsh)
-│   └── .config/omp/
-│       ├── theme.omp.json
-│       └── theme.omp.yaml
 ├── starship/             # Starship prompt (for pwsh)
 │   └── .config/starship.toml
 ├── pwsh/                 # PowerShell profile
@@ -99,14 +93,14 @@ Use the helper script or stow directly:
 
 ```bash
 # Using helper script
-./stow.sh add zsh vim omp    # Link specific packages
+./stow.sh add zsh nvim       # Link specific packages
 ./stow.sh add all            # Link all packages
 ./stow.sh remove bash        # Unlink a package
 ./stow.sh restow all         # Relink all packages
 ./stow.sh status             # Show what's linked
 
 # Using stow directly
-stow -t ~ zsh vim omp        # Link packages
+stow -t ~ zsh nvim           # Link packages
 stow -D -t ~ bash            # Unlink package
 ```
 
@@ -116,10 +110,8 @@ stow -D -t ~ bash            # Unlink package
 |---------|-------------|-------|
 | `bash`  | Bash shell config | `.bashrc` |
 | `zsh`   | Zsh + oh-my-zsh | `.zshrc` |
-| `vim`   | Vim config | `.config/vim/vimrc` |
 | `nvim`  | Neovim + LazyVim | `.config/nvim/` |
 | `tmux`  | Tmux config | `.config/tmux/tmux.conf` |
-| `omp`   | Oh My Posh theme (zsh) | `.config/omp/theme.omp.*` |
 | `starship` | Starship prompt config | `.config/starship.toml` |
 | `pwsh`  | PowerShell profile | `.config/powershell/...` |
 | `wsl`   | WSL bash (starts zsh) | `.bashrc` |
@@ -140,16 +132,8 @@ All configurations follow the [XDG Base Directory Specification](https://specifi
 
 - **oh-my-zsh** framework with curated plugins
 - Plugins: git, docker, kubectl, fzf, z, autosuggestions, syntax-highlighting
-- **Oh My Posh** prompt with Tokyo Night theme
 - GPG agent as SSH agent
 - XDG-compliant tool paths
-
-### Vim Configuration
-
-- **vim-plug** plugin manager
-- Plugins: ALE, NERDTree, fzf, easymotion, vim-surround
-- Full XDG directory support
-- WSL cursor fixes
 
 ### Neovim Configuration
 
@@ -158,13 +142,6 @@ All configurations follow the [XDG Base Directory Specification](https://specifi
 - Hidden files visible by default in file explorer
 - WSL clipboard integration
 - First launch auto-installs all plugins
-
-### Oh My Posh Theme (Zsh)
-
-- Multi-line prompt
-- Git status with color-coded changes
-- Language version display (Node, Python, Go, Ruby, PHP, Julia)
-- Tokyo Night color palette
 
 ### PowerShell + Starship
 
@@ -181,9 +158,6 @@ After running `install.sh`, you may want to install additional tools:
 ```bash
 # NVM (Node Version Manager)
 curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/master/install.sh | bash
-
-# SDKMAN (Java/JVM tools)
-curl -s https://get.sdkman.io | bash
 
 # lazygit
 # See: https://github.com/jesseduffield/lazygit#installation
@@ -225,7 +199,7 @@ Installed automatically by `install.sh`:
 
 - git, curl, wget
 - stow
-- zsh, vim/neovim, tmux
+- zsh, neovim, tmux
 - fzf, ripgrep
 
 ## License

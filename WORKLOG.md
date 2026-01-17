@@ -4,6 +4,12 @@ Development notes and changelog for dotfiles repository.
 
 ## 2026-01-17
 
+### Repository Cleanup
+
+- Removed SDKMAN init from WSL bashrc
+- Updated docs to drop vim/omp references and align with current packages
+- Expanded .gitignore for local/editor files
+
 ### Added Neovim Configuration with LazyVim
 
 Created a new `nvim` stow package with LazyVim starter configuration.
@@ -19,7 +25,7 @@ Created a new `nvim` stow package with LazyVim starter configuration.
 
 **Key features:**
 - LazyVim framework with lazy.nvim plugin manager
-- Tokyo Night colorscheme (matches Oh My Posh/Starship shell themes)
+- Tokyo Night colorscheme (matches Starship shell theme)
 - Hidden files visible by default in Neo-tree and Telescope
 - WSL clipboard integration
 - Space as leader key
@@ -78,7 +84,6 @@ All prompt tools use the Tokyo Night color palette for consistency:
 | Tool | Config | Data | State |
 |------|--------|------|-------|
 | Neovim | `$XDG_CONFIG_HOME/nvim` | `$XDG_DATA_HOME/nvim` | `$XDG_STATE_HOME/nvim` |
-| Vim | `$XDG_CONFIG_HOME/vim` | `$XDG_DATA_HOME/vim/plugged` | `$XDG_STATE_HOME/vim` |
 | Zsh | - | `$XDG_DATA_HOME/oh-my-zsh` | `$XDG_STATE_HOME/zsh` |
 | Starship | `$XDG_CONFIG_HOME/starship.toml` | - | - |
 | PowerShell | `$XDG_CONFIG_HOME/powershell` | - | - |

@@ -6,7 +6,7 @@
 DOTFILES_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 # Available packages
-PACKAGES=(bash zsh vim nvim tmux omp wsl git starship pwsh)
+PACKAGES=(bash zsh nvim tmux wsl git starship pwsh)
 
 # Colors for output
 RED='\033[0;31m'
@@ -45,7 +45,7 @@ usage() {
     echo "Packages: ${PACKAGES[*]}"
     echo ""
     echo "Examples:"
-    echo "  ./stow.sh add zsh vim      # Link zsh and vim configs"
+    echo "  ./stow.sh add zsh nvim     # Link zsh and nvim configs"
     echo "  ./stow.sh remove bash      # Unlink bash config"
     echo "  ./stow.sh restow all       # Relink all packages"
     echo "  ./stow.sh add all          # Link all packages"
@@ -124,15 +124,39 @@ stow_status() {
     echo "Stow status:"
     for pkg in "${PACKAGES[@]}"; do
         if [[ -d "$DOTFILES_DIR/$pkg" ]]; then
-            # Check if any file from this package is linked
+            # Check if any file from this package is linked to THIS package
+            # Stow may create symlinks to directories (folding) or individual files
             local linked=false
             while IFS= read -r -d '' file; do
                 local rel_path="${file#$DOTFILES_DIR/$pkg/}"
                 local target="$HOME/$rel_path"
+
+                # Check if the target itself is a symlink pointing to this package
                 if [[ -L "$target" ]]; then
-                    linked=true
-                    break
+                    local link_target
+                    link_target=$(readlink -f "$target" 2>/dev/null)
+                    if [[ "$link_target" == "$DOTFILES_DIR/$pkg/"* ]]; then
+                        linked=true
+                        break
+                    fi
                 fi
+
+                # Check if any parent directory is a symlink to this package
+                # This handles stow's "folding" where it symlinks directories
+                local check_path="$HOME"
+                local IFS='/'
+                read -ra parts <<< "$rel_path"
+                for part in "${parts[@]}"; do
+                    check_path="$check_path/$part"
+                    if [[ -L "$check_path" ]]; then
+                        local link_target
+                        link_target=$(readlink -f "$check_path" 2>/dev/null)
+                        if [[ "$link_target" == "$DOTFILES_DIR/$pkg/"* ]]; then
+                            linked=true
+                            break 2
+                        fi
+                    fi
+                done
             done < <(find "$DOTFILES_DIR/$pkg" -type f -print0 2>/dev/null)
 
             if $linked; then
@@ -185,10 +209,8 @@ backup_all() {
 
     # XDG config directories to backup
     local xdg_dirs=(
-        vim
         nvim
         tmux
-        omp
         zsh
         git
         powershell

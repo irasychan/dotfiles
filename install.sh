@@ -65,13 +65,10 @@ backup_existing() {
 
     # XDG config directories to backup
     local xdg_dirs=(
-        vim
         nvim
         tmux
-        omp
         zsh
         git
-        powershell
     )
 
     # Backup XDG config directories
@@ -228,9 +225,9 @@ detect_pkg_manager() {
 # Create XDG directories
 create_xdg_dirs() {
     info "Creating XDG directories..."
-    mkdir -p "$XDG_CONFIG_HOME"/{zsh,vim,nvim,omp,aws,docker,npm,git,powershell}
-    mkdir -p "$XDG_DATA_HOME"/{vim/plugged,vim/spell,nvim,oh-my-zsh,nvm,cargo,go,gnupg,sdkman}
-    mkdir -p "$XDG_STATE_HOME"/{vim/{backup,swap,view,undo},nvim,zsh,less}
+    mkdir -p "$XDG_CONFIG_HOME"/{zsh,nvim,aws,docker,npm,git}
+    mkdir -p "$XDG_DATA_HOME"/{nvim,oh-my-zsh,nvm,cargo,go,gnupg}
+    mkdir -p "$XDG_STATE_HOME"/{nvim,zsh,less}
     mkdir -p "$XDG_CACHE_HOME"/zsh
     mkdir -p "$HOME/.local/bin"
     success "XDG directories created"
@@ -261,15 +258,36 @@ install_base_packages() {
 
 # Install oh-my-zsh
 install_ohmyzsh() {
-    if [[ -d "$XDG_DATA_HOME/oh-my-zsh" ]]; then
+    local omz_dir="$XDG_DATA_HOME/oh-my-zsh"
+
+    # Check if oh-my-zsh is fully installed (not just custom folder)
+    if [[ -f "$omz_dir/oh-my-zsh.sh" ]]; then
         warn "oh-my-zsh already installed, skipping..."
         return
     fi
 
-    info "Installing oh-my-zsh..."
-    export ZSH="$XDG_DATA_HOME/oh-my-zsh"
-    sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
-    success "oh-my-zsh installed"
+    info "Installing oh-my-zsh to $omz_dir..."
+
+    # Remove partial installation if exists
+    if [[ -d "$omz_dir" ]]; then
+        warn "Removing incomplete oh-my-zsh installation..."
+        rm -rf "$omz_dir"
+    fi
+
+    # Create parent directory
+    mkdir -p "$XDG_DATA_HOME"
+
+    # Download and run installer with custom location
+    # RUNZSH=no prevents starting zsh after install
+    # KEEP_ZSHRC=yes prevents overwriting .zshrc
+    ZSH="$omz_dir" RUNZSH=no KEEP_ZSHRC=yes \
+        sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
+
+    if [[ -f "$omz_dir/oh-my-zsh.sh" ]]; then
+        success "oh-my-zsh installed"
+    else
+        error "oh-my-zsh installation failed"
+    fi
 }
 
 # Install oh-my-zsh plugins
@@ -296,18 +314,6 @@ install_zsh_plugins() {
     success "zsh plugins installed"
 }
 
-# Install Oh My Posh
-install_ohmyposh() {
-    if has oh-my-posh; then
-        warn "Oh My Posh already installed, skipping..."
-        return
-    fi
-
-    info "Installing Oh My Posh..."
-    curl -s https://ohmyposh.dev/install.sh | bash -s -- -d "$HOME/.local/bin"
-    success "Oh My Posh installed"
-}
-
 # Install Starship prompt
 install_starship() {
     if has starship; then
@@ -320,19 +326,27 @@ install_starship() {
     success "Starship installed"
 }
 
-# Install vim-plug
-install_vimplug() {
-    local plug_vim="$XDG_DATA_HOME/vim/autoload/plug.vim"
+# Check if path is managed by stow (inside a symlinked directory pointing to dotfiles)
+is_stow_managed() {
+    local path="$1"
+    local check_path=""
 
-    if [[ -f "$plug_vim" ]]; then
-        warn "vim-plug already installed, skipping..."
-        return
-    fi
+    # Walk up the path checking if any parent is a symlink to dotfiles
+    local IFS='/'
+    read -ra parts <<< "${path#$HOME/}"
+    check_path="$HOME"
 
-    info "Installing vim-plug..."
-    curl -fLo "$plug_vim" --create-dirs \
-        https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
-    success "vim-plug installed"
+    for part in "${parts[@]}"; do
+        check_path="$check_path/$part"
+        if [[ -L "$check_path" ]]; then
+            local link_target
+            link_target=$(readlink -f "$check_path" 2>/dev/null)
+            if [[ "$link_target" == "$DOTFILES_DIR/"* ]]; then
+                return 0  # Is managed by stow
+            fi
+        fi
+    done
+    return 1  # Not managed by stow
 }
 
 # Deploy dotfiles with stow
@@ -344,16 +358,16 @@ deploy_dotfiles() {
     local conflicts=(
         "$HOME/.bashrc"
         "$HOME/.zshrc"
-        "$HOME/.config/vim/vimrc"
         "$HOME/.config/nvim/init.lua"
         "$HOME/.config/tmux/tmux.conf"
-        "$HOME/.config/omp/theme.omp.json"
-        "$HOME/.config/omp/theme.omp.yaml"
         "$HOME/.config/starship.toml"
-        "$HOME/.config/powershell/Microsoft.PowerShell_profile.ps1"
     )
 
     for file in "${conflicts[@]}"; do
+        # Skip files already managed by stow
+        if is_stow_managed "$file"; then
+            continue
+        fi
         if [[ -f "$file" && ! -L "$file" ]]; then
             warn "Backing up existing $file to ${file}.bak"
             mv "$file" "${file}.bak"
@@ -361,7 +375,7 @@ deploy_dotfiles() {
     done
 
     # Stow packages
-    local packages=(bash zsh vim nvim tmux omp)
+    local packages=(bash zsh nvim tmux starship)
 
     for pkg in "${packages[@]}"; do
         if [[ -d "$DOTFILES_DIR/$pkg" ]]; then
@@ -373,15 +387,12 @@ deploy_dotfiles() {
     success "Dotfiles deployed"
 }
 
-# Install vim plugins
-install_vim_plugins() {
-    info "Installing vim plugins..."
+# Notify about neovim plugins
+notify_nvim_plugins() {
+    # Neovim uses LazyVim which auto-installs plugins on first launch
     if has nvim; then
-        nvim --headless +PlugInstall +qall 2>/dev/null || true
-    elif has vim; then
-        vim +PlugInstall +qall 2>/dev/null || true
+        info "Neovim plugins will be installed on first launch (LazyVim)"
     fi
-    success "Vim plugins installed"
 }
 
 # Set zsh as default shell
@@ -420,11 +431,10 @@ print_summary() {
     echo "  1. Restart your terminal or run: exec zsh"
     echo "  2. Install additional tools as needed:"
     echo "     - NVM: curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/master/install.sh | bash"
-    echo "     - SDKMAN: curl -s https://get.sdkman.io | bash"
     echo "     - lazygit: https://github.com/jesseduffield/lazygit#installation"
     echo ""
     echo "Stow packages available:"
-    echo "  bash, zsh, vim, nvim, tmux, omp, wsl, git, starship, pwsh"
+    echo "  bash, zsh, nvim, tmux, starship, wsl, git"
     echo ""
     echo "Neovim (LazyVim):"
     echo "  First launch will auto-install plugins."
@@ -436,7 +446,7 @@ print_summary() {
     echo ""
 }
 
-# Main installation
+# Main installation (no sudo required)
 main() {
     echo ""
     echo -e "${BLUE}========================================${NC}"
@@ -445,17 +455,17 @@ main() {
     echo ""
 
     backup_existing
-    detect_pkg_manager
     create_xdg_dirs
-    install_base_packages
     install_ohmyzsh
     install_zsh_plugins
-    install_ohmyposh
-    install_vimplug
+    install_starship
     deploy_dotfiles
-    install_vim_plugins
-    set_default_shell
+    notify_nvim_plugins
     print_summary
+
+    echo ""
+    echo "Note: Run './install.sh --system' to install system packages and set zsh as default shell (requires sudo)"
+    echo ""
 }
 
 # Run with options
@@ -465,14 +475,16 @@ case "${1:-}" in
         echo ""
         echo "Options:"
         echo "  --help, -h           Show this help message"
+        echo "  --system             Install system packages and set zsh as default (requires sudo)"
         echo "  --backup             Only backup existing environment"
         echo "  --restore [TIME]     Restore from backup (lists available if no TIME given)"
         echo "  --list-backups       List available backups"
-        echo "  --packages           Only install packages (no stow)"
         echo "  --stow               Only run stow (with backup, no package installation)"
         echo "  --stow-no-backup     Only run stow (without backup)"
         echo "  --wsl                Install for WSL (uses wsl package instead of bash)"
-        echo "  --pwsh               Install PowerShell profile with Starship prompt"
+        echo ""
+        echo "Default install (no options) does not require sudo."
+        echo "Run --system separately to install system packages."
         echo ""
         echo "Backups are stored in: $BACKUP_DIR"
         echo ""
@@ -487,15 +499,12 @@ case "${1:-}" in
     --list-backups)
         list_backups
         ;;
-    --packages)
-        backup_existing
+    --system)
+        info "Installing system packages (requires sudo)..."
         detect_pkg_manager
-        create_xdg_dirs
         install_base_packages
-        install_ohmyzsh
-        install_zsh_plugins
-        install_ohmyposh
-        install_vimplug
+        set_default_shell
+        success "System setup complete"
         ;;
     --stow)
         backup_existing
@@ -506,47 +515,51 @@ case "${1:-}" in
         ;;
     --wsl)
         backup_existing
-        detect_pkg_manager
         create_xdg_dirs
-        install_base_packages
         install_ohmyzsh
         install_zsh_plugins
-        install_ohmyposh
-        install_vimplug
+        install_starship
 
         # For WSL, stow wsl instead of bash
         info "Deploying dotfiles with stow (WSL mode)..."
         cd "$DOTFILES_DIR"
-        stow -v -R -t "$HOME" wsl zsh vim nvim tmux omp
+
+        # Unstow bash first if stowed (wsl and bash both provide .bashrc)
+        if [[ -L "$HOME/.bashrc" ]]; then
+            local link_target
+            link_target=$(readlink -f "$HOME/.bashrc" 2>/dev/null)
+            if [[ "$link_target" == "$DOTFILES_DIR/bash/"* ]]; then
+                info "Unstowing bash (replacing with wsl)..."
+                stow -v -D -t "$HOME" bash
+            fi
+        fi
+
+        # Handle conflicts for non-stowed files
+        local conflicts=(
+            "$HOME/.bashrc"
+            "$HOME/.zshrc"
+            "$HOME/.config/nvim/init.lua"
+            "$HOME/.config/tmux/tmux.conf"
+            "$HOME/.config/starship.toml"
+        )
+        for file in "${conflicts[@]}"; do
+            if is_stow_managed "$file"; then
+                continue
+            fi
+            if [[ -f "$file" && ! -L "$file" ]]; then
+                warn "Backing up existing $file to ${file}.bak"
+                mv "$file" "${file}.bak"
+            fi
+        done
+
+        stow -v -R -t "$HOME" wsl zsh nvim tmux starship
         success "Dotfiles deployed (WSL mode)"
 
-        install_vim_plugins
-        set_default_shell
+        notify_nvim_plugins
         print_summary
-        ;;
-    --pwsh)
-        backup_existing
-        install_starship
-
-        info "Deploying PowerShell and Starship configs..."
-        cd "$DOTFILES_DIR"
-        stow -v -R -t "$HOME" starship pwsh
-        success "PowerShell profile and Starship deployed"
 
         echo ""
-        echo -e "${GREEN}========================================${NC}"
-        echo -e "${GREEN}    PowerShell Setup Complete!         ${NC}"
-        echo -e "${GREEN}========================================${NC}"
-        echo ""
-        echo "Starship prompt installed with Tokyo Night theme."
-        echo ""
-        echo "To use in PowerShell, ensure pwsh is installed:"
-        echo "  # Ubuntu/Debian:"
-        echo "  sudo apt-get install -y powershell"
-        echo ""
-        echo "  # Or download from: https://github.com/PowerShell/PowerShell"
-        echo ""
-        echo "Start PowerShell with: pwsh"
+        echo "Note: Run './install.sh --system' to install system packages and set zsh as default shell (requires sudo)"
         echo ""
         ;;
     *)

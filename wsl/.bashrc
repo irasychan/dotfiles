@@ -16,6 +16,3 @@ if [ -t 1 ]; then
 exec zsh
 fi
 
-# SDKMan config must be at the end of file
-export SDKMAN_DIR="$HOME/.sdkman"
-[[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]] && source "$HOME/.sdkman/bin/sdkman-init.sh"

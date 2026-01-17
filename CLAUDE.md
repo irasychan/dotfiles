@@ -12,14 +12,10 @@ Personal dotfiles for Linux/WSL development environments, managed with GNU Stow.
 dotfiles/
 ├── bash/.bashrc              # Standard Linux bash
 ├── zsh/.zshrc                # Zsh + oh-my-zsh configuration
-├── vim/.config/vim/vimrc     # Vim with XDG support
 ├── nvim/.config/nvim/        # Neovim with LazyVim
 │   ├── init.lua
 │   └── lua/{config,plugins}/
 ├── tmux/.config/tmux/tmux.conf
-├── omp/.config/omp/          # Oh My Posh themes (for zsh)
-│   ├── theme.omp.json
-│   └── theme.omp.yaml
 ├── starship/.config/starship.toml  # Starship prompt (for pwsh)
 ├── pwsh/.config/powershell/  # PowerShell profile
 │   └── Microsoft.PowerShell_profile.ps1
@@ -45,12 +41,11 @@ Each top-level directory is a GNU Stow "package" - its contents mirror the struc
 Bootstrap script that:
 1. Backs up existing environment to `~/.dotfiles-backup/`
 2. Detects package manager (apt/dnf/pacman)
-3. Installs dependencies (stow, zsh, vim, neovim, tmux, fzf, ripgrep)
+3. Installs dependencies (stow, zsh, neovim, tmux, fzf, ripgrep)
 4. Installs oh-my-zsh and plugins
-5. Installs Oh My Posh and/or Starship
-6. Installs vim-plug
-7. Deploys configs via stow
-8. Sets zsh as default shell
+5. Installs Starship
+6. Deploys configs via stow
+7. Sets zsh as default shell
 
 Options:
 - `--wsl`: Uses `wsl` package instead of `bash`
@@ -70,7 +65,7 @@ Helper for managing stow packages:
 - `./stow.sh status`: Show linked status
 - Use `all` to operate on all packages
 
-Available packages: bash, zsh, vim, nvim, tmux, omp, starship, pwsh, wsl, git
+Available packages: bash, zsh, nvim, tmux, starship, pwsh, wsl, git
 
 ### windows/install.ps1
 
@@ -97,17 +92,8 @@ Windows config locations:
 - Sets XDG environment variables at top
 - oh-my-zsh installed to `$XDG_DATA_HOME/oh-my-zsh`
 - Plugins: git, docker, kubectl, fzf, z, zsh-autosuggestions, zsh-completions, zsh-syntax-highlighting
-- Oh My Posh theme loaded from `$XDG_CONFIG_HOME/omp/theme.omp.json`
 - GPG agent configured as SSH agent
 - Aliases: `vim`→`nvim`, `nv`, `nvc`, `lg`→`lazygit`, `pn`→`pnpm`
-
-### vim/.config/vim/vimrc
-
-- Full XDG support for vim directories (backup, swap, undo, viminfo)
-- vim-plug with plugins stored in `$XDG_DATA_HOME/vim/plugged`
-- Plugins: ALE (linting), NERDTree, fzf, vim-easymotion, vim-surround, vim-markdown, vim-vue
-- WSL cursor shape fixes
-- `<C-n>` toggles NERDTree
 
 ### nvim/.config/nvim/
 
@@ -145,16 +131,9 @@ Key bindings:
 
 First launch auto-installs all plugins.
 
-### omp/.config/omp/theme.omp.*
-
-- Multi-line prompt with Tokyo Night colors
-- Shows: path, git branch/status, language versions
-- JSON and YAML versions (JSON is active)
-- Used by zsh via Oh My Posh
-
 ### starship/.config/starship.toml
 
-- Cross-shell prompt matching Tokyo Night theme from Oh My Posh
+- Cross-shell prompt matching Tokyo Night theme
 - Multi-line format: `➜ path ⚡ (branch) \n ▶`
 - Right prompt shows language versions (node, python, rust, go, etc.)
 - Used by PowerShell profile
@@ -224,9 +203,7 @@ All configurations use the Tokyo Night color palette for consistency across shel
 | NVM | `$XDG_DATA_HOME/nvm` |
 | Cargo | `$XDG_DATA_HOME/cargo` |
 | Go | `$XDG_DATA_HOME/go` |
-| SDKMan | `$XDG_DATA_HOME/sdkman` |
 | GPG | `$XDG_DATA_HOME/gnupg` |
-| Vim plugins | `$XDG_DATA_HOME/vim/plugged` |
 | Neovim data | `$XDG_DATA_HOME/nvim` |
 | Neovim state | `$XDG_STATE_HOME/nvim` |
 | Zsh history | `$XDG_STATE_HOME/zsh/history` |
@@ -253,7 +230,6 @@ All configurations use the Tokyo Night color palette for consistency across shel
 
 After editing configs:
 - Zsh: `source ~/.zshrc` or restart terminal
-- Vim: `:source $MYVIMRC` or restart vim
 - Neovim: `:Lazy sync` to update plugins, or restart nvim
 - Tmux: `tmux source ~/.config/tmux/tmux.conf`
 - PowerShell: `. $PROFILE` or `reload`
