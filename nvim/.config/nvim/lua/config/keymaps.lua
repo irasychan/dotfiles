@@ -24,3 +24,35 @@ map("i", "<A-j>", "<esc><cmd>m .+1<cr>==gi", { desc = "Move Down" })
 map("i", "<A-k>", "<esc><cmd>m .-2<cr>==gi", { desc = "Move Up" })
 map("v", "<A-j>", ":m '>+1<cr>gv=gv", { desc = "Move Down" })
 map("v", "<A-k>", ":m '<-2<cr>gv=gv", { desc = "Move Up" })
+
+local function snacks_explorer_focus_or_toggle()
+  local current_ft = vim.bo.filetype
+  local explorer_win = nil
+
+  for _, win in ipairs(vim.api.nvim_list_wins()) do
+    local buf = vim.api.nvim_win_get_buf(win)
+    if vim.bo[buf].filetype == "snacks_picker_list" then
+      explorer_win = win
+      break
+    end
+  end
+
+  if current_ft == "snacks_picker_list" then
+    vim.api.nvim_win_close(0, true)
+    return
+  end
+
+  if explorer_win then
+    vim.api.nvim_set_current_win(explorer_win)
+    return
+  end
+
+  local ok, snacks = pcall(require, "snacks")
+  if ok and snacks.explorer then
+    snacks.explorer()
+  else
+    vim.cmd("Snacks explorer")
+  end
+end
+
+map("n", "<leader>e", snacks_explorer_focus_or_toggle, { desc = "Snacks explorer focus/toggle" })

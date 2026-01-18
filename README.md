@@ -142,6 +142,7 @@ All configurations follow the [XDG Base Directory Specification](https://specifi
 - **LazyVim** framework with lazy.nvim plugin manager
 - Tokyo Night colorscheme (matches shell themes)
 - Hidden files visible by default in file explorer
+- `<leader>e` focuses Snacks explorer when open and closes it when focused
 - WSL clipboard integration
 - First launch auto-installs all plugins
 - Tree-sitter parsers build on first launch (requires `tree-sitter-cli` on Linux)
