@@ -2,19 +2,19 @@
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 local lazyinit = lazypath .. "/lua/lazy/init.lua"
 if not (vim.uv or vim.loop).fs_stat(lazyinit) then
-  vim.fn.mkdir(vim.fn.fnamemodify(lazypath, ":h"), "p")
-  local lazyrepo = "https://github.com/folke/lazy.nvim.git"
-  local out = vim.fn.system({ "git", "clone", "--filter=blob:none", "--branch=stable", lazyrepo, lazypath })
-  if vim.v.shell_error ~= 0 then
-    vim.api.nvim_echo({
-      { "Failed to clone lazy.nvim:\n", "ErrorMsg" },
-      { out, "WarningMsg" },
-      { "\nCheck that git is installed and you can reach github.com.", "WarningMsg" },
-      { "\nPress any key to exit..." },
-    }, true, {})
-    vim.fn.getchar()
-    os.exit(1)
-  end
+	vim.fn.mkdir(vim.fn.fnamemodify(lazypath, ":h"), "p")
+	local lazyrepo = "https://github.com/folke/lazy.nvim.git"
+	local out = vim.fn.system({ "git", "clone", "--filter=blob:none", "--branch=stable", lazyrepo, lazypath })
+	if vim.v.shell_error ~= 0 then
+		vim.api.nvim_echo({
+			{ "Failed to clone lazy.nvim:\n", "ErrorMsg" },
+			{ out, "WarningMsg" },
+			{ "\nCheck that git is installed and you can reach github.com.", "WarningMsg" },
+			{ "\nPress any key to exit..." },
+		}, true, {})
+		vim.fn.getchar()
+		os.exit(1)
+	end
 end
 vim.opt.rtp:prepend(lazypath)
 
@@ -25,31 +25,31 @@ vim.g.maplocalleader = "\\"
 
 -- Setup lazy.nvim
 require("lazy").setup({
-  spec = {
-    -- Import LazyVim and its plugins
-    { "LazyVim/LazyVim", import = "lazyvim.plugins" },
-    -- Import/override with your plugins
-    { import = "plugins" },
-  },
-  defaults = {
-    lazy = false,
-    version = false, -- always use the latest git commit
-  },
-  install = { colorscheme = { "tokyonight", "habamax" } },
-  checker = {
-    enabled = true, -- check for plugin updates periodically
-    notify = false, -- notify on update
-  },
-  performance = {
-    rtp = {
-      -- disable some rtp plugins
-      disabled_plugins = {
-        "gzip",
-        "tarPlugin",
-        "tohtml",
-        "tutor",
-        "zipPlugin",
-      },
-    },
-  },
+	spec = {
+		-- Import LazyVim and its plugins
+		{ "LazyVim/LazyVim", import = "lazyvim.plugins" },
+		-- Import/override with your plugins
+		{ import = "plugins" },
+	},
+	defaults = {
+		lazy = false,
+		version = false, -- always use the latest git commit
+	},
+	install = { colorscheme = { "tokyonight", "habamax" } },
+	checker = {
+		enabled = true, -- check for plugin updates periodically
+		notify = false, -- notify on update
+	},
+	performance = {
+		rtp = {
+			-- disable some rtp plugins
+			disabled_plugins = {
+				"gzip",
+				"tarPlugin",
+				"tohtml",
+				"tutor",
+				"zipPlugin",
+			},
+		},
+	},
 })

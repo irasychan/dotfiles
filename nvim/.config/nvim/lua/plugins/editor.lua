@@ -1,19 +1,11 @@
 -- Editor plugins customization
 return {
-	-- Neo-tree: show hidden files by default
+	-- Snacks: file explorer
 	{
-		"nvim-neo-tree/neo-tree.nvim",
+		"folke/snacks.nvim",
 		opts = {
-			filesystem = {
-				filtered_items = {
-					visible = true, -- Show hidden files
-					hide_dotfiles = false,
-					hide_gitignored = false,
-					hide_by_name = {
-						".git",
-						".DS_Store",
-					},
-				},
+			explorer = {
+				replace_netrw = true,
 			},
 		},
 	},
