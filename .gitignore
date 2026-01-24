@@ -3,3 +3,4 @@
 *.bak
 *.swp
 *~
+tmux/.config/tmux/plugins/
