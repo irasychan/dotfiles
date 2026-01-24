@@ -61,6 +61,18 @@
                 "name": "Ubuntu",
                 "pathTranslationStyle": "wsl",
                 "suppressApplicationTitle": true
+            },
+            {
+                "guid": "{a82ba6ee-9792-5135-bda9-80b56759076e}",
+                "hidden": false,
+                "name": "podman-machine-default",
+                "source": "Microsoft.WSL"
+            },
+            {
+                "guid": "{2f0816e0-6c19-5547-9c3a-4f9382ab6176}",
+                "hidden": false,
+                "name": "podman-machine-default",
+                "source": "Microsoft.WSL"
             }
         ]
     },
