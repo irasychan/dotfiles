@@ -27,6 +27,8 @@ dotfiles/
 │   └── settings.json
 ├── wsl/.bashrc               # WSL-specific (auto-starts zsh)
 ├── git/.config/git/          # Git config (placeholder)
+├── docs/                     # Documentation and guides
+│   └── gpg-key-transfer-windows-wsl.md
 ├── windows/install.ps1       # Windows 11 installer
 ├── install.sh                # Bootstrap script (Linux/WSL)
 └── stow.sh                   # Stow helper
@@ -235,3 +237,9 @@ After editing configs:
 - PowerShell: `. $PROFILE` or `reload`
 - VS Code: Restart VS Code or `Ctrl+Shift+P` → "Reload Window"
 - Windows Terminal: Changes apply immediately (no restart needed)
+
+## Documentation
+
+The `docs/` directory contains guides and references:
+
+- **gpg-key-transfer-windows-wsl.md**: Step-by-step guide for transferring GPG signing keys from Windows to WSL Ubuntu
