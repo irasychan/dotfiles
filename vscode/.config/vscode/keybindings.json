@@ -8,7 +8,6 @@
     "key": "ctrl+shift+`",
     "command": "workbench.action.terminal.new"
   },
-
   // Quick file navigation
   {
     "key": "ctrl+p",
@@ -18,7 +17,6 @@
     "key": "ctrl+shift+p",
     "command": "workbench.action.showCommands"
   },
-
   // Editor navigation
   {
     "key": "ctrl+tab",
@@ -28,19 +26,16 @@
     "key": "ctrl+shift+tab",
     "command": "workbench.action.previousEditor"
   },
-
   // Sidebar toggle
   {
     "key": "ctrl+b",
     "command": "workbench.action.toggleSidebarVisibility"
   },
-
   // Multi-cursor
   {
     "key": "ctrl+d",
     "command": "editor.action.addSelectionToNextFindMatch"
   },
-
   // Line operations
   {
     "key": "ctrl+shift+k",
@@ -62,7 +57,6 @@
     "key": "shift+alt+down",
     "command": "editor.action.copyLinesDownAction"
   },
-
   // Code folding
   {
     "key": "ctrl+shift+[",
@@ -72,7 +66,14 @@
     "key": "ctrl+shift+]",
     "command": "editor.unfold"
   },
-
+  {
+    "key": "shift+enter",
+    "command": "workbench.action.terminal.sendSequence",
+    "args": {
+      "text": "\u001b\r"
+    },
+    "when": "terminalFocus"
+  },
   // Go to definition
   {
     "key": "f12",
@@ -82,13 +83,11 @@
     "key": "ctrl+f12",
     "command": "editor.action.peekDefinition"
   },
-
   // Format document
   {
     "key": "shift+alt+f",
     "command": "editor.action.formatDocument"
   },
-
   // Toggle zen mode
   {
     "key": "ctrl+k z",

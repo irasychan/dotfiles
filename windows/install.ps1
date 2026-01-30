@@ -36,6 +36,7 @@ param(
     [switch]$SkipStarship,
     [switch]$SkipVSCode,
     [switch]$SkipTerminal,
+    [switch]$SkipWezTerm,
     [switch]$Help
 )
 
@@ -86,6 +87,8 @@ Options:
     -SkipStarship   Skip Starship installation
     -SkipVSCode     Skip VS Code settings installation
     -SkipTerminal   Skip Windows Terminal settings installation
+    -SkipWezTerm    Skip WezTerm configuration installation
+
 
 Examples:
     .\install.ps1                    # Full installation
@@ -93,6 +96,8 @@ Examples:
     .\install.ps1 -Restore           # List backups
     .\install.ps1 -SkipStarship      # Install without Starship
     .\install.ps1 -SkipVSCode        # Install without VS Code settings
+    .\install.ps1 -SkipWezTerm       # Install without WezTerm config
+
 
 Backups are stored in: $Script:BackupDir
 
@@ -397,21 +402,27 @@ function Install-Profile {
         $completionDest = Join-Path $Script:ConfigHome "powershell\completions"
         New-Item -ItemType Directory -Path $completionDest -Force | Out-Null
 
-        Get-ChildItem $sourceCompletions -File | ForEach-Object {
-            $completionTarget = Join-Path $completionDest $_.Name
-            if (Test-Path $completionTarget) {
-                Remove-Item $completionTarget -Force
-            }
+        $completionFiles = @(Get-ChildItem $sourceCompletions -File -ErrorAction SilentlyContinue)
+        if ($completionFiles.Count -gt 0) {
+            foreach ($completionFile in $completionFiles) {
+                $completionTarget = Join-Path $completionDest $completionFile.Name
+                if (Test-Path $completionTarget) {
+                    Remove-Item $completionTarget -Force
+                }
 
-            try {
-                New-Item -ItemType SymbolicLink -Path $completionTarget -Target $_.FullName -Force | Out-Null
-                Write-Success "  Created symlink for completion $($_.Name)"
-            } catch {
-                Copy-Item $_.FullName $completionTarget -Force
-                Write-Success "  Copied completion $($_.Name)"
+                try {
+                    New-Item -ItemType SymbolicLink -Path $completionTarget -Target $completionFile.FullName -Force | Out-Null
+                    Write-Success "  Created symlink for completion $($completionFile.Name)"
+                } catch {
+                    Copy-Item $completionFile.FullName $completionTarget -Force
+                    Write-Success "  Copied completion $($completionFile.Name)"
+                }
             }
+        } else {
+            Write-Warn "  No completion files found in $sourceCompletions"
         }
     }
+
 }
 
 function Install-StarshipConfig {
@@ -513,6 +524,41 @@ function Install-WindowsTerminalSettings {
     }
 }
 
+function Install-WezTermConfig {
+    Write-Info "Installing WezTerm configuration..."
+
+    $sourceDir = Join-Path $Script:DotfilesDir "wezterm\.config\wezterm"
+
+    if (-not (Test-Path $sourceDir)) {
+        Write-Err "Source WezTerm config not found: $sourceDir"
+        return
+    }
+
+    $weztermConfigRoot = Join-Path $env:USERPROFILE ".config\wezterm"
+    New-Item -ItemType Directory -Path $weztermConfigRoot -Force | Out-Null
+
+    $sourceFile = Join-Path $sourceDir "wezterm.lua"
+    $dest = Join-Path $weztermConfigRoot "wezterm.lua"
+
+    if (-not (Test-Path $sourceFile)) {
+        Write-Err "WezTerm config not found: $sourceFile"
+        return
+    }
+
+    if (Test-Path $dest) {
+        Remove-Item $dest -Force
+    }
+
+    try {
+        New-Item -ItemType SymbolicLink -Path $dest -Target $sourceFile -Force | Out-Null
+        Write-Success "Created symlink for WezTerm wezterm.lua"
+    } catch {
+        Copy-Item $sourceFile $dest -Force
+        Write-Success "Copied WezTerm wezterm.lua"
+    }
+}
+
+
 function Install-NerdFont {
     Write-Info "Checking for Nerd Fonts..."
 
@@ -545,6 +591,8 @@ function Show-Summary {
     Write-Host "  - Starship prompt (Tokyo Night theme)"
     Write-Host "  - VS Code settings, keybindings, and extensions"
     Write-Host "  - Windows Terminal settings with Tokyo Night color scheme"
+    Write-Host "  - WezTerm configuration"
+
     Write-Host ""
     Write-Host "To restore: .\install.ps1 -Restore <timestamp>"
     Write-Host ""
@@ -589,8 +637,14 @@ function Main {
         Install-WindowsTerminalSettings
     }
 
-    # Check for Nerd Fonts
+    # Install WezTerm config
+    if (-not $SkipWezTerm) {
+        Install-WezTermConfig
+    }
+
+    # Check for Nerd Font
     Install-NerdFont
+
 
     # Show summary
     Show-Summary

@@ -32,7 +32,7 @@
             "colorScheme": "Tokyo Night",
             "font": 
             {
-                "face": "CaskaydiaCove Nerd Font",
+                "face": "CaskaydiaCove Nerd Font Mono",
                 "size": 10
             }
         },
@@ -63,13 +63,7 @@
                 "suppressApplicationTitle": true
             },
             {
-                "guid": "{a82ba6ee-9792-5135-bda9-80b56759076e}",
-                "hidden": false,
-                "name": "podman-machine-default",
-                "source": "Microsoft.WSL"
-            },
-            {
-                "guid": "{2f0816e0-6c19-5547-9c3a-4f9382ab6176}",
+                "guid": "{76f8d855-2ea0-535e-8346-39c7656b8e5d}",
                 "hidden": false,
                 "name": "podman-machine-default",
                 "source": "Microsoft.WSL"

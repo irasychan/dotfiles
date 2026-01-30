@@ -1,15 +1,13 @@
 {
   // VS Code Settings
   // Tokyo Night theme - aligned with terminal configurations
-
   // Theme
   "workbench.colorTheme": "Tokyo Night",
   "workbench.iconTheme": "material-icon-theme",
   "workbench.productIconTheme": "material-product-icons",
-
   // Editor
   "editor.fontFamily": "'CaskaydiaCove Nerd Font', 'Cascadia Code', 'Fira Code', Consolas, monospace",
-  "editor.fontSize": 14,
+  "editor.fontSize": 12,
   "editor.fontLigatures": true,
   "editor.lineHeight": 1.6,
   "editor.cursorBlinking": "smooth",
@@ -25,11 +23,11 @@
   "editor.tabSize": 2,
   "editor.insertSpaces": true,
   "editor.wordWrap": "off",
-  "editor.rulers": [80, 120],
+  "editor.rulers": [
+    80,
+    120
+  ],
   "editor.stickyScroll.enabled": true,
-
-  // Terminal - Tokyo Night colors
-  "terminal.integrated.fontFamily": "'CaskaydiaCove Nerd Font', 'Cascadia Code', monospace",
   "terminal.integrated.fontSize": 14,
   "terminal.integrated.cursorStyle": "line",
   "terminal.integrated.cursorBlinking": true,
@@ -55,7 +53,6 @@
     "terminal.selectionBackground": "#414868",
     "terminalCursor.foreground": "#c0caf5"
   },
-
   // Files
   "files.autoSave": "onFocusChange",
   "files.trimTrailingWhitespace": true,
@@ -68,12 +65,10 @@
     "**/__pycache__": true,
     "**/.pytest_cache": true
   },
-
   // Explorer
   "explorer.confirmDelete": false,
   "explorer.confirmDragAndDrop": false,
   "explorer.compactFolders": true,
-
   // Search
   "search.exclude": {
     "**/node_modules": true,
@@ -82,16 +77,19 @@
     "**/dist": true,
     "**/build": true
   },
-
   // Git
   "git.autofetch": true,
   "git.confirmSync": false,
   "git.enableSmartCommit": true,
-
   // Telemetry
   "telemetry.telemetryLevel": "off",
-
   // Extensions recommendations
   "extensions.ignoreRecommendations": false,
-  "claudeCode.preferredLocation": "panel"
+  "claudeCode.preferredLocation": "panel",
+  "[jsonc]": {
+    "editor.defaultFormatter": "vscode.json-language-features"
+  },
+  "chat.mcp.gallery.enabled": true,
+  "chatgpt.runCodexInWindowsSubsystemForLinux": true,
+  "chat.viewSessions.orientation": "stacked"
 }

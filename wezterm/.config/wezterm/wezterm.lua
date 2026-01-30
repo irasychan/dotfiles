@@ -197,7 +197,8 @@ config.skip_close_confirmation_for_processes_named = {
 }
 
 -- Selection behavior
-config.selection_word_boundary = ' \t\n{}[]()"\'\''`'
+config.selection_word_boundary = " \t\n{}[]()\"'`"
+
 
 -- ============================================================================
 -- Key Bindings
