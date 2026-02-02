@@ -94,7 +94,7 @@ config.font = wezterm.font_with_fallback {
   'JetBrains Mono',
 }
 
-config.font_size = 10.0
+config.font_size = 11.0
 config.line_height = 1.0
 config.cell_width = 1.0
 
@@ -131,7 +131,7 @@ config.enable_scroll_bar = true
 config.enable_tab_bar = true
 config.hide_tab_bar_if_only_one_tab = false
 config.use_fancy_tab_bar = true
-config.tab_bar_at_bottom = false
+config.tab_bar_at_bottom = true
 config.tab_max_width = 25
 
 -- Tab bar style
@@ -212,15 +212,21 @@ config.keys = {
   { key = 'Tab', mods = 'CTRL|SHIFT', action = wezterm.action.ActivateTabRelative(-1) },
 
   -- Pane management (split panes)
-  { key = 'd', mods = 'CTRL|SHIFT', action = wezterm.action.SplitHorizontal { domain = 'CurrentPaneDomain' } },
-  { key = 'e', mods = 'CTRL|SHIFT', action = wezterm.action.SplitVertical { domain = 'CurrentPaneDomain' } },
+  { key = 'd', mods = 'CTRL|SHIFT', action = wezterm.action.SplitVertical { domain = 'CurrentPaneDomain' } },
+  { key = 'e', mods = 'CTRL|SHIFT', action = wezterm.action.SplitHorizontal { domain = 'CurrentPaneDomain' } },
   { key = 'w', mods = 'CTRL|SHIFT|ALT', action = wezterm.action.CloseCurrentPane { confirm = true } },
 
-  -- Pane navigation
+  -- Pane navigation (arrows)
   { key = 'LeftArrow', mods = 'CTRL|SHIFT', action = wezterm.action.ActivatePaneDirection 'Left' },
   { key = 'RightArrow', mods = 'CTRL|SHIFT', action = wezterm.action.ActivatePaneDirection 'Right' },
   { key = 'UpArrow', mods = 'CTRL|SHIFT', action = wezterm.action.ActivatePaneDirection 'Up' },
   { key = 'DownArrow', mods = 'CTRL|SHIFT', action = wezterm.action.ActivatePaneDirection 'Down' },
+
+  -- Pane navigation (vim-style hjkl)
+  { key = 'h', mods = 'CTRL|SHIFT', action = wezterm.action.ActivatePaneDirection 'Left' },
+  { key = 'l', mods = 'CTRL|SHIFT', action = wezterm.action.ActivatePaneDirection 'Right' },
+  { key = 'k', mods = 'CTRL|SHIFT', action = wezterm.action.ActivatePaneDirection 'Up' },
+  { key = 'j', mods = 'CTRL|SHIFT', action = wezterm.action.ActivatePaneDirection 'Down' },
 
   -- Pane resizing
   { key = 'LeftArrow', mods = 'CTRL|SHIFT|ALT', action = wezterm.action.AdjustPaneSize { 'Left', 5 } },
@@ -281,6 +287,14 @@ if wezterm.target_triple == 'x86_64-pc-windows-msvc' then
     },
   }
 end
+
+-- ============================================================================
+-- Mouse Reporting
+-- ============================================================================
+
+-- Use older mouse protocol for better compatibility with Neovim on Windows
+config.enable_kitty_keyboard = false
+config.enable_csi_u_key_encoding = false
 
 -- ============================================================================
 -- Mouse Bindings
