@@ -3,8 +3,6 @@
   // Tokyo Night theme - aligned with terminal configurations
   // Theme
   "workbench.colorTheme": "Tokyo Night",
-  "workbench.iconTheme": "material-icon-theme",
-  "workbench.productIconTheme": "material-product-icons",
   // Editor
   "editor.fontFamily": "'CaskaydiaCove Nerd Font', 'Cascadia Code', 'Fira Code', Consolas, monospace",
   "editor.fontSize": 12,
@@ -85,11 +83,23 @@
   "telemetry.telemetryLevel": "off",
   // Extensions recommendations
   "extensions.ignoreRecommendations": false,
-  "claudeCode.preferredLocation": "panel",
+  // Language-specific formatters
   "[jsonc]": {
     "editor.defaultFormatter": "vscode.json-language-features"
   },
-  "chat.mcp.gallery.enabled": true,
-  "chatgpt.runCodexInWindowsSubsystemForLinux": true,
-  "chat.viewSessions.orientation": "stacked"
+  "[json]": {
+    "editor.defaultFormatter": "vscode.json-language-features"
+  },
+  // Copilot
+  "github.copilot.enable": {
+    "*": true,
+    "plaintext": true,
+    "markdown": false,
+    "scminput": false
+  },
+  "errorLens.enabledDiagnosticLevels": [
+    "error",
+    "warning",
+    "info"
+  ]
 }
