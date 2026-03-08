@@ -37,6 +37,7 @@ param(
     [switch]$SkipVSCode,
     [switch]$SkipTerminal,
     [switch]$SkipWezTerm,
+    [switch]$SkipNeovim,
     [switch]$Help
 )
 
@@ -88,6 +89,7 @@ Options:
     -SkipVSCode     Skip VS Code settings installation
     -SkipTerminal   Skip Windows Terminal settings installation
     -SkipWezTerm    Skip WezTerm configuration installation
+    -SkipNeovim     Skip Neovim configuration installation
 
 
 Examples:
@@ -97,6 +99,7 @@ Examples:
     .\install.ps1 -SkipStarship      # Install without Starship
     .\install.ps1 -SkipVSCode        # Install without VS Code settings
     .\install.ps1 -SkipWezTerm       # Install without WezTerm config
+    .\install.ps1 -SkipNeovim        # Install without Neovim config
 
 
 Backups are stored in: $Script:BackupDir
@@ -165,6 +168,17 @@ function Backup-ExistingConfig {
                 Write-Info "  Backing up VS Code $file"
                 Copy-Item $vscodeFile (Join-Path $vscodeBackupDir $file) -Force
             }
+        }
+    }
+
+    # Backup Neovim config
+    $nvimConfig = Join-Path $env:LOCALAPPDATA "nvim"
+    if (Test-Path $nvimConfig) {
+        $isSymlink = (Get-Item $nvimConfig).Attributes -band [System.IO.FileAttributes]::ReparsePoint
+        if (-not $isSymlink) {
+            Write-Info "  Backing up Neovim config"
+            $nvimBackupDir = Join-Path $backupPath "nvim"
+            Copy-Item $nvimConfig $nvimBackupDir -Recurse -Force
         }
     }
 
@@ -279,6 +293,17 @@ function Restore-FromBackup {
             Write-Info "  Restoring VS Code $($_.Name)"
             Copy-Item $_.FullName (Join-Path $Script:VSCodeUserPath $_.Name) -Force
         }
+    }
+
+    # Restore Neovim config
+    $nvimBackupDir = Join-Path $backupPath "nvim"
+    if (Test-Path $nvimBackupDir) {
+        $nvimDest = Join-Path $env:LOCALAPPDATA "nvim"
+        if (Test-Path $nvimDest) {
+            Remove-Item $nvimDest -Recurse -Force
+        }
+        Write-Info "  Restoring Neovim config"
+        Copy-Item $nvimBackupDir $nvimDest -Recurse -Force
     }
 
     # Restore Windows Terminal settings
@@ -559,6 +584,33 @@ function Install-WezTermConfig {
 }
 
 
+function Install-NeovimConfig {
+    Write-Info "Installing Neovim configuration..."
+
+    $sourceDir = Join-Path $Script:DotfilesDir "nvim\.config\nvim"
+
+    if (-not (Test-Path $sourceDir)) {
+        Write-Err "Source Neovim config not found: $sourceDir"
+        return
+    }
+
+    # Neovim on Windows uses $env:LOCALAPPDATA\nvim
+    $dest = Join-Path $env:LOCALAPPDATA "nvim"
+
+    if (Test-Path $dest) {
+        Remove-Item $dest -Force -Recurse
+    }
+
+    try {
+        New-Item -ItemType SymbolicLink -Path $dest -Target $sourceDir -Force | Out-Null
+        Write-Success "Created symlink for Neovim config"
+    } catch {
+        Write-Warn "Cannot create symlink (requires admin), copying instead..."
+        Copy-Item $sourceDir $dest -Recurse -Force
+        Write-Success "Copied Neovim config"
+    }
+}
+
 function Install-NerdFont {
     Write-Info "Checking for Nerd Fonts..."
 
@@ -592,6 +644,7 @@ function Show-Summary {
     Write-Host "  - VS Code settings, keybindings, and extensions"
     Write-Host "  - Windows Terminal settings with Tokyo Night color scheme"
     Write-Host "  - WezTerm configuration"
+    Write-Host "  - Neovim configuration (LazyVim + Tokyo Night)"
 
     Write-Host ""
     Write-Host "To restore: .\install.ps1 -Restore <timestamp>"
@@ -640,6 +693,11 @@ function Main {
     # Install WezTerm config
     if (-not $SkipWezTerm) {
         Install-WezTermConfig
+    }
+
+    # Install Neovim config
+    if (-not $SkipNeovim) {
+        Install-NeovimConfig
     }
 
     # Check for Nerd Font

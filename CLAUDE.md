@@ -79,13 +79,14 @@ Windows 11 installer (PowerShell):
 - Creates symlinks (requires admin) or copies files
 - Backup/restore functionality like Linux version
 
-Options: `-Help`, `-Backup`, `-Restore <timestamp>`, `-SkipStarship`, `-SkipVSCode`, `-SkipTerminal`
+Options: `-Help`, `-Backup`, `-Restore <timestamp>`, `-SkipStarship`, `-SkipVSCode`, `-SkipTerminal`, `-SkipWezTerm`, `-SkipNeovim`
 
 Windows config locations:
 - PowerShell 7+: `$HOME\Documents\PowerShell\Microsoft.PowerShell_profile.ps1`
 - PowerShell 5.x: `$HOME\Documents\WindowsPowerShell\Microsoft.PowerShell_profile.ps1`
 - VS Code: `%APPDATA%\Code\User\settings.json`
 - Windows Terminal: `%LOCALAPPDATA%\Packages\Microsoft.WindowsTerminal_*\LocalState\settings.json`
+- Neovim: `%LOCALAPPDATA%\nvim\`
 
 ## Configuration Details
 
@@ -219,6 +220,7 @@ All configurations use the Tokyo Night color palette for consistency across shel
 | Starship config | `%USERPROFILE%\.config\starship.toml` |
 | VS Code settings | `%APPDATA%\Code\User\` |
 | Windows Terminal | `%LOCALAPPDATA%\Packages\Microsoft.WindowsTerminal_*\LocalState\` |
+| Neovim | `%LOCALAPPDATA%\nvim\` |
 | PowerShell 7+ | `%USERPROFILE%\Documents\PowerShell\` |
 | PowerShell 5.x | `%USERPROFILE%\Documents\WindowsPowerShell\` |
 

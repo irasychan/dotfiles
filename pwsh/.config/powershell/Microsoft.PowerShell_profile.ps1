@@ -24,14 +24,19 @@ $env:STARSHIP_CONFIG = "$env:XDG_CONFIG_HOME/starship.toml"
 if (Get-Module -ListAvailable -Name PSReadLine) {
     Import-Module PSReadLine
 
-    # Prediction and history
-    Set-PSReadLineOption -PredictionSource History
-    Set-PSReadLineOption -PredictionViewStyle ListView
+    # History options
     Set-PSReadLineOption -HistoryNoDuplicates:$true
     Set-PSReadLineOption -HistorySearchCursorMovesToEnd:$true
 
+    # Prediction (PSReadLine 2.2+ / PowerShell 7+ only)
+    $psrlVersion = (Get-Module PSReadLine).Version
+    if ($psrlVersion -ge [version]'2.2.0') {
+        Set-PSReadLineOption -PredictionSource History
+        Set-PSReadLineOption -PredictionViewStyle ListView
+    }
+
     # Colors - Tokyo Night theme
-    Set-PSReadLineOption -Colors @{
+    $colors = @{
         Command            = '#7aa2f7'  # terminal-blue
         Parameter          = '#bb9af7'  # terminal-magenta
         Operator           = '#7dcfff'  # light-sky-blue
@@ -44,9 +49,12 @@ if (Get-Module -ListAvailable -Name PSReadLine) {
         Error              = '#f7768e'  # terminal-red
         Selection          = '#414868'  # terminal-black
         InlinePrediction   = '#565f89'  # blue-black
-        ListPrediction     = '#7dcfff'  # light-sky-blue
-        ListPredictionSelected = '#414868'  # terminal-black
     }
+    if ($psrlVersion -ge [version]'2.2.0') {
+        $colors['ListPrediction'] = '#7dcfff'           # light-sky-blue
+        $colors['ListPredictionSelected'] = '#414868'    # terminal-black
+    }
+    Set-PSReadLineOption -Colors $colors
 
     # Key bindings - Emacs style (like zsh default)
     Set-PSReadLineOption -EditMode Emacs
