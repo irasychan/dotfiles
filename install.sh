@@ -526,7 +526,6 @@ case "${1:-}" in
 
         # Unstow bash first if stowed (wsl and bash both provide .bashrc)
         if [[ -L "$HOME/.bashrc" ]]; then
-            local link_target
             link_target=$(readlink -f "$HOME/.bashrc" 2>/dev/null)
             if [[ "$link_target" == "$DOTFILES_DIR/bash/"* ]]; then
                 info "Unstowing bash (replacing with wsl)..."
@@ -535,7 +534,7 @@ case "${1:-}" in
         fi
 
         # Handle conflicts for non-stowed files
-        local conflicts=(
+        conflicts=(
             "$HOME/.bashrc"
             "$HOME/.zshrc"
             "$HOME/.config/nvim/init.lua"

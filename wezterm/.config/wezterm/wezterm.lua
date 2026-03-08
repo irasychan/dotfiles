@@ -130,9 +130,9 @@ config.enable_scroll_bar = true
 
 config.enable_tab_bar = true
 config.hide_tab_bar_if_only_one_tab = false
-config.use_fancy_tab_bar = true
-config.tab_bar_at_bottom = true
-config.tab_max_width = 25
+config.use_fancy_tab_bar = false
+config.tab_bar_at_bottom = false
+config.tab_max_width = 0
 
 -- Tab bar style
 config.window_frame = {
@@ -161,12 +161,6 @@ config.scrollback_lines = 10000
 -- ============================================================================
 
 config.audible_bell = 'Disabled'
-config.visual_bell = {
-  fade_in_function = 'EaseIn',
-  fade_in_duration_ms = 150,
-  fade_out_function = 'EaseOut',
-  fade_out_duration_ms = 150,
-}
 
 -- ============================================================================
 -- Performance
@@ -198,7 +192,6 @@ config.skip_close_confirmation_for_processes_named = {
 
 -- Selection behavior
 config.selection_word_boundary = " \t\n{}[]()\"'`"
-
 
 -- ============================================================================
 -- Key Bindings

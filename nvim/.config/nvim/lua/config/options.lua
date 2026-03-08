@@ -30,19 +30,3 @@ opt.smartcase = true -- Don't ignore case with capitals
 -- Splits
 opt.splitbelow = true -- Put new windows below current
 opt.splitright = true -- Put new windows right of current
-
--- WSL cursor shape fix
-if vim.fn.has("wsl") == 1 then
-  vim.g.clipboard = {
-    name = "WslClipboard",
-    copy = {
-      ["+"] = "clip.exe",
-      ["*"] = "clip.exe",
-    },
-    paste = {
-      ["+"] = 'powershell.exe -c [Console]::Out.Write($(Get-Clipboard -Raw).tostring().replace("`r", ""))',
-      ["*"] = 'powershell.exe -c [Console]::Out.Write($(Get-Clipboard -Raw).tostring().replace("`r", ""))',
-    },
-    cache_enabled = 0,
-  }
-end

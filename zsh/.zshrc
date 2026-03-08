@@ -17,7 +17,6 @@ export GNUPGHOME="$XDG_DATA_HOME/gnupg"
 export GOPATH="$XDG_DATA_HOME/go"
 export LESSHISTFILE="$XDG_STATE_HOME/less/history"
 export NPM_CONFIG_USERCONFIG="$XDG_CONFIG_HOME/npm/npmrc"
-export NPM_CONFIG_PREFIX="$HOME/.local/npm"
 export NVM_DIR="$XDG_DATA_HOME/nvm"
 export RUSTUP_HOME="$XDG_DATA_HOME/rustup"
 
@@ -183,8 +182,16 @@ if command -v starship &>/dev/null; then
     eval "$(starship init zsh)"
 fi
 
+# claude fix
+export USERPROFILE="$(wslpath -w ~)"
+
 # opencode
 export PATH=/home/irasy/.opencode/bin:$PATH
+
+# Android emulator
+export ANDROID_HOME="/mnt/c/Users/irasy/AppData/Local/Android/Sdk"
+export ANDROID_SDK_ROOT="$ANDROID_HOME"
+export PATH="$PATH:$ANDROID_HOME/platform-tools:$ANDROID_HOME/emulator"
 
 #THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
 export SDKMAN_DIR="$HOME/.sdkman"
