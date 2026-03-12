@@ -44,6 +44,15 @@ path=(
     $path
 )
 
+# Windows interop paths (WSL only)
+if [[ -n "$WSL_DISTRO_NAME" ]]; then
+    path+=(
+        "/mnt/c/WINDOWS/system32"
+        "/mnt/c/Users/irasy/AppData/Local/Programs/Microsoft VS Code/bin"
+        "/mnt/c/Users/irasy/AppData/Local/Programs/cursor/resources/app/bin"
+    )
+fi
+
 # -----------------------------------------------------------------------------
 # Oh My Zsh
 # -----------------------------------------------------------------------------
@@ -52,7 +61,6 @@ export ZSH="$XDG_DATA_HOME/oh-my-zsh"
 # Plugins (keep minimal for fast startup)
 plugins=(
     git
-    docker
     fzf
     z
     command-not-found
@@ -60,6 +68,9 @@ plugins=(
     zsh-completions
     zsh-syntax-highlighting
 )
+
+# Conditionally load plugins that require their tool to be running
+(( $+commands[docker] )) && plugins+=(docker)
 
 # Plugin settings
 zstyle ':omz:plugins:nvm' lazy yes
