@@ -3,6 +3,10 @@
 
 local opt = vim.opt
 
+-- Disable unused providers
+vim.g.loaded_perl_provider = 0
+vim.g.loaded_ruby_provider = 0
+
 -- General
 opt.clipboard = "unnamedplus" -- Sync with system clipboard
 opt.mouse = "a" -- Enable mouse mode
@@ -30,3 +34,8 @@ opt.smartcase = true -- Don't ignore case with capitals
 -- Splits
 opt.splitbelow = true -- Put new windows below current
 opt.splitright = true -- Put new windows right of current
+
+-- Targeted healthcheck (skips mason language noise, snacks.statuscolumn, etc.)
+vim.api.nvim_create_user_command("Health", function()
+	vim.cmd("checkhealth lazy lazyvim blink.cmp snacks noice render-markdown telescope vim.lsp vim.provider")
+end, { desc = "Run relevant healthchecks" })

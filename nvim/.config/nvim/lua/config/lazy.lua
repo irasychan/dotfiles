@@ -31,6 +31,7 @@ require("lazy").setup({
 		-- Import/override with your plugins
 		{ import = "plugins" },
 	},
+	rocks = { enabled = false },
 	defaults = {
 		lazy = false,
 		version = false, -- always use the latest git commit
