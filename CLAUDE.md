@@ -25,8 +25,11 @@ dotfiles/
 │   └── extensions.json
 ├── windowsterminal/.config/windowsterminal/  # Windows Terminal (Windows only)
 │   └── settings.json
+├── wezterm/.config/wezterm/  # WezTerm terminal (cross-platform)
+│   └── wezterm.lua
 ├── wsl/.bashrc               # WSL-specific (auto-starts zsh)
 ├── git/.config/git/          # Git config (placeholder)
+├── claude/.claude/           # Claude Code skills
 ├── docs/                     # Documentation and guides
 │   └── gpg-key-transfer-windows-wsl.md
 ├── windows/install.ps1       # Windows 11 installer
@@ -51,8 +54,7 @@ Bootstrap script that:
 
 Options:
 - `--wsl`: Uses `wsl` package instead of `bash`
-- `--pwsh`: Installs Starship and deploys PowerShell profile
-- `--packages`: Only install dependencies
+- `--system`: Install system packages and set zsh as default shell (requires sudo)
 - `--stow`: Only deploy configs (with backup)
 - `--backup`: Only backup existing environment
 - `--restore [TIME]`: Restore from backup
@@ -67,7 +69,7 @@ Helper for managing stow packages:
 - `./stow.sh status`: Show linked status
 - Use `all` to operate on all packages
 
-Available packages: bash, zsh, nvim, tmux, starship, pwsh, wsl, git
+Available packages: bash, zsh, nvim, tmux, starship, pwsh, wezterm, wsl, git
 
 ### windows/install.ps1
 
@@ -105,7 +107,7 @@ LazyVim-based Neovim configuration:
 - **Framework**: LazyVim (lazy.nvim plugin manager)
 - **Colorscheme**: Tokyo Night (matches shell theme)
 - **Leader key**: Space
-- **File explorer**: Neo-tree (hidden files visible by default)
+- **File explorer**: Snacks explorer (hidden files visible by default)
 - **Fuzzy finder**: Telescope (hidden files included)
 - **WSL**: Clipboard integration configured
 
@@ -120,12 +122,12 @@ nvim/.config/nvim/
     │   ├── keymaps.lua      # Custom keymaps
     │   └── autocmds.lua     # Autocommands
     └── plugins/
-        ├── editor.lua       # Neo-tree, Telescope config
+        ├── editor.lua       # Snacks explorer, Telescope config
         └── colorscheme.lua  # Tokyo Night theme
 ```
 
 Key bindings:
-- `<Space>e` - Toggle file explorer (Neo-tree)
+- `<Space>e` - Focus Snacks explorer (or toggle if already focused)
 - `<Space>ff` - Find files
 - `<Space>fg` - Live grep
 - `<Space>/` - Search in buffer

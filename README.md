@@ -44,11 +44,18 @@ dotfiles/
 │   └── .config/powershell/
 │       ├── Microsoft.PowerShell_profile.ps1
 │       └── completions/
-
+├── vscode/               # VS Code settings (Windows only)
+│   └── .config/vscode/
+├── windowsterminal/      # Windows Terminal settings (Windows only)
+│   └── .config/windowsterminal/
+├── wezterm/              # WezTerm terminal (cross-platform)
+│   └── .config/wezterm/wezterm.lua
 ├── wsl/                  # WSL-specific bash (auto-starts zsh)
 │   └── .bashrc
 ├── git/                  # Git configuration (placeholder)
 │   └── .config/git/
+├── claude/               # Claude Code skills
+│   └── .claude/
 ├── windows/              # Windows installer
 │   └── install.ps1
 ├── install.sh            # Bootstrap script (Linux/WSL)
@@ -62,9 +69,9 @@ dotfiles/
 Installs all dependencies and deploys configurations:
 
 ```bash
-./install.sh        # Standard Linux
-./install.sh --wsl  # WSL environment
-./install.sh --pwsh # PowerShell with Starship prompt (Linux)
+./install.sh         # Standard Linux
+./install.sh --wsl   # WSL environment
+./install.sh --system # Install system packages + set zsh as default (requires sudo)
 ```
 
 ### Windows 11 Installation
@@ -116,6 +123,7 @@ stow -D -t ~ bash            # Unlink package
 | `tmux`  | Tmux config | `.config/tmux/tmux.conf` |
 | `starship` | Starship prompt config | `.config/starship.toml` |
 | `pwsh`  | PowerShell profile | `.config/powershell/...` |
+| `wezterm` | WezTerm terminal | `.config/wezterm/wezterm.lua` |
 | `wsl`   | WSL bash (starts zsh) | `.bashrc` |
 | `git`   | Git configuration | `.config/git/` |
 
