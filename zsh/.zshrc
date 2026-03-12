@@ -44,6 +44,17 @@ path=(
     $path
 )
 
+# Add nvm default node to PATH for non-interactive shells (e.g., editor lint tools)
+if [[ -s "$NVM_DIR/alias/default" ]]; then
+    _nvm_ver=$(< "$NVM_DIR/alias/default")
+    [[ -s "$NVM_DIR/alias/$_nvm_ver" ]] && _nvm_ver=$(< "$NVM_DIR/alias/$_nvm_ver")
+    [[ "$_nvm_ver" == lts/* ]] && _nvm_ver=$(< "$NVM_DIR/alias/lts/${_nvm_ver#lts/}" 2>/dev/null)
+    _nvm_ver=${_nvm_ver#v}
+    _nvm_bins=("$NVM_DIR/versions/node"/v${_nvm_ver}*(N/))
+    (( ${#_nvm_bins} > 0 )) && path=("${_nvm_bins[1]}/bin" $path)
+    unset _nvm_ver _nvm_bins
+fi
+
 # Windows interop paths (WSL only)
 if [[ -n "$WSL_DISTRO_NAME" ]]; then
     path+=(
