@@ -168,9 +168,9 @@ wsl --list --verbose
 
 ## Next Steps
 
-1. Customize key bindings in `wezterm.lua` (line 143-181)
-2. Adjust font size if needed (line 88)
-3. Add custom shell profiles to launch menu (line 187-211)
+1. Customize key bindings in `wezterm.lua` (line 200-252)
+2. Adjust font size if needed (line 97)
+3. Add custom shell profiles to launch menu (line 254-283)
 4. Explore WezTerm features: https://wezfurlong.org/wezterm/
 
 ## Uninstall

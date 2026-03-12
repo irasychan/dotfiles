@@ -68,7 +68,7 @@ GPU-accelerated terminal emulator with Tokyo Night theme, matching your Windows 
 ## Features
 
 - **Tokyo Night Color Scheme**: Matches your Windows Terminal, VS Code, and Starship themes
-- **CaskaydiaCove Nerd Font**: 10pt with ligature support
+- **CaskaydiaCove Nerd Font**: 11pt with ligature support
 - **GPU Acceleration**: WebGPU rendering for smooth performance
 - **Multi-Shell Support**: PowerShell, Git Bash, WSL, CMD
 - **Pane Splitting**: Work with multiple panes in one window
@@ -118,11 +118,11 @@ The config file is located at:
 ## Customization
 
 Edit `wezterm.lua` to customize:
-- Colors (line 18-76)
-- Font (line 81-92)
-- Window settings (line 97-111)
-- Key bindings (line 143-181)
-- Launch menu (line 187-211)
+- Colors (line 13-86)
+- Font (line 88-102)
+- Window settings (line 105-144)
+- Key bindings (line 200-252)
+- Launch menu (line 254-283)
 
 Changes auto-reload when you save the file.
 
