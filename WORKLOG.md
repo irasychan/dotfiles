@@ -8,7 +8,7 @@ Development notes and changelog for dotfiles repository.
 - Fixed `install.sh` option docs (`--pwsh`/`--packages` → `--system`)
 - Updated Neovim file explorer reference: Neo-tree → Snacks explorer
 - Updated wezterm doc line references to match current `wezterm.lua`; font note 10pt → 11pt
-- Created `markdownlint/` stow package with `.markdownlint.json`
+- Replaced `markdownlint/` stow package with repo-root `.markdownlint.json` (stdin-mode fix for nvim-lint)
 
 ---
 
@@ -50,14 +50,14 @@ Created a new `nvim` stow package with LazyVim starter configuration.
 
 **Key bindings:**
 
-| Binding | Action |
-| ------- | ------ |
-| `<Space>e` | Toggle file explorer (Neo-tree) |
-| `<Space>ff` | Find files |
-| `<Space>fg` | Live grep |
-| `<Space>/` | Search in buffer |
-| `jk` / `jj` | Exit insert mode |
-| `:Lazy` | Plugin manager UI |
+| Binding     | Action                          |
+| ----------- | ------------------------------- |
+| `<Space>e`  | Toggle file explorer (Neo-tree) |
+| `<Space>ff` | Find files                      |
+| `<Space>fg` | Live grep                       |
+| `<Space>/`  | Search in buffer                |
+| `jk` / `jj` | Exit insert mode                |
+| `:Lazy`     | Plugin manager UI               |
 
 ### Updated Scripts
 
@@ -102,25 +102,25 @@ Add a portable `prettier` stow package with a `.prettierrc` tuned to personal pr
 
 All prompt tools use the Tokyo Night color palette for consistency:
 
-| Color | Hex | Usage |
-|-------|-----|-------|
-| terminal-blue | `#7aa2f7` | Prompt arrow, PHP |
-| terminal-magenta | `#bb9af7` | Path, .NET |
-| light-sky-blue | `#7dcfff` | Git branch clean, Go |
-| terminal-red | `#f7768e` | Errors, git dirty, Ruby |
-| pistachio-green | `#9ece6a` | Success char, Node |
-| terminal-yellow | `#e0af68` | Python |
-| white-blue | `#a9b1d6` | Command duration |
-| blue-black | `#565f89` | Comments, predictions |
+| Color            | Hex       | Usage                   |
+| ---------------- | --------- | ----------------------- |
+| terminal-blue    | `#7aa2f7` | Prompt arrow, PHP       |
+| terminal-magenta | `#bb9af7` | Path, .NET              |
+| light-sky-blue   | `#7dcfff` | Git branch clean, Go    |
+| terminal-red     | `#f7768e` | Errors, git dirty, Ruby |
+| pistachio-green  | `#9ece6a` | Success char, Node      |
+| terminal-yellow  | `#e0af68` | Python                  |
+| white-blue       | `#a9b1d6` | Command duration        |
+| blue-black       | `#565f89` | Comments, predictions   |
 
 ### XDG Paths
 
-| Tool | Config | Data | State |
-|------|--------|------|-------|
-| Neovim | `$XDG_CONFIG_HOME/nvim` | `$XDG_DATA_HOME/nvim` | `$XDG_STATE_HOME/nvim` |
-| Zsh | - | `$XDG_DATA_HOME/oh-my-zsh` | `$XDG_STATE_HOME/zsh` |
-| Starship | `$XDG_CONFIG_HOME/starship.toml` | - | - |
-| PowerShell | `$XDG_CONFIG_HOME/powershell` | - | - |
+| Tool       | Config                           | Data                       | State                  |
+| ---------- | -------------------------------- | -------------------------- | ---------------------- |
+| Neovim     | `$XDG_CONFIG_HOME/nvim`          | `$XDG_DATA_HOME/nvim`      | `$XDG_STATE_HOME/nvim` |
+| Zsh        | -                                | `$XDG_DATA_HOME/oh-my-zsh` | `$XDG_STATE_HOME/zsh`  |
+| Starship   | `$XDG_CONFIG_HOME/starship.toml` | -                          | -                      |
+| PowerShell | `$XDG_CONFIG_HOME/powershell`    | -                          | -                      |
 
 ---
 
