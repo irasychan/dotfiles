@@ -138,6 +138,15 @@ All configurations follow the [XDG Base Directory Specification](https://specifi
 - State: `~/.local/state/`
 - Cache: `~/.cache/`
 
+Tool-specific paths:
+
+| Tool       | Config                           | Data                       | State                  |
+| ---------- | -------------------------------- | -------------------------- | ---------------------- |
+| Neovim     | `$XDG_CONFIG_HOME/nvim`          | `$XDG_DATA_HOME/nvim`      | `$XDG_STATE_HOME/nvim` |
+| Zsh        | -                                | `$XDG_DATA_HOME/oh-my-zsh` | `$XDG_STATE_HOME/zsh`  |
+| Starship   | `$XDG_CONFIG_HOME/starship.toml` | -                          | -                      |
+| PowerShell | `$XDG_CONFIG_HOME/powershell`    | -                          | -                      |
+
 ### Zsh Configuration
 
 - **oh-my-zsh** framework with curated plugins
@@ -163,6 +172,20 @@ All configurations follow the [XDG Base Directory Specification](https://specifi
 - Git shortcuts and navigation functions
 - Completions for kubectl, Azure CLI, Starship CLI
 
+### Tokyo Night Theme Alignment
+
+All configurations use the Tokyo Night color palette for consistency across shells, editors, and terminals:
+
+| Color            | Hex       | Usage                   |
+| ---------------- | --------- | ----------------------- |
+| terminal-blue    | `#7aa2f7` | Prompt arrow, PHP       |
+| terminal-magenta | `#bb9af7` | Path, .NET              |
+| light-sky-blue   | `#7dcfff` | Git branch clean, Go    |
+| terminal-red     | `#f7768e` | Errors, git dirty, Ruby |
+| pistachio-green  | `#9ece6a` | Success char, Node      |
+| terminal-yellow  | `#e0af68` | Python                  |
+| white-blue       | `#a9b1d6` | Command duration        |
+| blue-black       | `#565f89` | Comments, predictions   |
 
 ## Post-Installation
 
