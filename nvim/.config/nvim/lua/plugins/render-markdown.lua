@@ -1,6 +1,6 @@
 return {
-  "MeanderingProgrammer/render-markdown.nvim",
-  opts = {
-    latex = { enabled = false },
-  },
+	"MeanderingProgrammer/render-markdown.nvim",
+	opts = {
+		latex = { enabled = false },
+	},
 }

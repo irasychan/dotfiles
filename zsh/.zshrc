@@ -43,6 +43,7 @@ path=(
     "/usr/local/bin"
     $path
 )
+[[ -d /snap/bin ]] && path+="/snap/bin"
 
 # Add nvm default node to PATH for non-interactive shells (e.g., editor lint tools)
 if [[ -s "$NVM_DIR/alias/default" ]]; then
@@ -124,10 +125,28 @@ alias ..='cd ..'
 alias ...='cd ../..'
 alias ....='cd ../../..'
 
-# List files
-alias l='ls -lah'
-alias ll='ls -lh'
-alias la='ls -lAh'
+# List files (use eza if available, else ls --color)
+if command -v eza &>/dev/null; then
+    alias ls='eza --color=auto --icons --group-directories-first'
+    alias l='eza -lah --icons --group-directories-first'
+    alias ll='eza -lh --icons --group-directories-first'
+    alias la='eza -lAh --icons --group-directories-first'
+    alias lt='eza -lah --icons --tree --level=2'
+    alias lta='eza -lah --icons --tree --level=3'
+else
+    alias ls='ls --color=auto'
+    alias l='ls -lah'
+    alias ll='ls -lh'
+    alias la='ls -lAh'
+    alias lt='ls -lAhR'
+fi
+if command -v eza &>/dev/null; then
+    alias lsd='eza -D --icons'
+    alias lsf='eza -f --icons'
+else
+    alias lsd='ls -d */'
+    alias lsf='ls -p | grep -v /'
+fi
 
 # Git
 alias g='git'
