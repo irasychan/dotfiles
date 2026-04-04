@@ -122,7 +122,7 @@ config.text_background_opacity = 1.0
 config.window_decorations = "RESIZE"
 
 -- Enable scrollbar
-config.enable_scroll_bar = true
+config.enable_scroll_bar = false
 
 -- ============================================================================
 -- Tab Bar Configuration
@@ -131,8 +131,8 @@ config.enable_scroll_bar = true
 config.enable_tab_bar = true
 config.hide_tab_bar_if_only_one_tab = false
 config.use_fancy_tab_bar = false
-config.tab_bar_at_bottom = false
-config.tab_max_width = 0
+config.tab_bar_at_bottom = true
+config.tab_max_width = 25
 
 -- Tab bar style
 config.window_frame = {
@@ -141,6 +141,18 @@ config.window_frame = {
   active_titlebar_bg = '#16161E',
   inactive_titlebar_bg = '#16161E',
 }
+
+-- Tmux-style tab titles: "1:zsh", "2:nvim", etc.
+wezterm.on('format-tab-title', function(tab)
+  local process = tab.active_pane.foreground_process_name or ''
+  -- Strip path to get just the process name, then remove .exe suffix
+  local name = process:gsub('(.*[/\\])(.*)', '%2'):gsub('%.exe$', '')
+  if name == '' then name = 'shell' end
+  local index = tab.tab_index + 1
+  local prefix = tab.is_active and ' ' or ' '
+  local suffix = tab.is_active and ' ' or ' '
+  return prefix .. index .. ':' .. name .. suffix
+end)
 
 -- ============================================================================
 -- Cursor Configuration
@@ -194,60 +206,73 @@ config.skip_close_confirmation_for_processes_named = {
 config.selection_word_boundary = " \t\n{}[]()\"'`"
 
 -- ============================================================================
+-- Leader Key (Ctrl+Space, like tmux prefix)
+-- ============================================================================
+
+config.leader = { key = 'Space', mods = 'CTRL', timeout_milliseconds = 1000 }
+
+-- ============================================================================
 -- Key Bindings
 -- ============================================================================
 
 config.keys = {
-  -- Tab management
-  { key = 't', mods = 'CTRL|SHIFT', action = wezterm.action.SpawnTab 'CurrentPaneDomain' },
-  { key = 'w', mods = 'CTRL|SHIFT', action = wezterm.action.CloseCurrentTab { confirm = true } },
-  { key = 'Tab', mods = 'CTRL', action = wezterm.action.ActivateTabRelative(1) },
-  { key = 'Tab', mods = 'CTRL|SHIFT', action = wezterm.action.ActivateTabRelative(-1) },
+  -- Tab management (Leader)
+  { key = 'c', mods = 'LEADER', action = wezterm.action.SpawnTab 'CurrentPaneDomain' },
+  { key = 'x', mods = 'LEADER', action = wezterm.action.CloseCurrentTab { confirm = true } },
+  { key = 'n', mods = 'LEADER', action = wezterm.action.ActivateTabRelative(1) },
+  { key = 'p', mods = 'LEADER', action = wezterm.action.ActivateTabRelative(-1) },
 
-  -- Pane management (split panes)
-  { key = 'd', mods = 'CTRL|SHIFT', action = wezterm.action.SplitVertical { domain = 'CurrentPaneDomain' } },
-  { key = 'e', mods = 'CTRL|SHIFT', action = wezterm.action.SplitHorizontal { domain = 'CurrentPaneDomain' } },
-  { key = 'w', mods = 'CTRL|SHIFT|ALT', action = wezterm.action.CloseCurrentPane { confirm = true } },
+  -- Jump to tab by number (Leader + 1-9)
+  { key = '1', mods = 'LEADER', action = wezterm.action.ActivateTab(0) },
+  { key = '2', mods = 'LEADER', action = wezterm.action.ActivateTab(1) },
+  { key = '3', mods = 'LEADER', action = wezterm.action.ActivateTab(2) },
+  { key = '4', mods = 'LEADER', action = wezterm.action.ActivateTab(3) },
+  { key = '5', mods = 'LEADER', action = wezterm.action.ActivateTab(4) },
+  { key = '6', mods = 'LEADER', action = wezterm.action.ActivateTab(5) },
+  { key = '7', mods = 'LEADER', action = wezterm.action.ActivateTab(6) },
+  { key = '8', mods = 'LEADER', action = wezterm.action.ActivateTab(7) },
+  { key = '9', mods = 'LEADER', action = wezterm.action.ActivateTab(8) },
 
-  -- Pane navigation (arrows)
-  { key = 'LeftArrow', mods = 'CTRL|SHIFT', action = wezterm.action.ActivatePaneDirection 'Left' },
-  { key = 'RightArrow', mods = 'CTRL|SHIFT', action = wezterm.action.ActivatePaneDirection 'Right' },
-  { key = 'UpArrow', mods = 'CTRL|SHIFT', action = wezterm.action.ActivatePaneDirection 'Up' },
-  { key = 'DownArrow', mods = 'CTRL|SHIFT', action = wezterm.action.ActivatePaneDirection 'Down' },
+  -- Pane splits (Leader)
+  { key = '-', mods = 'LEADER', action = wezterm.action.SplitVertical { domain = 'CurrentPaneDomain' } },
+  { key = '\\', mods = 'LEADER', action = wezterm.action.SplitHorizontal { domain = 'CurrentPaneDomain' } },
+  { key = 'q', mods = 'LEADER', action = wezterm.action.CloseCurrentPane { confirm = true } },
+  { key = 'z', mods = 'LEADER', action = wezterm.action.TogglePaneZoomState },
 
-  -- Pane navigation (vim-style hjkl)
-  { key = 'h', mods = 'CTRL|SHIFT', action = wezterm.action.ActivatePaneDirection 'Left' },
-  { key = 'l', mods = 'CTRL|SHIFT', action = wezterm.action.ActivatePaneDirection 'Right' },
-  { key = 'k', mods = 'CTRL|SHIFT', action = wezterm.action.ActivatePaneDirection 'Up' },
-  { key = 'j', mods = 'CTRL|SHIFT', action = wezterm.action.ActivatePaneDirection 'Down' },
+  -- Pane navigation (Leader + vim hjkl)
+  { key = 'h', mods = 'LEADER', action = wezterm.action.ActivatePaneDirection 'Left' },
+  { key = 'l', mods = 'LEADER', action = wezterm.action.ActivatePaneDirection 'Right' },
+  { key = 'k', mods = 'LEADER', action = wezterm.action.ActivatePaneDirection 'Up' },
+  { key = 'j', mods = 'LEADER', action = wezterm.action.ActivatePaneDirection 'Down' },
 
-  -- Pane resizing
-  { key = 'LeftArrow', mods = 'CTRL|SHIFT|ALT', action = wezterm.action.AdjustPaneSize { 'Left', 5 } },
-  { key = 'RightArrow', mods = 'CTRL|SHIFT|ALT', action = wezterm.action.AdjustPaneSize { 'Right', 5 } },
-  { key = 'UpArrow', mods = 'CTRL|SHIFT|ALT', action = wezterm.action.AdjustPaneSize { 'Up', 5 } },
-  { key = 'DownArrow', mods = 'CTRL|SHIFT|ALT', action = wezterm.action.AdjustPaneSize { 'Down', 5 } },
+  -- Pane resizing (Leader + arrow keys)
+  { key = 'LeftArrow', mods = 'LEADER', action = wezterm.action.AdjustPaneSize { 'Left', 5 } },
+  { key = 'RightArrow', mods = 'LEADER', action = wezterm.action.AdjustPaneSize { 'Right', 5 } },
+  { key = 'UpArrow', mods = 'LEADER', action = wezterm.action.AdjustPaneSize { 'Up', 5 } },
+  { key = 'DownArrow', mods = 'LEADER', action = wezterm.action.AdjustPaneSize { 'Down', 5 } },
 
-  -- Copy/Paste
+  -- Scrollback / Copy mode (Leader)
+  { key = '[', mods = 'LEADER', action = wezterm.action.ActivateCopyMode },
+  { key = 'u', mods = 'LEADER', action = wezterm.action.ScrollByPage(-0.5) },
+  { key = 'd', mods = 'LEADER', action = wezterm.action.ScrollByPage(0.5) },
+
+  -- Search (Leader)
+  { key = 'f', mods = 'LEADER', action = wezterm.action.Search 'CurrentSelectionOrEmptyString' },
+
+  -- Copy/Paste (keep as direct shortcuts)
   { key = 'c', mods = 'CTRL|SHIFT', action = wezterm.action.CopyTo 'Clipboard' },
   { key = 'v', mods = 'CTRL|SHIFT', action = wezterm.action.PasteFrom 'Clipboard' },
 
-  -- Font size
+  -- Font size (keep as direct shortcuts)
   { key = '+', mods = 'CTRL', action = wezterm.action.IncreaseFontSize },
   { key = '-', mods = 'CTRL', action = wezterm.action.DecreaseFontSize },
   { key = '0', mods = 'CTRL', action = wezterm.action.ResetFontSize },
-
-  -- Search
-  { key = 'f', mods = 'CTRL|SHIFT', action = wezterm.action.Search 'CurrentSelectionOrEmptyString' },
-
-  -- Scrollback
-  { key = 'PageUp', mods = 'SHIFT', action = wezterm.action.ScrollByPage(-1) },
-  { key = 'PageDown', mods = 'SHIFT', action = wezterm.action.ScrollByPage(1) },
 
   -- Toggle fullscreen
   { key = 'F11', mods = 'NONE', action = wezterm.action.ToggleFullScreen },
 
   -- Command Palette
-  { key = 'p', mods = 'CTRL|SHIFT', action = wezterm.action.ActivateCommandPalette },
+  { key = 'Space', mods = 'LEADER', action = wezterm.action.ActivateCommandPalette },
 }
 
 -- ============================================================================
@@ -277,6 +302,10 @@ if wezterm.target_triple == 'x86_64-pc-windows-msvc' then
     {
       label = 'Ubuntu (WSL)',
       args = { 'wsl.exe', '~' },
+    },
+    {
+      label = 'Ubuntu (WSL + tmux)',
+      args = { 'wsl.exe', '--cd', '~', '--', 'tmux', 'new-session', '-A', '-s', 'main' },
     },
   }
 end
