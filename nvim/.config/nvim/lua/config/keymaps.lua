@@ -56,3 +56,8 @@ local function snacks_explorer_focus_or_toggle()
 end
 
 map("n", "<leader>e", snacks_explorer_focus_or_toggle, { desc = "Snacks explorer focus/toggle" })
+
+-- Toggle render-markdown (conceallevel follows via win_options config)
+map("n", "<leader>uM", function()
+	require("render-markdown").toggle()
+end, { desc = "Toggle render-markdown + conceal" })

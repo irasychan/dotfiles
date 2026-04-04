@@ -63,6 +63,9 @@ if [[ -n "$WSL_DISTRO_NAME" ]]; then
         "/mnt/c/Users/irasy/AppData/Local/Programs/Microsoft VS Code/bin"
         "/mnt/c/Users/irasy/AppData/Local/Programs/cursor/resources/app/bin"
     )
+    # Fix oversized cursor in WSLg GUI apps
+    export XCURSOR_SIZE=16
+    export XCURSOR_THEME=Adwaita
 fi
 
 # -----------------------------------------------------------------------------
