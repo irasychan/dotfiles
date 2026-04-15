@@ -172,7 +172,8 @@ function Backup-ExistingConfig {
     }
 
     # Backup Neovim config
-    $nvimConfig = Join-Path $env:LOCALAPPDATA "nvim"
+    $nvimConfigHome = if ($env:XDG_CONFIG_HOME) { $env:XDG_CONFIG_HOME } else { Join-Path $HOME ".config" }
+    $nvimConfig = Join-Path $nvimConfigHome "nvim"
     if (Test-Path $nvimConfig) {
         $isSymlink = (Get-Item $nvimConfig).Attributes -band [System.IO.FileAttributes]::ReparsePoint
         if (-not $isSymlink) {
@@ -298,7 +299,8 @@ function Restore-FromBackup {
     # Restore Neovim config
     $nvimBackupDir = Join-Path $backupPath "nvim"
     if (Test-Path $nvimBackupDir) {
-        $nvimDest = Join-Path $env:LOCALAPPDATA "nvim"
+        $nvimConfigHome = if ($env:XDG_CONFIG_HOME) { $env:XDG_CONFIG_HOME } else { Join-Path $HOME ".config" }
+        $nvimDest = Join-Path $nvimConfigHome "nvim"
         if (Test-Path $nvimDest) {
             Remove-Item $nvimDest -Recurse -Force
         }
@@ -583,6 +585,30 @@ function Install-WezTermConfig {
     }
 }
 
+function Install-CCompiler {
+    # Required by nvim-treesitter to compile parsers
+    if (Get-Command cc -ErrorAction SilentlyContinue) {
+        Write-Warn "C compiler already available, skipping..."
+        return
+    }
+    if (Get-Command gcc -ErrorAction SilentlyContinue) {
+        Write-Warn "C compiler already available, skipping..."
+        return
+    }
+
+    Write-Info "Installing C compiler (required by nvim-treesitter)..."
+
+    if (Get-Command winget -ErrorAction SilentlyContinue) {
+        winget install --id=BrechtSanders.WinLibs.POSIX.UCRT -e --accept-source-agreements --accept-package-agreements
+        if ($LASTEXITCODE -eq 0) {
+            Write-Success "C compiler installed via winget (WinLibs MinGW)"
+            return
+        }
+    }
+
+    Write-Warn "Could not install C compiler automatically."
+    Write-Warn "Install manually: winget install --id=BrechtSanders.WinLibs.POSIX.UCRT -e"
+}
 
 function Install-NeovimConfig {
     Write-Info "Installing Neovim configuration..."
@@ -594,8 +620,9 @@ function Install-NeovimConfig {
         return
     }
 
-    # Neovim on Windows uses $env:LOCALAPPDATA\nvim
-    $dest = Join-Path $env:LOCALAPPDATA "nvim"
+    # Neovim uses XDG_CONFIG_HOME/nvim (set to ~/.config by our PS profile)
+    $configHome = if ($env:XDG_CONFIG_HOME) { $env:XDG_CONFIG_HOME } else { Join-Path $HOME ".config" }
+    $dest = Join-Path $configHome "nvim"
 
     if (Test-Path $dest) {
         Remove-Item $dest -Force -Recurse
@@ -697,6 +724,7 @@ function Main {
 
     # Install Neovim config
     if (-not $SkipNeovim) {
+        Install-CCompiler
         Install-NeovimConfig
     }
 
