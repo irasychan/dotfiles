@@ -85,7 +85,13 @@ plugins=(
 )
 
 # Conditionally load plugins that require their tool to be running
-(( $+commands[docker] )) && plugins+=(docker)
+# Check socket existence rather than binary presence — in WSL the docker CLI
+# is always installed by Docker Desktop even when the daemon is off.
+if (( $+commands[docker] )); then
+    _docker_sock="${${DOCKER_HOST:-unix:///var/run/docker.sock}#unix://}"
+    [[ -S "$_docker_sock" ]] && plugins+=(docker)
+    unset _docker_sock
+fi
 
 # Plugin settings
 zstyle ':omz:plugins:nvm' lazy yes
