@@ -1,5 +1,6 @@
 .DS_Store
 /.claude/
+/.remember/
 .vscode/
 *.bak
 *.swp
