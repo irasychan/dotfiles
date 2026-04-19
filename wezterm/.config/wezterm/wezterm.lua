@@ -218,9 +218,11 @@ config.leader = { key = 'Space', mods = 'CTRL', timeout_milliseconds = 1000 }
 config.keys = {
   -- Tab management (Leader)
   { key = 'c', mods = 'LEADER', action = wezterm.action.SpawnTab 'CurrentPaneDomain' },
-  { key = 'x', mods = 'LEADER', action = wezterm.action.CloseCurrentTab { confirm = true } },
   { key = 'n', mods = 'LEADER', action = wezterm.action.ActivateTabRelative(1) },
   { key = 'p', mods = 'LEADER', action = wezterm.action.ActivateTabRelative(-1) },
+  { key = 'Tab', mods = 'LEADER', action = wezterm.action.ActivateLastTab },
+  { key = 's', mods = 'LEADER', action = wezterm.action.ShowTabNavigator },
+  { key = '&', mods = 'LEADER|SHIFT', action = wezterm.action.CloseCurrentTab { confirm = true } },
 
   -- Jump to tab by number (Leader + 1-9)
   { key = '1', mods = 'LEADER', action = wezterm.action.ActivateTab(0) },
@@ -233,11 +235,23 @@ config.keys = {
   { key = '8', mods = 'LEADER', action = wezterm.action.ActivateTab(7) },
   { key = '9', mods = 'LEADER', action = wezterm.action.ActivateTab(8) },
 
-  -- Pane splits (Leader)
+  -- Jump to tab without leader (Alt + 1-9)
+  { key = '1', mods = 'ALT', action = wezterm.action.ActivateTab(0) },
+  { key = '2', mods = 'ALT', action = wezterm.action.ActivateTab(1) },
+  { key = '3', mods = 'ALT', action = wezterm.action.ActivateTab(2) },
+  { key = '4', mods = 'ALT', action = wezterm.action.ActivateTab(3) },
+  { key = '5', mods = 'ALT', action = wezterm.action.ActivateTab(4) },
+  { key = '6', mods = 'ALT', action = wezterm.action.ActivateTab(5) },
+  { key = '7', mods = 'ALT', action = wezterm.action.ActivateTab(6) },
+  { key = '8', mods = 'ALT', action = wezterm.action.ActivateTab(7) },
+  { key = '9', mods = 'ALT', action = wezterm.action.ActivateTab(8) },
+
+  -- Pane splits (Leader): | horizontal (left/right), - vertical (top/bottom)
+  { key = '|', mods = 'LEADER|SHIFT', action = wezterm.action.SplitHorizontal { domain = 'CurrentPaneDomain' } },
   { key = '-', mods = 'LEADER', action = wezterm.action.SplitVertical { domain = 'CurrentPaneDomain' } },
-  { key = '\\', mods = 'LEADER', action = wezterm.action.SplitHorizontal { domain = 'CurrentPaneDomain' } },
-  { key = 'q', mods = 'LEADER', action = wezterm.action.CloseCurrentPane { confirm = true } },
+  { key = 'x', mods = 'LEADER', action = wezterm.action.CloseCurrentPane { confirm = true } },
   { key = 'z', mods = 'LEADER', action = wezterm.action.TogglePaneZoomState },
+  { key = 'o', mods = 'LEADER', action = wezterm.action.RotatePanes 'Clockwise' },
 
   -- Pane navigation (Leader + vim hjkl)
   { key = 'h', mods = 'LEADER', action = wezterm.action.ActivatePaneDirection 'Left' },
@@ -245,11 +259,14 @@ config.keys = {
   { key = 'k', mods = 'LEADER', action = wezterm.action.ActivatePaneDirection 'Up' },
   { key = 'j', mods = 'LEADER', action = wezterm.action.ActivatePaneDirection 'Down' },
 
-  -- Pane resizing (Leader + arrow keys)
-  { key = 'LeftArrow', mods = 'LEADER', action = wezterm.action.AdjustPaneSize { 'Left', 5 } },
-  { key = 'RightArrow', mods = 'LEADER', action = wezterm.action.AdjustPaneSize { 'Right', 5 } },
-  { key = 'UpArrow', mods = 'LEADER', action = wezterm.action.AdjustPaneSize { 'Up', 5 } },
-  { key = 'DownArrow', mods = 'LEADER', action = wezterm.action.AdjustPaneSize { 'Down', 5 } },
+  -- Pane resizing (Leader + uppercase HJKL, one-shot 5 cells)
+  { key = 'H', mods = 'LEADER|SHIFT', action = wezterm.action.AdjustPaneSize { 'Left', 5 } },
+  { key = 'J', mods = 'LEADER|SHIFT', action = wezterm.action.AdjustPaneSize { 'Down', 5 } },
+  { key = 'K', mods = 'LEADER|SHIFT', action = wezterm.action.AdjustPaneSize { 'Up', 5 } },
+  { key = 'L', mods = 'LEADER|SHIFT', action = wezterm.action.AdjustPaneSize { 'Right', 5 } },
+
+  -- Resize mode (Leader + R): HJKL repeat until Escape
+  { key = 'R', mods = 'LEADER|SHIFT', action = wezterm.action.ActivateKeyTable { name = 'resize_pane', one_shot = false } },
 
   -- Scrollback / Copy mode (Leader)
   { key = '[', mods = 'LEADER', action = wezterm.action.ActivateCopyMode },
@@ -258,6 +275,9 @@ config.keys = {
 
   -- Search (Leader)
   { key = 'f', mods = 'LEADER', action = wezterm.action.Search 'CurrentSelectionOrEmptyString' },
+
+  -- Reload config (Leader)
+  { key = 'r', mods = 'LEADER', action = wezterm.action.ReloadConfiguration },
 
   -- Copy/Paste (keep as direct shortcuts)
   { key = 'c', mods = 'CTRL|SHIFT', action = wezterm.action.CopyTo 'Clipboard' },
@@ -271,8 +291,24 @@ config.keys = {
   -- Toggle fullscreen
   { key = 'F11', mods = 'NONE', action = wezterm.action.ToggleFullScreen },
 
-  -- Command Palette
-  { key = 'Space', mods = 'LEADER', action = wezterm.action.ActivateCommandPalette },
+  -- Command Palette (Leader + :)
+  { key = ':', mods = 'LEADER|SHIFT', action = wezterm.action.ActivateCommandPalette },
+}
+
+-- Resize key table: activated via LEADER R, exits on Escape/Enter
+config.key_tables = {
+  resize_pane = {
+    { key = 'h', action = wezterm.action.AdjustPaneSize { 'Left', 5 } },
+    { key = 'j', action = wezterm.action.AdjustPaneSize { 'Down', 5 } },
+    { key = 'k', action = wezterm.action.AdjustPaneSize { 'Up', 5 } },
+    { key = 'l', action = wezterm.action.AdjustPaneSize { 'Right', 5 } },
+    { key = 'LeftArrow', action = wezterm.action.AdjustPaneSize { 'Left', 5 } },
+    { key = 'DownArrow', action = wezterm.action.AdjustPaneSize { 'Down', 5 } },
+    { key = 'UpArrow', action = wezterm.action.AdjustPaneSize { 'Up', 5 } },
+    { key = 'RightArrow', action = wezterm.action.AdjustPaneSize { 'Right', 5 } },
+    { key = 'Escape', action = 'PopKeyTable' },
+    { key = 'Enter', action = 'PopKeyTable' },
+  },
 }
 
 -- ============================================================================
