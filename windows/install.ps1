@@ -395,15 +395,10 @@ function Install-Profile {
             Remove-Item $dest -Force
         }
 
-        # Create symbolic link (requires admin) or copy
-        try {
-            New-Item -ItemType SymbolicLink -Path $dest -Target $sourceProfile -Force | Out-Null
-            Write-Success "  Created symlink for PowerShell 7+"
-        } catch {
-            Write-Warn "  Cannot create symlink (requires admin), copying instead..."
-            Copy-Item $sourceProfile $dest -Force
-            Write-Success "  Copied profile for PowerShell 7+"
-        }
+        # Copy, don't symlink: Documents resolves under OneDrive when KFM is on,
+        # and a symlink pointing outside OneDrive's scope keeps it in a full-scan loop.
+        Copy-Item $sourceProfile $dest -Force
+        Write-Success "  Copied profile for PowerShell 7+ (re-run installer to pick up edits)"
     }
 
     # Install for Windows PowerShell 5.x
@@ -416,13 +411,8 @@ function Install-Profile {
         Remove-Item $dest5 -Force
     }
 
-    try {
-        New-Item -ItemType SymbolicLink -Path $dest5 -Target $sourceProfile -Force | Out-Null
-        Write-Success "  Created symlink for PowerShell 5.x"
-    } catch {
-        Copy-Item $sourceProfile $dest5 -Force
-        Write-Success "  Copied profile for PowerShell 5.x"
-    }
+    Copy-Item $sourceProfile $dest5 -Force
+    Write-Success "  Copied profile for PowerShell 5.x (re-run installer to pick up edits)"
 
     if (Test-Path $sourceCompletions) {
         Write-Info "  Installing PowerShell completions..."
