@@ -6,7 +6,7 @@
 DOTFILES_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 # Available packages
-PACKAGES=(bash zsh nvim tmux wsl git starship pwsh)
+PACKAGES=(bash zsh nvim tmux wsl git starship pwsh wezterm prettier)
 
 # Colors for output
 RED='\033[0;31m'

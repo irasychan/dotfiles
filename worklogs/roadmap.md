@@ -4,17 +4,17 @@ Future work and improvements for the dotfiles repository.
 
 ## High Priority
 
-### [ ] Add `wezterm` and `prettier` to stow.sh
+### [x] Add `wezterm` and `prettier` to stow.sh
 
 `stow.sh` lists available packages on line 9 but is missing `wezterm` and `prettier`, which both exist as stow packages
 in the repo.
 
-### [ ] Update install.sh default stow packages
+### [x] Update install.sh default stow packages
 
 Default stow list (`bash zsh nvim tmux starship`) is missing `git` and `pwsh`. WSL mode (`wsl zsh nvim tmux starship`)
 is also missing `git`.
 
-### [ ] Fix CRLF line endings in VS Code extensions.json
+### [x] Fix CRLF line endings in VS Code extensions.json
 
 `vscode/.config/vscode/extensions.json` has CRLF endings (git warns on checkout). Normalize to LF.
 
@@ -35,7 +35,7 @@ See `docs/vscode-setup-summary.md` for details.
 Only 2 custom keybindings defined. `docs/vscode-setup-summary.md` has TODOs for more productivity shortcuts and snippet
 definitions.
 
-### [ ] Align docs with stow.sh package list
+### [x] Align docs with stow.sh package list
 
 CLAUDE.md lists `wezterm` as available but stow.sh doesn't include it. Ensure CLAUDE.md, README.md, and stow.sh all
 agree on available packages.

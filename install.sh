@@ -375,7 +375,7 @@ deploy_dotfiles() {
     done
 
     # Stow packages
-    local packages=(bash zsh nvim tmux starship)
+    local packages=(bash zsh nvim tmux starship git pwsh)
 
     for pkg in "${packages[@]}"; do
         if [[ -d "$DOTFILES_DIR/$pkg" ]]; then
@@ -434,7 +434,7 @@ print_summary() {
     echo "     - lazygit: https://github.com/jesseduffield/lazygit#installation"
     echo ""
     echo "Stow packages available:"
-    echo "  bash, zsh, nvim, tmux, starship, wsl, git"
+    echo "  bash, zsh, nvim, tmux, starship, pwsh, wezterm, wsl, git, prettier"
     echo ""
     echo "Neovim (LazyVim):"
     echo "  First launch will auto-install plugins."
@@ -551,7 +551,7 @@ case "${1:-}" in
             fi
         done
 
-        stow -v -R -t "$HOME" wsl zsh nvim tmux starship
+        stow -v -R -t "$HOME" wsl zsh nvim tmux starship git
         success "Dotfiles deployed (WSL mode)"
 
         notify_nvim_plugins

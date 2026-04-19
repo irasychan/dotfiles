@@ -69,7 +69,7 @@ Helper for managing stow packages:
 - `./stow.sh status`: Show linked status
 - Use `all` to operate on all packages
 
-Available packages: bash, zsh, nvim, tmux, starship, pwsh, wezterm, wsl, git
+Available packages: bash, zsh, nvim, tmux, starship, pwsh, wezterm, wsl, git, prettier
 
 ### windows/install.ps1
 
