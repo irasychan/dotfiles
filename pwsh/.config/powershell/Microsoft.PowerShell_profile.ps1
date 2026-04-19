@@ -87,10 +87,22 @@ if ($PSVersionTable.PSVersion.Major -ge 7 -and $PSVersionTable.PSVersion.Minor -
 
 #region Aliases
 
-# Navigation
-Set-Alias -Name ll -Value Get-ChildItemLong
-Set-Alias -Name la -Value Get-ChildItemAll
-Set-Alias -Name l -Value Get-ChildItemCompact
+# List files (use eza if available, else Get-ChildItem wrappers)
+if (Get-Command eza -ErrorAction SilentlyContinue) {
+    Remove-Item Alias:ls -Force -ErrorAction SilentlyContinue
+    function ls  { eza --color=auto --icons --group-directories-first @args }
+    function l   { eza -lah --icons --group-directories-first @args }
+    function ll  { eza -lh  --icons --group-directories-first @args }
+    function la  { eza -lAh --icons --group-directories-first @args }
+    function lt  { eza -lah --icons --tree --level=2 @args }
+    function lta { eza -lah --icons --tree --level=3 @args }
+    function lsd { eza -D --icons @args }
+    function lsf { eza -f --icons @args }
+} else {
+    Set-Alias -Name ll -Value Get-ChildItemLong
+    Set-Alias -Name la -Value Get-ChildItemAll
+    Set-Alias -Name l  -Value Get-ChildItemCompact
+}
 
 # Editor
 Set-Alias -Name vim -Value nvim -ErrorAction SilentlyContinue
