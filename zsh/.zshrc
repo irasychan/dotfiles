@@ -121,6 +121,16 @@ if command -v gpgconf &>/dev/null; then
     gpgconf --launch gpg-agent 2>/dev/null
 fi
 
+# 1Password-managed secrets — service account mode
+# The SA token reads from ~/.config/op/service-account-token (chmod 600) and is
+# scoped only to this single `op read` invocation, so child shells inherit the
+# resolved GitHub PAT but never see the SA credential itself. Loaded once per
+# session — subsequent shells inherit via export and skip the network call.
+# Silently no-ops if the token file is missing.
+if [[ -z "$GITHUB_PERSONAL_ACCESS_TOKEN" && -r "$HOME/.config/op/service-account-token" ]]; then
+  export GITHUB_PERSONAL_ACCESS_TOKEN="$(OP_SERVICE_ACCOUNT_TOKEN="$(<"$HOME/.config/op/service-account-token")" op read 'op://WSL/Github/PAT' 2>/dev/null)"
+fi
+
 # -----------------------------------------------------------------------------
 # Aliases
 # -----------------------------------------------------------------------------
@@ -246,3 +256,5 @@ export PATH="$PATH:$ANDROID_HOME/platform-tools:$ANDROID_HOME/emulator"
 #THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
 export SDKMAN_DIR="$HOME/.sdkman"
 [[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]] && source "$HOME/.sdkman/bin/sdkman-init.sh"
+
+. "$HOME/.local/share/../bin/env"
