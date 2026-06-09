@@ -1,0 +1,7 @@
+# Line-ending policy — keep correctness independent of each machine's
+# core.autocrlf setting. Linux/WSL files are LF; only Windows-native file
+# types keep CRLF.
+*.sh             text eol=lf
+*.md             text eol=lf
+*.ps1            text eol=crlf
+*.code-workspace text eol=crlf
