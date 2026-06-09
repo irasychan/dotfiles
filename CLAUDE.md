@@ -186,17 +186,26 @@ All configurations use the Tokyo Night color palette for consistency across shel
 
 | Color | Hex | Usage |
 |-------|-----|-------|
-| main-bg | `#1a1b26` | Terminal/editor background |
-| terminal-blue | `#7aa2f7` | Prompt arrow, commands, PHP |
-| terminal-magenta | `#bb9af7` | Path, keywords, .NET |
+| main-bg | `#1a1b26` | Terminal/editor background (night variant) |
+| bg-dark | `#16161e` | Tab/title bar background, darker UI chrome |
+| bg-highlight | `#292e42` | Inactive tab hover, subtle UI highlights |
+| storm-bg | `#24283b` | Tokyo Night Storm scheme background (variant alt) |
+| fg-bright | `#c0caf5` | Primary terminal foreground, white, cursor (night variant) |
+| terminal-blue | `#7aa2f7` | Prompt arrow, commands, PHP, ls directory entries |
+| terminal-magenta | `#bb9af7` | Prompt path, keywords, .NET |
 | light-sky-blue | `#7dcfff` | Git branch clean, operators, Go |
 | terminal-red | `#f7768e` | Errors, git dirty, Ruby |
 | pistachio-green | `#9ece6a` | Success char, strings, Node |
 | terminal-yellow | `#e0af68` | Python, numbers |
 | terminal-green | `#73daca` | Variables |
-| white-blue | `#a9b1d6` | Command duration, foreground |
+| white-blue | `#a9b1d6` | Command duration, secondary text |
 | blue-black | `#565f89` | Comments, predictions |
 | terminal-black | `#414868` | Selection background |
+
+### Role notes
+
+- **Foreground:** Use `fg-bright` (`#c0caf5`) for the primary foreground / white / cursor in terminals and editors. Use `white-blue` (`#a9b1d6`) only for secondary text such as starship's command-duration display.
+- **Blue vs magenta for "directory":** Two roles, two colors. Starship's prompt **path** uses `terminal-magenta` (`#bb9af7`). PowerShell `PSStyle.FileInfo.Directory` and `ls`-style directory listings use `terminal-blue` (`#7aa2f7`), matching LS_COLORS convention. Don't unify them — they answer different questions.
 
 ## XDG Paths Reference
 
