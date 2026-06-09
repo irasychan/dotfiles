@@ -18,3 +18,4 @@ fi
 
 
 . "$HOME/.local/share/../bin/env"
+. "/home/irasy/.local/share/cargo/env"
