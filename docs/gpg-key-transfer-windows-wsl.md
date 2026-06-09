@@ -19,13 +19,13 @@ gpg --list-secret-keys --keyid-format=long
 Example output:
 
 ```
-sec   rsa4096/5E9D7B9E55FA3B57 2024-02-25 [SC]
-      C291CE1DAFF4EB72DCC170665E9D7B9E55FA3B57
+sec   rsa4096/DDDD4444EEEE5555 2024-02-25 [SC]
+      AAAA1111BBBB2222CCCC3333DDDD4444EEEE5555
 uid                 [ultimate] Your Name <your.email@example.com>
-ssb   rsa4096/75A7ED4BFFBA4EB5 2024-02-25 [E]
+ssb   rsa4096/1111222233334444 2024-02-25 [E]
 ```
 
-Note the key ID after `rsa4096/` (e.g., `5E9D7B9E55FA3B57`).
+Note the key ID after `rsa4096/` (e.g., `DDDD4444EEEE5555`).
 
 ## Step 2: Export Your GPG Key
 
@@ -69,7 +69,7 @@ echo 'YOUR_FULL_FINGERPRINT:6:' | gpg --import-ownertrust
 Example:
 
 ```bash
-echo 'C291CE1DAFF4EB72DCC170665E9D7B9E55FA3B57:6:' | gpg --import-ownertrust
+echo 'AAAA1111BBBB2222CCCC3333DDDD4444EEEE5555:6:' | gpg --import-ownertrust
 ```
 
 Verify the trust level changed to `[ultimate]`:

@@ -119,13 +119,20 @@ if command -v gpgconf &>/dev/null; then
 fi
 
 # 1Password-managed secrets — service account mode
-# The SA token reads from ~/.config/op/service-account-token (chmod 600) and is
-# scoped only to this single `op read` invocation, so child shells inherit the
-# resolved GitHub PAT but never see the SA credential itself. Loaded once per
-# session — subsequent shells inherit via export and skip the network call.
-# Silently no-ops if the token file is missing.
+# The SA token reads from ~/.config/op/service-account-token and is scoped only
+# to this single `op read` invocation, so child shells inherit the resolved
+# GitHub PAT but never see the SA credential itself. Loaded once per session —
+# subsequent shells inherit via export and skip the network call. No-ops if the
+# token file is missing. Defense-in-depth: the token MUST be owner-only (chmod
+# 600/400); the loader refuses to read it — and warns — if it is group/other
+# readable, so an accidental loosening of perms fails closed instead of silently
+# exposing the SA credential to other local accounts.
 if [[ -z "$GITHUB_PERSONAL_ACCESS_TOKEN" && -r "$HOME/.config/op/service-account-token" ]]; then
-  export GITHUB_PERSONAL_ACCESS_TOKEN="$(OP_SERVICE_ACCOUNT_TOKEN="$(<"$HOME/.config/op/service-account-token")" op read 'op://WSL/Github/PAT' 2>/dev/null)"
+  if [[ "$(stat -c '%a' "$HOME/.config/op/service-account-token" 2>/dev/null)" == [0-7]00 ]]; then
+    export GITHUB_PERSONAL_ACCESS_TOKEN="$(OP_SERVICE_ACCOUNT_TOKEN="$(<"$HOME/.config/op/service-account-token")" op read 'op://WSL/Github/PAT' 2>/dev/null)"
+  else
+    print -u2 "zshrc: ~/.config/op/service-account-token is not owner-only (run: chmod 600); skipping PAT load."
+  fi
 fi
 
 # -----------------------------------------------------------------------------
