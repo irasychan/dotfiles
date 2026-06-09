@@ -70,177 +70,46 @@ list_profiles() {
     echo ""
 }
 
-# Merge multiple profiles into one workspace JSON
-# Uses a simple approach: concatenate settings and deduplicate extensions
+# Merge multiple profiles into one workspace JSON using jq:
+#   - settings are deep-merged (last profile wins on key conflicts), which
+#     preserves [language] overrides and unions search.exclude/files.exclude
+#   - extensions.recommendations are unioned and de-duplicated, order preserved
 merge_profiles() {
     local project_dir="$1"
     shift
     local profiles=("$@")
 
+    if ! command -v jq >/dev/null 2>&1; then
+        error "Merging multiple profiles requires 'jq'. Install jq, or pass a single profile."
+    fi
+
     local project_name
     project_name=$(basename "$(cd "$project_dir" && pwd)")
 
-    local merged_settings=""
-    local merged_extensions=""
-    local merged_search_exclude=""
-    local merged_files_exclude=""
-    local lang_overrides=""
-
+    local profile_files=()
     for profile in "${profiles[@]}"; do
         local profile_file="$PROFILES_DIR/${profile}.code-workspace"
-
         if [[ ! -f "$profile_file" ]]; then
             error "Profile not found: $profile (available: $(available_profiles))"
         fi
-
-        info "Loading profile: $profile"
-
-        # Extract settings block content (between the outer braces of "settings")
-        # We parse line by line to collect what we need
-        local in_settings=false
-        local in_search_exclude=false
-        local in_files_exclude=false
-        local in_lang_override=false
-        local in_extensions=false
-        local in_recommendations=false
-        local brace_depth=0
-
-        while IFS= read -r line; do
-            # Track extension recommendations
-            if [[ "$line" =~ \"recommendations\" ]]; then
-                in_recommendations=true
-                continue
-            fi
-            if $in_recommendations; then
-                if [[ "$line" =~ \] ]]; then
-                    in_recommendations=false
-                    continue
-                fi
-                # Extract extension ID
-                local ext
-                ext=$(echo "$line" | sed -n 's/.*"\([^"]*\)".*/\1/p')
-                if [[ -n "$ext" ]]; then
-                    if [[ -z "$merged_extensions" ]]; then
-                        merged_extensions="$ext"
-                    elif [[ ! "$merged_extensions" =~ $ext ]]; then
-                        merged_extensions="$merged_extensions|$ext"
-                    fi
-                fi
-                continue
-            fi
-
-            # Track search.exclude
-            if [[ "$line" =~ \"search.exclude\" ]]; then
-                in_search_exclude=true
-                continue
-            fi
-            if $in_search_exclude; then
-                if [[ "$line" =~ \} ]]; then
-                    in_search_exclude=false
-                    continue
-                fi
-                local pattern
-                pattern=$(echo "$line" | sed -n 's/.*"\([^"]*\)".*/\1/p')
-                if [[ -n "$pattern" && ! "$merged_search_exclude" =~ "$pattern" ]]; then
-                    merged_search_exclude="${merged_search_exclude}      \"${pattern}\": true,
-"
-                fi
-                continue
-            fi
-
-            # Track files.exclude
-            if [[ "$line" =~ \"files.exclude\" ]]; then
-                in_files_exclude=true
-                continue
-            fi
-            if $in_files_exclude; then
-                if [[ "$line" =~ \} ]]; then
-                    in_files_exclude=false
-                    continue
-                fi
-                local pattern
-                pattern=$(echo "$line" | sed -n 's/.*"\([^"]*\)".*/\1/p')
-                if [[ -n "$pattern" && ! "$merged_files_exclude" =~ "$pattern" ]]; then
-                    merged_files_exclude="${merged_files_exclude}      \"${pattern}\": true,
-"
-                fi
-                continue
-            fi
-
-            # Track language-specific overrides [lang]
-            if [[ "$line" =~ ^\s*\"\\[ ]]; then
-                in_lang_override=true
-                lang_overrides="${lang_overrides}    ${line}
-"
-                continue
-            fi
-            if $in_lang_override; then
-                lang_overrides="${lang_overrides}    ${line}
-"
-                if [[ "$line" =~ ^\s*\} ]]; then
-                    in_lang_override=false
-                fi
-                continue
-            fi
-
-            # Collect top-level settings (skip folders, settings wrapper, extensions wrapper)
-            if [[ "$line" =~ \"editor\. ]] || [[ "$line" =~ \"python\. ]] || \
-               [[ "$line" =~ \"go\. ]] || [[ "$line" =~ \"rust-analyzer\. ]] || \
-               [[ "$line" =~ \"omnisharp\. ]]; then
-                merged_settings="${merged_settings}    ${line}
-"
-            fi
-
-        done < "$profile_file"
+        info "Loading profile: $profile" >&2
+        profile_files+=("$profile_file")
     done
 
-    # Build the final workspace file
     local workspace_file="$project_dir/${project_name}.code-workspace"
 
-    # Remove trailing comma from excludes
-    merged_search_exclude=$(echo "$merged_search_exclude" | sed '$ s/,$//')
-    merged_files_exclude=$(echo "$merged_files_exclude" | sed '$ s/,$//')
-
-    # Build extensions array
-    local ext_json=""
-    IFS='|' read -ra ext_arr <<< "$merged_extensions"
-    for i in "${!ext_arr[@]}"; do
-        if [[ $i -lt $((${#ext_arr[@]} - 1)) ]]; then
-            ext_json="${ext_json}      \"${ext_arr[$i]}\",
-"
-        else
-            ext_json="${ext_json}      \"${ext_arr[$i]}\""
-        fi
-    done
-
-    # Remove trailing commas from lang_overrides and settings
-    lang_overrides=$(echo "$lang_overrides" | sed '$ s/,$//')
-    merged_settings=$(echo "$merged_settings" | sed '$ s/,$//')
-
-    cat > "$workspace_file" << WORKSPACE
-{
-  "folders": [
-    {
-      "path": "."
-    }
-  ],
-  "settings": {
-${merged_settings}
-${lang_overrides}
-    "search.exclude": {
-${merged_search_exclude}
-    },
-    "files.exclude": {
-${merged_files_exclude}
-    }
-  },
-  "extensions": {
-    "recommendations": [
-${ext_json}
-    ]
-  }
-}
-WORKSPACE
+    jq -s '
+        {
+            folders: [{ path: "." }],
+            settings: (map(.settings // {}) | reduce .[] as $s ({}; . * $s)),
+            extensions: {
+                recommendations: (
+                    map(.extensions.recommendations // []) | add
+                    | reduce .[] as $x ([]; if index($x) then . else . + [$x] end)
+                )
+            }
+        }
+    ' "${profile_files[@]}" > "$workspace_file"
 
     echo "$workspace_file"
 }
