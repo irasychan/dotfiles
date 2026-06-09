@@ -92,8 +92,9 @@ cd $env:USERPROFILE\dotfiles\windows
 ### Partial Installation (Linux/WSL)
 
 ```bash
-./install.sh --packages  # Only install dependencies
-./install.sh --stow      # Only deploy configs (assumes deps installed)
+./install.sh --system          # Install system packages + set zsh default (sudo)
+./install.sh --stow            # Only deploy configs, with backup (deps assumed)
+./install.sh --stow-no-backup  # Only deploy configs, skip backup
 ```
 
 ### Manual Stow
