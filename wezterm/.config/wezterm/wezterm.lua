@@ -115,7 +115,7 @@ config.window_padding = {
 config.initial_cols = 120
 config.initial_rows = 30
 
-config.window_background_opacity = 1.0
+config.window_background_opacity = 0.95
 config.text_background_opacity = 1.0
 
 -- Window decorations
@@ -182,7 +182,7 @@ config.audible_bell = "Disabled"
 
 config.max_fps = 144
 config.animation_fps = 60
-config.front_end = "WebGpu"
+config.front_end = "OpenGL"
 
 -- ============================================================================
 -- Behavior
