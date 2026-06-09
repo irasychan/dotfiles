@@ -93,9 +93,6 @@ if (( $+commands[docker] )); then
     unset _docker_sock
 fi
 
-# Plugin settings
-zstyle ':omz:plugins:nvm' lazy yes
-
 # Load oh-my-zsh
 source "$ZSH/oh-my-zsh.sh"
 
