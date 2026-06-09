@@ -4,14 +4,6 @@
 local autocmd = vim.api.nvim_create_autocmd
 local augroup = vim.api.nvim_create_augroup
 
--- Highlight on yank
-autocmd("TextYankPost", {
-	group = augroup("highlight_yank", { clear = true }),
-	callback = function()
-		vim.highlight.on_yank()
-	end,
-})
-
 -- Resize splits if window got resized
 autocmd("VimResized", {
 	group = augroup("resize_splits", { clear = true }),
