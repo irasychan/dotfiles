@@ -4,7 +4,7 @@
   // Theme
   "workbench.colorTheme": "Tokyo Night",
   // Editor
-  "editor.fontFamily": "'CaskaydiaCove Nerd Font', 'Cascadia Code', 'Fira Code', Consolas, monospace",
+  "editor.fontFamily": "'CaskaydiaCove Nerd Font', 'I.Mahjong-HK', 'Cascadia Code', 'Fira Code', Consolas, monospace",
   "editor.fontSize": 12,
   "editor.fontLigatures": true,
   "editor.lineHeight": 1.6,
@@ -101,5 +101,8 @@
     "error",
     "warning",
     "info"
-  ]
+  ],
+  "[xml]": {
+    "editor.defaultFormatter": "redhat.vscode-xml"
+  }
 }
