@@ -11,19 +11,4 @@ return {
 			image = { enabled = false },
 		},
 	},
-
-	-- Telescope: show hidden files
-	{
-		"nvim-telescope/telescope.nvim",
-		opts = {
-			defaults = {
-				file_ignore_patterns = { ".git/" },
-			},
-			pickers = {
-				find_files = {
-					hidden = true,
-				},
-			},
-		},
-	},
 }
