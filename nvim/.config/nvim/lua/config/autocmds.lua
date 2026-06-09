@@ -22,6 +22,25 @@ autocmd("VimResized", {
 	end,
 })
 
+-- Force fold recompute after the treesitter parser attaches.
+-- Without this, opening a JSON/JSONC buffer can leave foldexpr returning 0
+-- for every line because the parser wasn't ready when folds were first evaluated.
+autocmd("FileType", {
+	group = augroup("ts_fold_refresh", { clear = true }),
+	pattern = { "json", "jsonc", "json5", "yaml", "toml" },
+	callback = function(args)
+		vim.schedule(function()
+			if vim.api.nvim_buf_is_valid(args.buf) then
+				vim.api.nvim_buf_call(args.buf, function()
+					if vim.wo.foldmethod == "expr" then
+						vim.cmd("silent! normal! zx")
+					end
+				end)
+			end
+		end)
+	end,
+})
+
 -- Go to last location when opening a buffer
 autocmd("BufReadPost", {
 	group = augroup("last_loc", { clear = true }),
