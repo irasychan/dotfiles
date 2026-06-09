@@ -138,6 +138,8 @@ fi
 alias vim='nvim'
 alias v='nvim'
 alias vi='nvim'
+alias cc='claude'
+alias ccc='claude -c'
 
 # Navigation
 alias ..='cd ..'
